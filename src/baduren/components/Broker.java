@@ -1,5 +1,6 @@
 package baduren.components;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +23,8 @@ public class Broker extends AbstractComponent {
 	protected ReceptionOutboundPort receptionOutboundPort;
 	protected String uri; 
 	
-	private Map<String, List<Message>> messages; //Map between topic and messages ( each topic has several messages)
-	private Map<String, List<String>> subscribers; //Map between topics and subscribers URI ( each topic has several URI followers) 
+	private HashMap<String, List<MessageI>> messages; //Map between topic and messages ( each topic has several messages)
+	private HashMap<String, List<String>> subscribers; //Map between topics and subscribers URI ( each topic has several URI followers) 
 	
 //	private String[] topics= new String[0]; 
 //	private Message[] messages = new Message[0]; 
@@ -39,8 +40,8 @@ public class Broker extends AbstractComponent {
 		publicationInboundPort.publishPort();
 		receptionOutboundPort.localPublishPort();
 		
-		List<Message> aux = new Vector<Message>(); 
-		this.messages = new HashMap<String,List<Message>>(); 
+		List<Message> aux = new ArrayList<Message>(); 
+		this.messages = new HashMap<String,List<MessageI>>(); 
 
 		// Pour les logs
 		if (AbstractCVM.isDistributed) {
@@ -134,21 +135,21 @@ public class Broker extends AbstractComponent {
 	}
 
 	public void createTopic(String topic) throws Exception {
-		this.messages.putIfAbsent(topic, new Vector<Message>());
-//		this.topics = addX(this.topics, topic); 
-
+		this.messages.put(topic,new ArrayList<>()); 
+		this.subscribers.put(topic, new ArrayList<>());
 	}
 
 	
 	public void createTopics(String[] topics) throws Exception {
 		for (int i=0; i< topics.length; i++) 
-			this.messages.putIfAbsent(topics[i], new Vector<Message>());
+			createTopic(topics[i]); 
 
 	}
 
 	
 	public void destroyTopic(String topic) throws Exception {
 		this.messages.remove(topic);
+		this.subscribers.remove(topic); 
 
 	}
 

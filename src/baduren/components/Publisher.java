@@ -101,58 +101,51 @@ public class Publisher extends AbstractComponent {
 
 
 	public void subscribe(String topic, String inboundPortURI) {
-		// TODO Auto-generated method stub
+		this.managementOutboundPort.subscribe(topic, inboundPortURI);
 
 	}
 
 	public void subscribe(String[] topics, String inboundPortURI) {
-		// TODO Auto-generated method stub
+		this.managementOutboundPort.subscribe(topics, inboundPortURI);
 
 	}
 
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) {
-		// TODO Auto-generated method stub
+		this.managementOutboundPort.subscribe(topic,filter, inboundPortURI);
 
 	}
 
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) {
-		// TODO Auto-generated method stub
+		this.managementOutboundPort.subscribe(topic, newFilter, inboundPortURI);
 
 	}
 
 	public void unsubscribe(String topic, String inboundPortUri) {
-		// TODO Auto-generated method stub
-
+		this.managementOutboundPort.unsubscribe(topic, inboundPortUri);
 	}
 
 	public void createTopic(String topic) {
-		// TODO Auto-generated method stub
-
+		this.managementOutboundPort.createTopic(topic);
 	}
 
 	public void createTopics(String[] topics) {
-		// TODO Auto-generated method stub
-
+		this.managementOutboundPort.createTopics(topics);
 	}
 
 	public void destroyTopic(String topic) {
-		// TODO Auto-generated method stub
-
+		this.managementOutboundPort.destroyTopic(topic);
 	}
 
 	public boolean isTopic(String topic) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.managementOutboundPort.isTopic(topic);
 	}
 
 	public String[] getTopics() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.managementOutboundPort.getTopics();
 	}
 
 	public String getPublicationPortURI() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.managementOutboundPort.getPublicationPortURI();
 	}
 
 
