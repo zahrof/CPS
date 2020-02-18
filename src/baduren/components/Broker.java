@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import baduren.connectors.ReceptionConnector;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.message.Message;
@@ -20,8 +21,12 @@ import fr.sorbonne_u.components.ports.PortI;
 
 public class Broker extends AbstractComponent {
 
-	protected ReceptionOutboundPort receptionOutboundPort;
+	//protected ReceptionOutboundPort receptionOutboundPort;
 	protected String uri; 
+	
+	int compteur =0; 
+	
+	private List<ReceptionOutboundPort> rop; 
 	
 	private HashMap<String, List<MessageI>> messages; //Map between topic and messages ( each topic has several messages)
 	private HashMap<String, List<String>> subscribers; //Map between topics and subscribers URI ( each topic has several URI followers) 
@@ -29,19 +34,29 @@ public class Broker extends AbstractComponent {
 //	private String[] topics= new String[0]; 
 //	private Message[] messages = new Message[0]; 
 
-	protected Broker (String uri, 
-			String managementInboundPortName, String publicationInboundPortName, String receptionOutboundPortName) throws Exception {
+	protected Broker (String uri, String managementInboundPortName,String publicationInboundPortName, String receptionOutboundPortName) throws Exception {
 		super(uri, 1, 0) ;
 		this.uri=uri; 
+		
 		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this); 
 		PortI publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this); 
-		this.receptionOutboundPort = new ReceptionOutboundPort(receptionOutboundPortName,this); 
-		managementInboundPort.publishPort();
-		publicationInboundPort.publishPort();
-		receptionOutboundPort.localPublishPort();
 		
-		List<Message> aux = new ArrayList<Message>(); 
+		
+		
+		managementInboundPort.publishPort();
+		
+		publicationInboundPort.publishPort();
+		
+		
+		
+		this.rop = new ArrayList<ReceptionOutboundPort>(); 
+		this.rop.add( new ReceptionOutboundPort(receptionOutboundPortName,this)); 
+		this.rop.get(0).localPublishPort();
 		this.messages = new HashMap<String,List<MessageI>>(); 
+		
+		this.messages = new HashMap<String,List<MessageI>>(); 
+		
+		
 
 		// Pour les logs
 		if (AbstractCVM.isDistributed) {
@@ -65,7 +80,33 @@ public class Broker extends AbstractComponent {
 	public void			execute() throws Exception
 	{
 		super.execute() ;
-
+		
+		while(this.messages.size()==0) {
+			try {
+				this.wait();
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("on est la");
+		System.out.println("messages: "+ this.messages+ this.messages.size()); 
+		System.out.println("messgfgfages: "+ this.messages.get("fruits")+ this.messages.size()); 
+		this.logMessage("envoie message depuis Broker ");
+		System.out.println("taille: "+this.subscribers.get("fruits").size());
+		this.logMessage("patate ");
+		for(String sub : this.subscribers.get("fruits") ) {
+			for(ReceptionOutboundPort r : this.rop) {
+		
+				if( r.getPortURI()==sub) {
+			
+					r.acceptMessage(this.messages.get("fruits").get(0));
+				}
+			}
+		}
+		System.out.println("on est la encore");
+		
+		//this.mapMessage.get("banane");
 
 	}
 
@@ -76,11 +117,19 @@ public class Broker extends AbstractComponent {
 	}
 	
 	public void publish(MessageI m, String topic)throws Exception {
-		logMessage("Publishing message "+m.getURI()+" to topic " + topic);
-		if(!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
-		this.messages.get(topic).add((Message) m); 
 		
-		this.receptionOutboundPort.acceptMessage(m);
+		logMessage("Publishing message "+m.getURI()+" to topic " + topic);
+		if(!isTopic(topic)) {
+			logMessage("holzzz" );
+			createTopic(topic); // Si le topic n'existait pas déjà on le crée
+			logMessage("I've create the topic "+ topic);
+			this.messages.get(topic).add((Message) m);
+			
+		}
+		else this.messages.get(topic).add((Message) m); // On ajoute le message
+		System.out.println("messagesfruite: "+this.messages.get("fruits").indexOf(0));
+		//this.receptionOutboundPort.acceptMessage(m);
+		
 		
 	}
 	
@@ -108,9 +157,20 @@ public class Broker extends AbstractComponent {
 	}
 	
 	public void subscribe(String topic, String inboundPortURI) throws Exception{
-		//  
-		// 
-		
+		System.out.println("je bloque là ");
+		if(this.subscribers.containsKey(topic)) {
+			
+			this.subscribers.get(topic).add(inboundPortURI); 
+			
+			this.rop.add(new ReceptionOutboundPort(uri+compteur, this));
+			this.doPortConnection(this.uri+compteur, inboundPortURI, ReceptionConnector.class.getCanonicalName());
+			this.compteur++; 
+		}else {
+			
+			this.createTopic(topic);
+			this.subscribers.get(topic).add(inboundPortURI);
+		}
+		System.out.println("subscribers: "+ this.subscribers);
 		
 	}
 

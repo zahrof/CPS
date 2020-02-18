@@ -25,50 +25,50 @@ public class ManagementOutboundPort extends		AbstractOutboundPort implements Man
 	// Methodes
 
 	@Override
-	public void subscribe(String topic, String inboundPortURI) {
-//		((ManagementCI)this.connector).subscribe(topic,inboundPortURI);
+	public void subscribe(String topic, String inboundPortURI) throws Exception {
+		((ManagementCI)this.connector).subscribe(topic,inboundPortURI);
 		
 	}
 
 	@Override
-	public void subscribe(String[] topics, String inboundPortURI) {
-//		((ManagementCI)this.connector).subscribe(topics,inboundPortURI);
+	public void subscribe(String[] topics, String inboundPortURI) throws Exception {
+		((ManagementCI)this.connector).subscribe(topics,inboundPortURI);
 		
 	}
 
 	@Override
-	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) {
-//		((ManagementCI)this.connector).subscribe(topic,filter,inboundPortURI);
+	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
+		((ManagementCI)this.connector).subscribe(topic,filter,inboundPortURI);
 		
 	}
 
 	@Override
-	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) {
-//		((ManagementCI)this.connector).modifyFilter(topic,newFilter,inboundPortURI);
+	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception {
+		((ManagementCI)this.connector).modifyFilter(topic,newFilter,inboundPortURI);
 		
 	}
 
 	@Override
-	public void unsubscribe(String topic, String inboundPortUri) {
-//		((ManagementCI)this.connector).unsubscribe(topic,inboundPortUri);
+	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
+		((ManagementCI)this.connector).unsubscribe(topic,inboundPortUri);
 		
 	}
 
 	@Override
-	public void createTopic(String topic) {
-//		((ManagementCI)this.connector).createTopic(topic);
+	public void createTopic(String topic) throws Exception {
+		((ManagementCI)this.connector).createTopic(topic);
 		
 	}
 
 	@Override
-	public void createTopics(String[] topics) {
-//		((ManagementCI)this.connector).createTopics(topics);
+	public void createTopics(String[] topics) throws Exception {
+		((ManagementCI)this.connector).createTopics(topics);
 		
 	}
 
 	@Override
-	public void destroyTopic(String topic) {
-//		((ManagementCI)this.connector).destroyTopic(topic);
+	public void destroyTopic(String topic) throws Exception {
+		((ManagementCI)this.connector).destroyTopic(topic);
 		
 	}
 
@@ -79,9 +79,8 @@ public class ManagementOutboundPort extends		AbstractOutboundPort implements Man
 	}
 
 	@Override
-	public String[] getTopics() {
-		return null;
-		//return ((ManagementCI)this.connector).getTopics();
+	public String[] getTopics() throws Exception {
+		return ((ManagementCI)this.connector).getTopics();
 	}
 
 	@Override

@@ -40,17 +40,15 @@ public class Subscriber extends	AbstractComponent{
 	public void			start() throws ComponentStartException
 	{
 		super.start() ;
-		this.logMessage("starting publisher component.") ;
+		this.logMessage("starting subscriber component.") ;
 	}
 	
 	@Override
 	public void			execute() throws Exception
 	{
 		super.execute() ;
-		
-		
-
-		
+		subscribe("fruits", this.uri);
+		while(true) {}
 	}
 	
 	@Override
@@ -62,60 +60,57 @@ public class Subscriber extends	AbstractComponent{
 	// TOUTES LES METHODES DE MANAGEMENTCI
 
 
-	public void subscribe(String topic, String inboundPortURI) {
+	public void subscribe(String topic, String inboundPortURI) throws Exception{
 		logMessage("Subscribing to topic " + topic+ " with the inbound PortURI : "+ inboundPortURI);
 		this.managementOutboundPort.subscribe(topic, inboundPortURI);
 
 	}
 
-	public void subscribe(String[] topics, String inboundPortURI) {
-		// TODO Auto-generated method stub
+	public void subscribe(String[] topics, String inboundPortURI)throws Exception {
+		this.managementOutboundPort.subscribe(topics, inboundPortURI);
 
 	}
 
-	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) {
-		// TODO Auto-generated method stub
+	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI)throws Exception {
+		this.managementOutboundPort.subscribe(topic,filter,inboundPortURI);
 
 	}
 
-	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) {
-		// TODO Auto-generated method stub
+	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
+		this.managementOutboundPort.modifyFilter(topic,newFilter,inboundPortURI);
 
 	}
 
-	public void unsubscribe(String topic, String inboundPortUri) {
-		// TODO Auto-generated method stub
+	public void unsubscribe(String topic, String inboundPortUri)throws Exception {
+		this.managementOutboundPort.unsubscribe(topic,inboundPortUri);
 
 	}
 
-	public void createTopic(String topic) {
-		// TODO Auto-generated method stub
+	public void createTopic(String topic) throws Exception{
+		this.managementOutboundPort.createTopic(topic);
 
 	}
 
-	public void createTopics(String[] topics) {
-		// TODO Auto-generated method stub
+	public void createTopics(String[] topics) throws Exception{
+		this.managementOutboundPort.createTopics(topics);
 
 	}
 
-	public void destroyTopic(String topic) {
-		// TODO Auto-generated method stub
+	public void destroyTopic(String topic) throws Exception{
+		this.managementOutboundPort.destroyTopic(topic);
 
 	}
 
 	public boolean isTopic(String topic) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.managementOutboundPort.isTopic(topic);
 	}
 
-	public String[] getTopics() {
-		// TODO Auto-generated method stub
-		return null;
+	public String[] getTopics() throws Exception{
+		return this.managementOutboundPort.getTopics();
 	}
 
 	public String getPublicationPortURI() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.managementOutboundPort.getPublicationPortURI();
 	}
 	
 	// TOUTES LES METHODES DE RECEPTIONCI
@@ -124,6 +119,8 @@ public class Subscriber extends	AbstractComponent{
 		this.logMessage("Receiving/accepting the message "+m.getURI());
 	}
 	public void acceptMessages(MessageI[] ms) {
-		
+		for (MessageI m : ms) {
+			this.logMessage("Receiving/accepting the message "+m.getURI());
+		}
 	}
 }

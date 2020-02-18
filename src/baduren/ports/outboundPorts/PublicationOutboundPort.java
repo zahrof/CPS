@@ -1,6 +1,5 @@
 package baduren.ports.outboundPorts;
 
-import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
 import fr.sorbonne_u.components.ComponentI;

@@ -1,5 +1,6 @@
 package baduren.ports.inboundPorts;
 
+import baduren.components.Broker;
 import baduren.interfaces.ManagementCI;
 import baduren.interfaces.MessageFilterI;
 import fr.sorbonne_u.components.ComponentI;
@@ -18,70 +19,68 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void subscribe(String topic, String inboundPortURI) {
-		// TODO Auto-generated method stub
+	public void subscribe(String topic, String inboundPortURI) throws Exception {
+		((Broker)this.owner).subscribe(topic, inboundPortURI);
 		
 	}
 
 	@Override
-	public void subscribe(String[] topics, String inboundPortURI) {
-		// TODO Auto-generated method stub
+	public void subscribe(String[] topics, String inboundPortURI) throws Exception {
+		((Broker)this.owner).subscribe(topics, inboundPortURI);
 		
 	}
 
 	@Override
-	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) {
-		// TODO Auto-generated method stub
+	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
+		((Broker)this.owner).subscribe(topic, filter, inboundPortURI);
 		
 	}
 
 	@Override
-	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) {
-		// TODO Auto-generated method stub
+	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception {
+		((Broker)this.owner).subscribe(topic,newFilter, inboundPortURI);
 		
 	}
 
 	@Override
-	public void unsubscribe(String topic, String inboundPortUri) {
-		// TODO Auto-generated method stub
+	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
+		((Broker)this.owner).subscribe(topic, inboundPortUri);
 		
 	}
 
 
 	@Override
-	public void createTopic(String topic) {
-		// TODO Auto-generated method stub
+	public void createTopic(String topic) throws Exception {
+		((Broker)this.owner).createTopic(topic);
 		
 	}
 
 	@Override
-	public void createTopics(String[] topics) {
-		// TODO Auto-generated method stub
+	public void createTopics(String[] topics) throws Exception {
+		((Broker)this.owner).createTopics(topics);
 		
 	}
 
 	@Override
-	public void destroyTopic(String topic) {
-		// TODO Auto-generated method stub
+	public void destroyTopic(String topic) throws Exception {
+		((Broker)this.owner).destroyTopic(topic);
 		
 	}
 
 	@Override
-	public boolean isTopic(String topic) {
-		// TODO Auto-generated method stub
+	public boolean isTopic(String topic) throws Exception {
+		((Broker)this.owner).isTopic(topic);
 		return false;
 	}
 
 	@Override
-	public String[] getTopics() {
-		// TODO Auto-generated method stub
-		return null;
+	public String[] getTopics() throws Exception {
+		return ((Broker)this.owner).getTopics();
 	}
 
 	@Override
-	public String getPublicationPortURI() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getPublicationPortURI() throws Exception {
+		return ((Broker)this.owner).getPublicationPortURI();
 	}
 
 

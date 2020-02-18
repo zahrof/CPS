@@ -29,23 +29,12 @@ public class ReceptionInboundPort extends		AbstractInboundPort implements Recept
 
 	@Override
 	public void acceptMessage(MessageI m) throws Exception {
-		this.owner.handleRequestAsync(new AbstractComponent.AbstractService<Void>() {
-
-			@Override
-			public Void call() throws Exception {
-				((Subscriber)this.getServiceOwner()).acceptMessage(m);
-				return null;
-				
-			}
-			
-		});
-		
+		((Subscriber)this.owner).acceptMessage(m);
 	}
 
 	@Override
 	public void acceptMessages(MessageI[] ms) {
-		// TODO Auto-generated method stub
-		
+		((Subscriber)this.owner).acceptMessages(ms);
 	}
 
 	

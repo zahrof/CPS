@@ -14,8 +14,8 @@ public class ReceptionConnector extends AbstractConnector implements ReceptionCI
 	}
 
 	@Override
-	public void acceptMessages(MessageI[] ms) {
-		// TODO Auto-generated method stub
+	public void acceptMessages(MessageI[] ms) throws Exception {
+		((ReceptionCI)this.offering).acceptMessages(ms); 
 		
 	}
 

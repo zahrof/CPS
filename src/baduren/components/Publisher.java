@@ -100,51 +100,51 @@ public class Publisher extends AbstractComponent {
 	// TOUTES LES METHODES DE MANAGEMENTCI
 
 
-	public void subscribe(String topic, String inboundPortURI) {
+	public void subscribe(String topic, String inboundPortURI)throws Exception {
 		this.managementOutboundPort.subscribe(topic, inboundPortURI);
 
 	}
 
-	public void subscribe(String[] topics, String inboundPortURI) {
+	public void subscribe(String[] topics, String inboundPortURI)throws Exception {
 		this.managementOutboundPort.subscribe(topics, inboundPortURI);
 
 	}
 
-	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) {
+	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
 		this.managementOutboundPort.subscribe(topic,filter, inboundPortURI);
 
 	}
 
-	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) {
+	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception{
 		this.managementOutboundPort.subscribe(topic, newFilter, inboundPortURI);
 
 	}
 
-	public void unsubscribe(String topic, String inboundPortUri) {
+	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
 		this.managementOutboundPort.unsubscribe(topic, inboundPortUri);
 	}
 
-	public void createTopic(String topic) {
+	public void createTopic(String topic)throws Exception {
 		this.managementOutboundPort.createTopic(topic);
 	}
 
-	public void createTopics(String[] topics) {
+	public void createTopics(String[] topics) throws Exception{
 		this.managementOutboundPort.createTopics(topics);
 	}
 
-	public void destroyTopic(String topic) {
+	public void destroyTopic(String topic)throws Exception {
 		this.managementOutboundPort.destroyTopic(topic);
 	}
 
-	public boolean isTopic(String topic) {
+	public boolean isTopic(String topic) throws Exception{
 		return this.managementOutboundPort.isTopic(topic);
 	}
 
-	public String[] getTopics() {
+	public String[] getTopics() throws Exception{
 		return this.managementOutboundPort.getTopics();
 	}
 
-	public String getPublicationPortURI() {
+	public String getPublicationPortURI() throws Exception{
 		return this.managementOutboundPort.getPublicationPortURI();
 	}
 

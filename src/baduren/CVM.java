@@ -24,6 +24,7 @@ extends		AbstractCVM
 	protected static final String ReceptionOutboundPortUri = "receptionOport";
 	
 	protected static final String ManagementInboundPortUri = "managementIport";
+		
 	protected static final String PublicationInboundPortUri = "publicationIport";
 	protected static final String ReceptionInboundPortUri = "receptionIport";
 
