@@ -25,7 +25,7 @@ public class Subscriber extends	AbstractComponent{
 		this.receptionInboundPort  = new ReceptionInboundPort(receptionInboundPortName,this); 
 		this.managementOutboundPort = new ManagementOutboundPort(managementOutboundPortName, this);
 		receptionInboundPort.publishPort();
-		managementOutboundPort.localPublishPort();
+		managementOutboundPort.publishPort();
 		
 		if (AbstractCVM.isDistributed) {
 			this.executionLog.setDirectory(System.getProperty("user.dir")) ;

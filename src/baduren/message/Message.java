@@ -6,7 +6,7 @@ import baduren.interfaces.MessageI;
 @FunctionalInterface
 interface MessageFilterI 
 { 
-    boolean filter(MessageI m); 
+	boolean filter(MessageI m); 
 } 
 //@FunctionalInterface
 //interface Square 
@@ -16,19 +16,24 @@ interface MessageFilterI
 //  
 
 public class Message implements MessageI {
-	
+
 	protected String uri; 
 	protected TimeStamp timeStamp; 
 	protected Properties properties; 
 	protected Serializable serializableObject; 
-	
+
 	public Message(String uri) throws Exception {
 		this.uri=uri; 
 		this.timeStamp = new TimeStamp();
 		// lambda expression to define the calculate method 
-       // Square s = (int x)->x*x; 
+		// Square s = (int x)->x*x; 
 	}
-	
+
+	@Override
+	public String toString() {
+		return uri;
+	}
+
 	@Override
 	public String getURI() {
 		return this.uri; 

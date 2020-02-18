@@ -54,7 +54,7 @@ public class Broker extends AbstractComponent {
 		this.rop.get(0).localPublishPort();
 		this.messages = new HashMap<String,List<MessageI>>(); 
 		
-		this.messages = new HashMap<String,List<MessageI>>(); 
+		this.subscribers = new HashMap<String,List<String>>(); 
 		
 		
 
@@ -83,7 +83,6 @@ public class Broker extends AbstractComponent {
 		
 		while(this.messages.size()==0) {
 			try {
-				this.wait();
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -157,12 +156,12 @@ public class Broker extends AbstractComponent {
 	}
 	
 	public void subscribe(String topic, String inboundPortURI) throws Exception{
-		System.out.println("je bloque là ");
+		ReceptionOutboundPort r = null;
 		if(this.subscribers.containsKey(topic)) {
-			
+			System.out.println("je bloque là ");
 			this.subscribers.get(topic).add(inboundPortURI); 
-			
-			this.rop.add(new ReceptionOutboundPort(uri+compteur, this));
+			 r = new ReceptionOutboundPort(uri+compteur, this);
+			this.rop.add(r);
 			this.doPortConnection(this.uri+compteur, inboundPortURI, ReceptionConnector.class.getCanonicalName());
 			this.compteur++; 
 		}else {
@@ -171,6 +170,8 @@ public class Broker extends AbstractComponent {
 			this.subscribers.get(topic).add(inboundPortURI);
 		}
 		System.out.println("subscribers: "+ this.subscribers);
+		r.acceptMessage(new Message("hola"));
+		
 		
 	}
 
