@@ -16,120 +16,110 @@ import baduren.ports.inboundPorts.PublicationInboundPort;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
+import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.components.ports.PortI;
 
 public class Broker extends AbstractComponent {
 
-	//protected ReceptionOutboundPort receptionOutboundPort;
 	protected String uri; 
-	
-	int compteur =0; 
+	int compteur; 
 	
 	private List<ReceptionOutboundPort> rop; 
 	
-	private HashMap<String, List<MessageI>> messages; //Map between topic and messages ( each topic has several messages)
-	private HashMap<String, List<String>> subscribers; //Map between topics and subscribers URI ( each topic has several URI followers) 
+	private HashMap<String, List<MessageI>> messages; //Map between topic and messages (each topic has several messages)
+	private HashMap<String, HashMap<ReceptionOutboundPort,MessageFilterI>> subscribers; //Map between topics and subscribers URI ( each topic has several URI followers) 
+	private HashMap<String, List<ReceptionOutboundPort>> aux; 
+	private HashMap<String, ReceptionOutboundPort> clients;
 	
-//	private String[] topics= new String[0]; 
-//	private Message[] messages = new Message[0]; 
 
 	protected Broker (String uri, String managementInboundPortName,String publicationInboundPortName, String receptionOutboundPortName) throws Exception {
 		super(uri, 1, 0) ;
 		this.uri=uri; 
+		this.compteur =0; 
+		
+		this.messages = new HashMap<>(); 
+		this.subscribers = new HashMap<>(); 
+		this.rop = new ArrayList<>(); 
+		this.clients = new HashMap<>(); 
+		this.aux = new HashMap<>(); 
 		
 		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this); 
 		PortI publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this); 
+		this.rop.add( new ReceptionOutboundPort(receptionOutboundPortName,this)); 
 		
 		
-		
+		this.rop.get(0).localPublishPort();
 		managementInboundPort.publishPort();
-		
 		publicationInboundPort.publishPort();
 		
-		
-		
-		this.rop = new ArrayList<ReceptionOutboundPort>(); 
-		this.rop.add( new ReceptionOutboundPort(receptionOutboundPortName,this)); 
-		this.rop.get(0).localPublishPort();
-		this.messages = new HashMap<String,List<MessageI>>(); 
-		
-		this.subscribers = new HashMap<String,List<String>>(); 
-		
-		
-
-		// Pour les logs
-		if (AbstractCVM.isDistributed) {
-			this.executionLog.setDirectory(System.getProperty("user.dir")) ;
-		} else {
-			this.executionLog.setDirectory(System.getProperty("user.home")) ;
-		}
 		this.tracer.setTitle("broker") ;
 		this.tracer.setRelativePosition(1, 1) ;
 	}
 
 
 	@Override
-	public void			start() throws ComponentStartException
+	public void	start() throws ComponentStartException
 	{
-		super.start() ;
 		this.logMessage("starting broker component.") ;
+		super.start() ;
 	}
 
 	@Override
-	public void			execute() throws Exception
+	public void	execute() throws Exception
 	{
 		super.execute() ;
 		
-		while(this.messages.size()==0) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println("on est la");
-		System.out.println("messages: "+ this.messages+ this.messages.size()); 
-		System.out.println("messgfgfages: "+ this.messages.get("fruits")+ this.messages.size()); 
-		this.logMessage("envoie message depuis Broker ");
-		System.out.println("taille: "+this.subscribers.get("fruits").size());
-		this.logMessage("patate ");
-		for(String sub : this.subscribers.get("fruits") ) {
-			for(ReceptionOutboundPort r : this.rop) {
-		
-				if( r.getPortURI()==sub) {
-			
-					r.acceptMessage(this.messages.get("fruits").get(0));
+		System.out.println("taille ici :" + this.messages.size()); 
+		System.out.println("ici on a bizarrement : " +  this.subscribers.get("fruits").size());
+				while(this.messages.size()<1 || this.subscribers.get("fruits").size() != 1) {
+					
+					try {
+						//System.out.println(mapMessage.size());
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
-		}
-		System.out.println("on est la encore");
-		
-		//this.mapMessage.get("banane");
+				System.out.println("hola");
+				this.logMessage("le broker previent les publisher ");
+				//System.out.println("ici c'est bon la taille est bien de " ); //+ mapSubscription.get("banane").size());
+				
+//				for(ReceptionOutboundPort sub :this.subscribers.get("fruits").keySet()) {
+//					
+//					this.logMessage("kokokokko");
+//					sub.acceptMessage(this.messages.get("fruits").get(0));
+//					this.logMessage("halleluiah "+ this.messages.get("fruits").get(0).getURI());
+//						
+//				}
+				this.aux.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(0));
+			
+				this.clients.get("fruits").acceptMessage(this.messages.get("fruits").get(0));
+
 
 	}
 
 	@Override
-	public void			finalise() throws Exception
+	public void	finalise() throws Exception
 	{
+		this.logMessage("stopping broker component.") ;
 		super.finalise();
+
 	}
+	
+
 	
 	public void publish(MessageI m, String topic)throws Exception {
 		
 		logMessage("Publishing message "+m.getURI()+" to topic " + topic);
 		if(!isTopic(topic)) {
-			logMessage("holzzz" );
 			createTopic(topic); // Si le topic n'existait pas déjà on le crée
 			logMessage("I've create the topic "+ topic);
 			this.messages.get(topic).add((Message) m);
 			
 		}
 		else this.messages.get(topic).add((Message) m); // On ajoute le message
-		System.out.println("messagesfruite: "+this.messages.get("fruits").indexOf(0));
-		//this.receptionOutboundPort.acceptMessage(m);
-		
-		
 	}
 	
 	
@@ -156,23 +146,41 @@ public class Broker extends AbstractComponent {
 	}
 	
 	public void subscribe(String topic, String inboundPortURI) throws Exception{
-		ReceptionOutboundPort r = null;
-		if(this.subscribers.containsKey(topic)) {
-			System.out.println("je bloque là ");
-			this.subscribers.get(topic).add(inboundPortURI); 
-			 r = new ReceptionOutboundPort(uri+compteur, this);
-			this.rop.add(r);
-			this.doPortConnection(this.uri+compteur, inboundPortURI, ReceptionConnector.class.getCanonicalName());
-			this.compteur++; 
-		}else {
+		logMessage("Subscribing "+inboundPortURI+" to topic " + topic);
+	
+		ReceptionOutboundPort rp; 
+		
+		if(clients.containsKey(inboundPortURI)) {
 			
-			this.createTopic(topic);
-			this.subscribers.get(topic).add(inboundPortURI);
+			rp = this.clients.get(inboundPortURI); 
+		}else {
+			System.out.println("patate"); 
+			rp = new ReceptionOutboundPort(this.uri+compteur, this); 
+			this.clients.put(inboundPortURI, rp); 
+			rp.publishPort();
+			this.rop.add(rp); 
+			this.doPortConnection(this.uri+compteur, inboundPortURI, ReceptionConnector.class.getCanonicalName());
 		}
-		System.out.println("subscribers: "+ this.subscribers);
-		r.acceptMessage(new Message("hola"));
+		
+		if(this.aux.containsKey(topic)) {
+			this.aux.get(topic).add(rp); 
+		}else {
+			this.createTopic(topic);
+			this.subscribers.get(topic).put(rp, null); 
+			this.aux.get(topic).add(rp); 
+		}
+		System.out.println("subs: "+ this.subscribers.get("fruits").keySet().size()); 
+		System.out.println("aux: "+ this.aux.get("fruits").size()); 
 		
 		
+//		if(this.subscribers.containsKey(topic)) {
+//			this.subscribers.get(topic).put(rp, null); 
+//		}else {
+//			this.createTopic(topic);
+//			this.subscribers.get(topic).put(rp, null); 
+//		}
+//		System.out.println("subs: "+ this.subscribers.get("fruits").keySet().size()); 
+		this.compteur++; 
 	}
 
 	public void subscribe(String[] topics, String inboundPortURI) throws Exception{
@@ -197,7 +205,8 @@ public class Broker extends AbstractComponent {
 
 	public void createTopic(String topic) throws Exception {
 		this.messages.put(topic,new ArrayList<>()); 
-		this.subscribers.put(topic, new ArrayList<>());
+		this.subscribers.put(topic, new HashMap<>());
+		this.aux.put(topic, new ArrayList<>());
 	}
 
 	

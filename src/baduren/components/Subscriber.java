@@ -47,7 +47,7 @@ public class Subscriber extends	AbstractComponent{
 	public void			execute() throws Exception
 	{
 		super.execute() ;
-		subscribe("fruits", this.uri);
+		subscribe("fruits", this.receptionInboundPort.getPortURI());
 		while(true) {}
 	}
 	
@@ -61,7 +61,7 @@ public class Subscriber extends	AbstractComponent{
 
 
 	public void subscribe(String topic, String inboundPortURI) throws Exception{
-		logMessage("Subscribing to topic " + topic+ " with the inbound PortURI : "+ inboundPortURI);
+	//	logMessage("Ask a subscription at port: "+inboundPortURI+" to topic " + topic);
 		this.managementOutboundPort.subscribe(topic, inboundPortURI);
 
 	}
