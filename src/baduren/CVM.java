@@ -111,11 +111,13 @@ extends		AbstractCVM
 				ManagementConnector.class.getCanonicalName()) ;
 		// do the connection
 		//logMessage(this.uriSubscriberURI+ReceptionOutboundPortUri+ ReceptionInboundPortUri) ;
+		/*
 		this.doPortConnection(
 				this.uriBrokerURI,
 				ReceptionOutboundPortUri,
 				ReceptionInboundPortUri,
 				ReceptionConnector.class.getCanonicalName()) ;
+		*/
 
 		// --------------------------------------------------------------------
 		// Deployment done

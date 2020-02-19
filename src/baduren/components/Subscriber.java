@@ -60,6 +60,8 @@ public class Subscriber extends	AbstractComponent{
 //		Thread.sleep(1000);
 //		System.out.println("let's filterU"); 
 //		subscribe("voiture",new VehiculeAerien(),this.receptionInboundPort.getPortURI());
+		
+		subscribe("voiture", new VehiculeAerien(), this.receptionInboundPort.getPortURI());
 		while(true) {}
 	}
 	
