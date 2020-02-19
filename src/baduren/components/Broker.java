@@ -29,8 +29,8 @@ public class Broker extends AbstractComponent {
 	
 	private HashMap<String, List<MessageI>> messages; //Map between topic and messages (each topic has several messages)
 	private HashMap<String, HashMap<ReceptionOutboundPort,MessageFilterI>> subscribers; //Map between topics and subscribers URI ( each topic has several URI followers) 
-	private HashMap<String, List<ReceptionOutboundPort>> aux; 
-	private HashMap<String, ReceptionOutboundPort> clients;
+	private HashMap<String, List<ReceptionOutboundPort>> subscribers_without_filters; 
+	private HashMap<String, ReceptionOutboundPort> Map_URIPort;
 	
 
 	protected Broker (String uri, String managementInboundPortName,String publicationInboundPortName, String receptionOutboundPortName) throws Exception {
@@ -41,8 +41,8 @@ public class Broker extends AbstractComponent {
 		this.messages = new HashMap<>(); 
 		this.subscribers = new HashMap<>(); 
 		this.rop = new ArrayList<>(); 
-		this.clients = new HashMap<>(); 
-		this.aux = new HashMap<>(); 
+		this.Map_URIPort = new HashMap<>(); 
+		this.subscribers_without_filters = new HashMap<>(); 
 		
 		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this); 
 		PortI publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this); 
@@ -86,16 +86,19 @@ public class Broker extends AbstractComponent {
 				this.logMessage("le broker previent les publisher ");
 				//System.out.println("ici c'est bon la taille est bien de " ); //+ mapSubscription.get("banane").size());
 				
-//				for(ReceptionOutboundPort sub :this.subscribers.get("fruits").keySet()) {
-//					
-//					this.logMessage("kokokokko");
-//					sub.acceptMessage(this.messages.get("fruits").get(0));
-//					this.logMessage("halleluiah "+ this.messages.get("fruits").get(0).getURI());
-//						
-//				}
-				this.aux.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(0));
+				this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(0));
+				this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(1));
+				HashMap<ReceptionOutboundPort,MessageFilterI>hm =new HashMap<>();
+				hm = this.subscribers.get("voiture"); 
+				//hm.ge
+				for(ReceptionOutboundPort up: hm.keySet()) {
+					up.acceptMessage(this.messages.get("voiture").get(0));
+				}
+				
+				//this.subscribers.get("voiture").get(0).acceptMessage(this.messages.get("voiture").get(0));
+				//this.subscribers.get("voiture").get(0).acceptMessage(this.messages.get("voiture").get(1));
 			
-				this.clients.get("fruits").acceptMessage(this.messages.get("fruits").get(0));
+				//this.Map_URIPort.get("fruits").acceptMessage(this.messages.get("fruits").get(0));
 
 
 	}
@@ -150,46 +153,63 @@ public class Broker extends AbstractComponent {
 	
 		ReceptionOutboundPort rp; 
 		
-		if(clients.containsKey(inboundPortURI)) {
+		if(Map_URIPort.containsKey(inboundPortURI)) {
 			
-			rp = this.clients.get(inboundPortURI); 
+			rp = this.Map_URIPort.get(inboundPortURI); 
 		}else {
-			System.out.println("patate"); 
 			rp = new ReceptionOutboundPort(this.uri+compteur, this); 
-			this.clients.put(inboundPortURI, rp); 
+			this.Map_URIPort.put(inboundPortURI, rp); 
 			rp.publishPort();
 			this.rop.add(rp); 
 			this.doPortConnection(this.uri+compteur, inboundPortURI, ReceptionConnector.class.getCanonicalName());
 		}
 		
-		if(this.aux.containsKey(topic)) {
-			this.aux.get(topic).add(rp); 
+		if(this.subscribers_without_filters.containsKey(topic)) {
+			this.subscribers_without_filters.get(topic).add(rp); 
 		}else {
 			this.createTopic(topic);
 			this.subscribers.get(topic).put(rp, null); 
-			this.aux.get(topic).add(rp); 
+			this.subscribers_without_filters.get(topic).add(rp); 
 		}
-		System.out.println("subs: "+ this.subscribers.get("fruits").keySet().size()); 
-		System.out.println("aux: "+ this.aux.get("fruits").size()); 
+		System.out.println("subs A: "+ this.subscribers.get("voiture").keySet().size()); 
+		System.out.println("aux A: "+ this.subscribers_without_filters.get("voiture").size()); 
 		
-		
-//		if(this.subscribers.containsKey(topic)) {
-//			this.subscribers.get(topic).put(rp, null); 
-//		}else {
-//			this.createTopic(topic);
-//			this.subscribers.get(topic).put(rp, null); 
-//		}
-//		System.out.println("subs: "+ this.subscribers.get("fruits").keySet().size()); 
 		this.compteur++; 
 	}
 
 	public void subscribe(String[] topics, String inboundPortURI) throws Exception{
-		// TODO Auto-generated method stub
+		for(String s: topics)
+			subscribe(s, inboundPortURI); 
 		
 	}
 
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
-		// TODO Auto-generated method stub
+		logMessage("Subscribing "+inboundPortURI+" to topic " + topic + "with filter");
+		
+		ReceptionOutboundPort rp; 
+		
+		if(Map_URIPort.containsKey(inboundPortURI)) {
+			
+			rp = this.Map_URIPort.get(inboundPortURI); 
+		}else {
+			rp = new ReceptionOutboundPort(this.uri+compteur, this); 
+			this.Map_URIPort.put(inboundPortURI, rp); 
+			rp.publishPort();
+			this.rop.add(rp); 
+			this.doPortConnection(this.uri+compteur, inboundPortURI, ReceptionConnector.class.getCanonicalName());
+		}
+		
+		if(this.subscribers_without_filters.containsKey(topic)) {
+			this.subscribers_without_filters.get(topic).add(rp); 
+		}else {
+			this.createTopic(topic);
+			this.subscribers.get(topic).put(rp, filter); 
+			this.subscribers_without_filters.get(topic).add(rp); 
+		}
+		System.out.println("subs: "+ this.subscribers.get("voiture").keySet().size()); 
+		System.out.println("aux: "+ this.subscribers_without_filters.get("voiture").size()); 
+		
+		this.compteur++; 
 		
 	}
 
@@ -206,7 +226,7 @@ public class Broker extends AbstractComponent {
 	public void createTopic(String topic) throws Exception {
 		this.messages.put(topic,new ArrayList<>()); 
 		this.subscribers.put(topic, new HashMap<>());
-		this.aux.put(topic, new ArrayList<>());
+		this.subscribers_without_filters.put(topic, new ArrayList<>());
 	}
 
 	

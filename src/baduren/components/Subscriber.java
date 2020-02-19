@@ -43,13 +43,27 @@ public class Subscriber extends	AbstractComponent{
 		this.logMessage("starting subscriber component.") ;
 	}
 	
+	public class VehiculeAerien implements MessageFilterI{
+
+		@Override
+		public boolean filter(MessageI m) throws Exception {
+			return m.getProperties().getBooleanProp("can_fly"); 
+		}
+		
+	}
+	
 	@Override
 	public void			execute() throws Exception
 	{
 		super.execute() ;
 		subscribe("fruits", this.receptionInboundPort.getPortURI());
+//		Thread.sleep(1000);
+//		System.out.println("let's filterU"); 
+//		subscribe("voiture",new VehiculeAerien(),this.receptionInboundPort.getPortURI());
 		while(true) {}
 	}
+	
+
 	
 	@Override
 	public void			finalise() throws Exception
@@ -72,6 +86,7 @@ public class Subscriber extends	AbstractComponent{
 	}
 
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI)throws Exception {
+		System.out.println("let's filterU"); 
 		this.managementOutboundPort.subscribe(topic,filter,inboundPortURI);
 
 	}
@@ -116,7 +131,8 @@ public class Subscriber extends	AbstractComponent{
 	// TOUTES LES METHODES DE RECEPTIONCI
 	
 	public void acceptMessage(MessageI m) {
-		this.logMessage("Receiving/accepting the message "+m.getURI());
+		this.logMessage("Receiving/accepting the message "+m.getURI()+ "send by : "+ m.getTimeStamp()+
+				" a la date de "+ m.getTimeStamp().getTime());
 	}
 	public void acceptMessages(MessageI[] ms) {
 		for (MessageI m : ms) {

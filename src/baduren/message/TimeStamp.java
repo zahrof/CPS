@@ -16,7 +16,7 @@ public class TimeStamp {
 		return (this.time==0)&& (this.timeStamper==null);  
 	}
 
-	long getTime(){
+	public long getTime(){
 		return this.time; 
 	}
 

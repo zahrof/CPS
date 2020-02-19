@@ -32,6 +32,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 
 	@Override
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
+	
 		((Broker)this.owner).subscribe(topic, filter, inboundPortURI);
 		
 	}

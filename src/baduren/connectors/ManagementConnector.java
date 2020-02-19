@@ -15,62 +15,58 @@ public class ManagementConnector extends AbstractConnector implements Management
 
 	@Override
 	public void subscribe(String[] topics, String inboundPortURI)throws Exception {
-		// TODO Auto-generated method stub
+		((ManagementCI)this.offering).subscribe(topics, inboundPortURI); 
 		
 	}
 
 	@Override
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI)throws Exception {
-		// TODO Auto-generated method stub
+		((ManagementCI)this.offering).subscribe(topic,filter, inboundPortURI); 
 		
 	}
 
 	@Override
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
-		// TODO Auto-generated method stub
+		((ManagementCI)this.offering).modifyFilter(topic, newFilter, inboundPortURI); 
 		
 	}
 
 	@Override
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception{
-		// TODO Auto-generated method stub
+		((ManagementCI)this.offering).unsubscribe(topic, inboundPortUri); 
 		
 	}
 
 	@Override
 	public void createTopic(String topic)throws Exception {
-		// TODO Auto-generated method stub
+		((ManagementCI)this.offering).createTopic(topic); 
 		
 	}
 
 	@Override
 	public void createTopics(String[] topics)throws Exception {
-		// TODO Auto-generated method stub
+		((ManagementCI)this.offering).createTopics(topics); 
 		
 	}
 
 	@Override
 	public void destroyTopic(String topic) throws Exception{
-		// TODO Auto-generated method stub
-		
+		((ManagementCI)this.offering).destroyTopic(topic); 
 	}
 
 	@Override
 	public boolean isTopic(String topic)throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		return ((ManagementCI)this.offering).isTopic(topic); 
 	}
 
 	@Override
 	public String[] getTopics() throws Exception{
-		// TODO Auto-generated method stub
-		return null;
+		return ((ManagementCI)this.offering).getTopics(); 
 	}
 
 	@Override
 	public String getPublicationPortURI() throws Exception{
-		// TODO Auto-generated method stub
-		return null;
+		return 	((ManagementCI)this.offering).getPublicationPortURI(); 
 	}
 
 }

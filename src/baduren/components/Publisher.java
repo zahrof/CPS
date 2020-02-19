@@ -56,8 +56,11 @@ public class Publisher extends AbstractComponent {
 		for (int i=0; i <10; i++) {
 			publish(new Message("Banane"+i), "fruits");
 		}
-		String topics[]= {"voiture", "avions"}; 
-		publish(new Message("voiture-volante"), topics); 
+//		String topics[]= {"voiture", "avions"}; 
+//		Message m = new Message("voiture-volante"); 
+//		//m.getProperties().putProp("can_fly", true);
+//		publish(m,"voiture"); 
+//		publish(m, "avions"); 
 		
 	}
 

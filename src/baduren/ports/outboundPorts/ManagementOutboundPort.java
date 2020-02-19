@@ -38,6 +38,7 @@ public class ManagementOutboundPort extends		AbstractOutboundPort implements Man
 
 	@Override
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
+		System.out.println("let's filter"); 
 		((ManagementCI)this.connector).subscribe(topic,filter,inboundPortURI);
 		
 	}

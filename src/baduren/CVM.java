@@ -51,7 +51,7 @@ extends		AbstractCVM
 					Publisher.class.getCanonicalName(),
 					new Object[]{PUBLISHER_COMPONENT_URI,
 							ManagementOutboundPortUri,
-							PublicationOutboundPortUri }) ;
+							PublicationOutboundPortUri });
 		assert	this.isDeployedComponent(this.uriPublisherURI) ;
 		// make it trace its operations; comment and uncomment the line to see
 		// the difference
