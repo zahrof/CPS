@@ -53,6 +53,8 @@ public class Publisher extends AbstractComponent {
 	public void			execute() throws Exception
 	{
 		super.execute() ;
+		
+		Thread.sleep(1000);
 		for (int i=0; i <10; i++) {
 			publish(new Message("Banane"+i), "fruits");
 		}

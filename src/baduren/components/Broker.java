@@ -152,7 +152,7 @@ public class Broker extends AbstractComponent {
 	
 	public void publish(MessageI m, String topic)throws Exception {
 		
-		logMessage("Publishing message "+m.getURI()+" to topic " + topic);
+		
 		/* Non car on ne peut pas publier sur un topic qui a été supp
 		if(!isTopic(topic)) {
 			createTopic(topic); // Si le topic n'existait pas déjà on le crée
@@ -162,6 +162,27 @@ public class Broker extends AbstractComponent {
 		}
 		else this.messages.get(topic).add((Message) m); // On ajoute le message
 		*/
+		this.messages.get(topic).add((Message) m); // On ajoute le message
+		
+		
+		
+		if(!isTopic(topic)) {
+			logMessage("The following message hasn't been published because it's topic (" + topic + ") doesn't exist : " + m.getURI());
+		} else {
+			logMessage("Publishing message "+m.getURI()+" to topic " + topic);
+			
+			for(String inboundPortURI: subscribers.keySet()) {
+				Subscriber subscriber = subscribers.get(inboundPortURI);
+				
+				if(subscriber.topics.containsKey(topic)) {
+					if(subscriber.topics.get(topic) == null) {
+						subscriber.receptionOutboundPort.acceptMessage(m);
+					} else if (subscribers.get(inboundPortURI).topics.get(topic).filter(m)) {
+						subscriber.receptionOutboundPort.acceptMessage(m);
+					}
+				}
+			}
+		}
 		
 		
 		

@@ -133,12 +133,13 @@ public class Subscriber extends	AbstractComponent{
 	// TOUTES LES METHODES DE RECEPTIONCI
 	
 	public void acceptMessage(MessageI m) {
-		this.logMessage("Receiving/accepting the message "+m.getURI()+ "send by : "+ m.getTimeStamp()+
-				" a la date de "+ m.getTimeStamp().getTime());
+		//this.logMessage("Receiving/accepting the message "+m.getURI()+ "send by : "+ m.getTimeStamp()+
+		//		" a la date de "+ m.getTimeStamp().getTime());
+		this.logMessage("Receiving/accepting the message : "+m.getURI());
 	}
 	public void acceptMessages(MessageI[] ms) {
 		for (MessageI m : ms) {
-			this.logMessage("Receiving/accepting the message "+m.getURI());
+			this.logMessage("Receiving/accepting the message : "+m.getURI());
 		}
 	}
 }
