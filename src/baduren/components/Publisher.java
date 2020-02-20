@@ -3,6 +3,7 @@ package baduren.components;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.message.Message;
+import baduren.message.Properties;
 import baduren.ports.outboundPorts.ManagementOutboundPort;
 import baduren.ports.outboundPorts.PublicationOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
@@ -54,15 +55,20 @@ public class Publisher extends AbstractComponent {
 	{
 		super.execute() ;
 		
-		Thread.sleep(1000);
-		for (int i=0; i <10; i++) {
-			publish(new Message("Banane"+i), "fruits");
+		try {
+			Thread.sleep(1000);
+			for (int i=0; i <10; i++) {
+				publish(new Message("Banane"+i), "fruits");
+			}
+			String topics[]= {"voiture", "avions"}; 
+			Message m = new Message("voiture-volante"); 
+			Properties p = m.getProperties();
+			p.putProp("can_fly", true);
+			
+			publish(m,topics); 
+		} catch(Throwable t) {
+			t.printStackTrace();
 		}
-//		String topics[]= {"voiture", "avions"}; 
-//		Message m = new Message("voiture-volante"); 
-//		//m.getProperties().putProp("can_fly", true);
-//		publish(m,"voiture"); 
-//		publish(m, "avions"); 
 		
 	}
 
@@ -86,18 +92,37 @@ public class Publisher extends AbstractComponent {
 
 
 	public void publish(MessageI m, String[] topics) throws Exception {
+		String str= " "; 
+		for (String s : topics) {
+			str += s+ " ";
+		}
+		logMessage("Publishing message " + m.getURI()+ " to the topic : "+str);
 		this.publicationOutboundPort.publish(m, topics);
 
 	}
 
 
 	public void publish(MessageI[] ms, String topics) throws Exception {
+		String str= " "; 
+		for (MessageI s : ms) {
+			str += s.getURI()+ " ";
+		}
+		logMessage("Publishing message " + str+ " to the topic : "+topics);
 		this.publicationOutboundPort.publish(ms, topics);
 
 	}
 
 
 	public void publish(MessageI[] ms, String[] topics) throws Exception {
+		String str= " "; 
+		for (MessageI s : ms) {
+			str += s.getURI()+ " ";
+		}
+		String str2= " "; 
+		for (String s : topics) {
+			str2 += s+ " ";
+		}
+		logMessage("Publishing message " + str+ " to the topic : "+str2);
 		this.publicationOutboundPort.publish(ms, topics);
 
 	}

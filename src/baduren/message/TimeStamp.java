@@ -24,7 +24,7 @@ public class TimeStamp {
 		this.time=time; 
 	}
 
-	String getTimeStamper(String timeStamper) {
+	public String getTimeStamper() {
 		return this.timeStamper; 
 	}
 

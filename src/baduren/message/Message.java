@@ -25,6 +25,7 @@ public class Message implements MessageI {
 	public Message(String uri) throws Exception {
 		this.uri=uri; 
 		this.timeStamp = new TimeStamp();
+		this.properties = new Properties();
 		// lambda expression to define the calculate method 
 		// Square s = (int x)->x*x; 
 	}

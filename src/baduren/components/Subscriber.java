@@ -15,9 +15,6 @@ import fr.sorbonne_u.components.ports.InboundPortI;
 import fr.sorbonne_u.components.ports.PortI;
 import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
 
-
-
-
 @OfferedInterfaces(offered = {ReceptionCI.class})
 @AddPlugin(pluginClass = Subscriber.SubscriberSidePlugin.class,
 		   pluginURI = Subscriber.DYNAMIC_CONNECTION_PLUGIN_URI)
@@ -79,6 +76,7 @@ public class Subscriber extends	AbstractComponent{
 
 		@Override
 		public boolean filter(MessageI m) throws Exception {
+			//System.out.println()
 			return m.getProperties().getBooleanProp("can_fly"); 
 		}
 		
@@ -91,7 +89,7 @@ public class Subscriber extends	AbstractComponent{
 		subscribe("fruits", this.receptionInboundPort.getPortURI());
 //		Thread.sleep(1000);
 //		System.out.println("let's filterU"); 
-//		subscribe("voiture",new VehiculeAerien(),this.receptionInboundPort.getPortURI());
+		subscribe("voiture",new VehiculeAerien(),this.receptionInboundPort.getPortURI());
 		
 		subscribe("voiture", new VehiculeAerien(), this.receptionInboundPort.getPortURI());
 		while(true) {}
@@ -165,13 +163,12 @@ public class Subscriber extends	AbstractComponent{
 	// TOUTES LES METHODES DE RECEPTIONCI
 	
 	public void acceptMessage(MessageI m) {
-		//this.logMessage("Receiving/accepting the message "+m.getURI()+ "send by : "+ m.getTimeStamp()+
-		//		" a la date de "+ m.getTimeStamp().getTime());
-		this.logMessage("Receiving/accepting the message : "+m.getURI());
+		this.logMessage("Receiving/accepting the message "+m.getURI()+ " send by : "+ m.getTimeStamp().getTimeStamper() +
+				" a la date de "+ m.getTimeStamp().getTime());
 	}
 	public void acceptMessages(MessageI[] ms) {
 		for (MessageI m : ms) {
-			this.logMessage("Receiving/accepting the message : "+m.getURI());
+			acceptMessage(m); 
 		}
 	}
 }

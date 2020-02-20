@@ -12,7 +12,7 @@ public class Properties implements java.io.Serializable{
 	 HashMap<String, Long> longProperties = new HashMap<String, Long>();
 	 HashMap<String, Short> shortProperties = new HashMap<String, Short>();
 	 HashMap<String, String> stringProperties = new HashMap<String, String>();
-	 
+
 	
 	
 	public void putProp(String name, boolean v) {

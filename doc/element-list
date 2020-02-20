@@ -1,0 +1,7 @@
+baduren
+baduren.components
+baduren.connectors
+baduren.interfaces
+baduren.message
+baduren.ports.inboundPorts
+baduren.ports.outboundPorts

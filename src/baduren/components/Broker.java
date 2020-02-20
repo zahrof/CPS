@@ -1,16 +1,9 @@
 package baduren.components;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-
-import baduren.CVM;
 import baduren.connectors.ReceptionConnector;
-import baduren.interfaces.ManagementCI;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
@@ -19,62 +12,42 @@ import baduren.ports.inboundPorts.ManagementInboundPort;
 import baduren.ports.inboundPorts.PublicationInboundPort;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
-import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.annotations.AddPlugin;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
-import fr.sorbonne_u.components.cvm.AbstractCVM;
-import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.components.plugins.dconnection.DynamicConnectionClientSidePlugin;
-import fr.sorbonne_u.components.plugins.dconnection.interfaces.DynamicConnectionDescriptorI;
-import fr.sorbonne_u.components.ports.OutboundPortI;
 import fr.sorbonne_u.components.ports.PortI;
 import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
 
 @RequiredInterfaces(required = {ReflectionI.class, ReceptionCI.class})
-@AddPlugin(pluginClass = DynamicConnectionClientSidePlugin.class,
-		   pluginURI = Broker.DYNAMIC_CONNECTION_PLUGIN_URI)
+@AddPlugin(pluginClass = DynamicConnectionClientSidePlugin.class, pluginURI = Broker.DYNAMIC_CONNECTION_PLUGIN_URI)
 
 public class Broker extends AbstractComponent {
-
-	public final static String	DYNAMIC_CONNECTION_PLUGIN_URI =
-			"clientSidePLuginURI" ;
-	
-	protected String uri; 
-	int compteur; 
-	
-	//private List<ReceptionOutboundPort> rop; 
-	
-	private HashMap<String, List<MessageI>> messages; //Map between topic and messages (each topic has several messages)
-	//private List<String> topics;
-	/*
-	private HashMap<String, HashMap<ReceptionOutboundPort,MessageFilterI>> subscribers; //Map between topics and subscribers URI ( each topic has several URI followers) 
-	private HashMap<String, List<ReceptionOutboundPort>> subscribers_without_filters; 
-	private HashMap<String, ReceptionOutboundPort> Map_URIPort;
-	*/
 	
 	private class Subscriber {
-		
-		public Subscriber(Broker b_instance, HashMap<String, MessageFilterI> topics) {
+		public Subscriber(Broker b_instance) {
 			this.uri = b_instance.uri + compteur;
-			this.topics = topics;
+			this.topics = new HashMap<String, MessageFilterI>();
 			try {
 				this.receptionOutboundPort = new ReceptionOutboundPort(b_instance.uri+compteur, b_instance);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		public Subscriber(Broker b_instance) {
-			this(b_instance, new HashMap<String, MessageFilterI>());
-		}
 		
-		public String uri;
-		public HashMap<String, MessageFilterI> topics;
+		public String uri; // uri of outbound port
+		public HashMap<String, MessageFilterI> topics; // topics aquel il est abonée
 		public ReceptionOutboundPort receptionOutboundPort;
 	}
-	private HashMap<String, Subscriber> subscribers;
 	
 	
+
+	public final static String	DYNAMIC_CONNECTION_PLUGIN_URI ="clientSidePLuginURI" ;
+	protected String uri; 
+	int compteur; 
+	private HashMap<String, List<MessageI>> messages; //Map between topic and messages (each topic has several messages)
+	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscriber
+	private PublicationInboundPort publicationInboundPort; 
 	
 
 	protected Broker (String uri, String managementInboundPortName,String publicationInboundPortName, String receptionOutboundPortName) throws Exception {
@@ -83,18 +56,10 @@ public class Broker extends AbstractComponent {
 		this.compteur = 0; 
 		
 		this.messages = new HashMap<>(); 
-		//this.topics = new ArrayList<>();
-		/*
-		this.subscribers = new HashMap<>(); 
-		this.rop = new ArrayList<>(); 
-		this.Map_URIPort = new HashMap<>(); 
-		this.subscribers_without_filters = new HashMap<>(); 
-		*/
-		
 		this.subscribers = new HashMap<>();
 		
 		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this); 
-		PortI publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this); 
+		this.publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this); 
 		PortI rop = new ReceptionOutboundPort(receptionOutboundPortName,this); 
 		
 		
@@ -165,21 +130,7 @@ public class Broker extends AbstractComponent {
 
 	}
 	
-
-	
 	public void publish(MessageI m, String topic)throws Exception {
-		
-		
-		/* Non car on ne peut pas publier sur un topic qui a été supp
-		if(!isTopic(topic)) {
-			createTopic(topic); // Si le topic n'existait pas déjà on le crée
-			logMessage("Creation of topic " + topic);
-			this.messages.get(topic).add((Message) m);
-			
-		}
-		else this.messages.get(topic).add((Message) m); // On ajoute le message
-		*/
-		
 		
 		if(!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
 		this.messages.get(topic).add((Message) m); // On ajoute le message
@@ -195,13 +146,11 @@ public class Broker extends AbstractComponent {
 				Subscriber subscriber = subscribers.get(inboundPortURI);
 				
 				if(subscriber.topics.containsKey(topic)) {
-					
-					
 					boolean transfer_message = false;
 					
 					if(subscriber.topics.get(topic) == null) {
 						transfer_message = true;
-					} else if (subscribers.get(inboundPortURI).topics.get(topic).filter(m)) {
+					} else if (subscriber.topics.get(topic).filter(m)) {
 						transfer_message = true;
 					}
 					
@@ -347,13 +296,16 @@ public class Broker extends AbstractComponent {
 	}
 
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
-		// TODO Auto-generated method stub
+		if (isTopic(topic)) {
+			if(!subscribers.get(inboundPortURI).topics.containsKey(topic)) {
+				subscribers.get(inboundPortURI).topics.put(topic, newFilter);
+			}
+		}
 		
 	}
 
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception{
-		// TODO Auto-generated method stub
-		
+		this.subscribers.remove(inboundPortUri); 
 	}
 
 	public void createTopic(String topic) throws Exception {
@@ -385,8 +337,7 @@ public class Broker extends AbstractComponent {
 
 	
 	public String getPublicationPortURI() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return this.publicationInboundPort.getPortURI();
 	}
 
 }

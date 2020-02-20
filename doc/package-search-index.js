@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"baduren"},{"l":"baduren.components"},{"l":"baduren.connectors"},{"l":"baduren.interfaces"},{"l":"baduren.message"},{"l":"baduren.ports.inboundPorts"},{"l":"baduren.ports.outboundPorts"}]
