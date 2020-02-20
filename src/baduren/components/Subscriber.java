@@ -2,14 +2,46 @@ package baduren.components;
 
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
+import baduren.interfaces.ReceptionCI;
 import baduren.ports.inboundPorts.ReceptionInboundPort;
 import baduren.ports.outboundPorts.ManagementOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
+import fr.sorbonne_u.components.annotations.AddPlugin;
+import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
+import fr.sorbonne_u.components.plugins.dconnection.DynamicConnectionServerSidePlugin;
+import fr.sorbonne_u.components.ports.InboundPortI;
 import fr.sorbonne_u.components.ports.PortI;
+import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
+
+
+
+
+@OfferedInterfaces(offered = {ReceptionCI.class})
+@AddPlugin(pluginClass = Subscriber.SubscriberSidePlugin.class,
+		   pluginURI = Subscriber.DYNAMIC_CONNECTION_PLUGIN_URI)
 
 public class Subscriber extends	AbstractComponent{
+	public final static String	DYNAMIC_CONNECTION_PLUGIN_URI =
+			"serverSidePLuginURI" ;
+	
+	public static class	SubscriberSidePlugin
+	extends		DynamicConnectionServerSidePlugin
+	{
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * @see fr.sorbonne_u.components.plugins.dconnection.DynamicConnectionServerSidePlugin#createServerSideDynamicPort(java.lang.Class)
+		 */
+		@Override
+		protected InboundPortI createServerSideDynamicPort(
+			Class<?> offeredInterface
+			) throws Exception
+		{
+			return new ReceptionInboundPort(this.owner) ;
+		}
+	}
 
 
 	/**	the outbound port used to call the service.							*/

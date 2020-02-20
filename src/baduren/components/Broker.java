@@ -8,21 +8,38 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import baduren.CVM;
 import baduren.connectors.ReceptionConnector;
+import baduren.interfaces.ManagementCI;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
+import baduren.interfaces.ReceptionCI;
 import baduren.message.Message;
 import baduren.ports.inboundPorts.ManagementInboundPort;
 import baduren.ports.inboundPorts.PublicationInboundPort;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
+import fr.sorbonne_u.components.ComponentI;
+import fr.sorbonne_u.components.annotations.AddPlugin;
+import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
+import fr.sorbonne_u.components.plugins.dconnection.DynamicConnectionClientSidePlugin;
+import fr.sorbonne_u.components.plugins.dconnection.interfaces.DynamicConnectionDescriptorI;
+import fr.sorbonne_u.components.ports.OutboundPortI;
 import fr.sorbonne_u.components.ports.PortI;
+import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
+
+@RequiredInterfaces(required = {ReflectionI.class, ReceptionCI.class})
+@AddPlugin(pluginClass = DynamicConnectionClientSidePlugin.class,
+		   pluginURI = Broker.DYNAMIC_CONNECTION_PLUGIN_URI)
 
 public class Broker extends AbstractComponent {
 
+	public final static String	DYNAMIC_CONNECTION_PLUGIN_URI =
+			"clientSidePLuginURI" ;
+	
 	protected String uri; 
 	int compteur; 
 	
@@ -78,10 +95,10 @@ public class Broker extends AbstractComponent {
 		
 		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this); 
 		PortI publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this); 
-		//this.rop.add( new ReceptionOutboundPort(receptionOutboundPortName,this)); 
+		PortI rop = new ReceptionOutboundPort(receptionOutboundPortName,this); 
 		
 		
-		//this.rop.get(0).localPublishPort();
+		rop.localPublishPort();
 		managementInboundPort.publishPort();
 		publicationInboundPort.publishPort();
 		
@@ -162,6 +179,9 @@ public class Broker extends AbstractComponent {
 		}
 		else this.messages.get(topic).add((Message) m); // On ajoute le message
 		*/
+		
+		
+		if(!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
 		this.messages.get(topic).add((Message) m); // On ajoute le message
 		
 		
@@ -175,11 +195,91 @@ public class Broker extends AbstractComponent {
 				Subscriber subscriber = subscribers.get(inboundPortURI);
 				
 				if(subscriber.topics.containsKey(topic)) {
+					
+					
+					boolean transfer_message = false;
+					
 					if(subscriber.topics.get(topic) == null) {
-						subscriber.receptionOutboundPort.acceptMessage(m);
+						transfer_message = true;
 					} else if (subscribers.get(inboundPortURI).topics.get(topic).filter(m)) {
-						subscriber.receptionOutboundPort.acceptMessage(m);
+						transfer_message = true;
 					}
+					
+					if(transfer_message) {
+						// Méthode classique
+						subscriber.receptionOutboundPort.acceptMessage(m);
+						
+						// Méthode greffon
+						
+						
+						
+						/*
+						//System.out.println(this.installedPlugins.keySet().toString());
+						//DynamicConnectionClientSidePlugin dconnectionPlugIn = null;
+						
+						//for(String plugin : installedPlugins.keySet()) {
+						//	dconnectionPlugIn = (DynamicConnectionClientSidePlugin) installedPlugins.get(plugin);
+						//	System.out.println(installedPlugins.get(plugin).toString());
+						//}
+						
+						
+						try {
+							// Connecting the dynamic connection plug-ins
+							
+							DynamicConnectionClientSidePlugin dconnectionPlugIn =
+									(DynamicConnectionClientSidePlugin)
+											this.getPlugin(DYNAMIC_CONNECTION_PLUGIN_URI) ; // Peut etre faux
+							System.out.println(inboundPortURI);
+							
+							
+							//DynamicConnectionClientSidePlugin dconnectionPlugIn =
+							//		(DynamicConnectionClientSidePlugin) installedPlugins.get(this.installedPlugins.keySet().toArray()[0]);
+							
+							dconnectionPlugIn.connectWithServerSide(inboundPortURI) ;
+
+							// Use the dynamic connection facilities to connect the example
+							// ports.
+							ReceptionOutboundPort top =
+								(ReceptionOutboundPort)
+									dconnectionPlugIn.doDynamicConnection(
+										ReceptionCI.class, // peut etre ReceptionCI
+										inboundPortURI,
+										ReceptionCI.class,
+										new DynamicConnectionDescriptorI() {
+											@Override
+											public OutboundPortI	 createClientSideDynamicPort(
+													Class<?> requiredInterface,
+													ComponentI owner) {
+												try {
+													assert	requiredInterface.equals(ReceptionCI.class) ;
+													return new ReceptionOutboundPort(owner) ;
+												} catch (Exception e) {
+													throw new RuntimeException(e) ;
+												}
+											}
+
+											@Override
+											public String dynamicConnectorClassName(
+												Class<?> requiredInterface
+												)
+											{
+												assert	requiredInterface.equals(ReceptionCI.class) ;
+												return ReceptionConnector.class.getCanonicalName() ;
+											}
+										}) ;
+
+							top.acceptMessage(m);
+						} catch(Throwable t) {
+							t.printStackTrace();
+						}
+						*/
+						
+					}
+					
+					
+					
+					
+					
 				}
 			}
 		}
@@ -222,7 +322,7 @@ public class Broker extends AbstractComponent {
 	}
 
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
-		this.logMessage("Subscribing " + inboundPortURI + " to topic " + topic + " with filter");
+		this.logMessage("Subscribing " + inboundPortURI + " to topic " + topic + " with filter"); 
 		
 		if(!subscribers.containsKey(inboundPortURI)) {
 			subscribers.put(inboundPortURI, new Subscriber(this));
@@ -257,8 +357,8 @@ public class Broker extends AbstractComponent {
 	}
 
 	public void createTopic(String topic) throws Exception {
+		logMessage("Creation of topic " + topic);
 		if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); 
-		//if(!topics.contains(topic)) topics.add(topic);
 	}
 
 	
