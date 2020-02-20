@@ -10,6 +10,9 @@ import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 
+/**
+ * The type Publisher.
+ */
 public class Publisher extends AbstractComponent {
 
 
@@ -17,12 +20,29 @@ public class Publisher extends AbstractComponent {
 	// Constructors and instance variables
 	// ------------------------------------------------------------------------
 
+	/**
+	 * The Uri prefix.
+	 */
 	protected String uriPrefix ;
 
+	/**
+	 * The Management outbound port.
+	 */
 	protected ManagementOutboundPort managementOutboundPort;
+	/**
+	 * The Publication outbound port.
+	 */
 	protected PublicationOutboundPort publicationOutboundPort;
 
-	protected Publisher(String uri, String managementOutboundPortName, String publicationOutboundPortName) 
+	/**
+	 * Instantiates a new Publisher.
+	 *
+	 * @param uri                         the uri
+	 * @param managementOutboundPortName  the management outbound port name
+	 * @param publicationOutboundPortName the publication outbound port name
+	 * @throws Exception the exception
+	 */
+	protected Publisher(String uri, String managementOutboundPortName, String publicationOutboundPortName)
 			throws Exception {
 		super(uri, 0, 1); 
 		this.uriPrefix = uri;
@@ -77,20 +97,36 @@ public class Publisher extends AbstractComponent {
 	{
 		this.logMessage("stopping publisher component.") ;
 		this.printExecutionLogOnFile("publisher");
+
 		this.publicationOutboundPort.unpublishPort();
 		this.managementOutboundPort.unpublishPort();
+
 		super.finalise();
 	}
 
 	
 	// TOUTES LES METHODES DE PUBLICATIONSCI
 
+	/**
+	 * Publish.
+	 *
+	 * @param m     the m
+	 * @param topic the topic
+	 * @throws Exception the exception
+	 */
 	public void publish(MessageI m, String topic) throws Exception {
-		logMessage("Publishing message " + m.getURI()+ " to the topic : "+ topic);
+		logMessage("Publishing message " + m.getURI()+ " to the topic : "+ topic );
 		this.publicationOutboundPort.publish(m, topic);
 	}
 
 
+	/**
+	 * Publish.
+	 *
+	 * @param m      the m
+	 * @param topics the topics
+	 * @throws Exception the exception
+	 */
 	public void publish(MessageI m, String[] topics) throws Exception {
 		String str= " "; 
 		for (String s : topics) {
@@ -102,6 +138,13 @@ public class Publisher extends AbstractComponent {
 	}
 
 
+	/**
+	 * Publish.
+	 *
+	 * @param ms     the ms
+	 * @param topics the topics
+	 * @throws Exception the exception
+	 */
 	public void publish(MessageI[] ms, String topics) throws Exception {
 		String str= " "; 
 		for (MessageI s : ms) {
@@ -113,6 +156,13 @@ public class Publisher extends AbstractComponent {
 	}
 
 
+	/**
+	 * Publish.
+	 *
+	 * @param ms     the ms
+	 * @param topics the topics
+	 * @throws Exception the exception
+	 */
 	public void publish(MessageI[] ms, String[] topics) throws Exception {
 		String str= " "; 
 		for (MessageI s : ms) {
@@ -130,50 +180,124 @@ public class Publisher extends AbstractComponent {
 	// TOUTES LES METHODES DE MANAGEMENTCI
 
 
+	/**
+	 * Subscribe.
+	 *
+	 * @param topic          the topic
+	 * @param inboundPortURI the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void subscribe(String topic, String inboundPortURI)throws Exception {
 		this.managementOutboundPort.subscribe(topic, inboundPortURI);
 
 	}
 
+	/**
+	 * Subscribe.
+	 *
+	 * @param topics         the topics
+	 * @param inboundPortURI the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void subscribe(String[] topics, String inboundPortURI)throws Exception {
 		this.managementOutboundPort.subscribe(topics, inboundPortURI);
 
 	}
 
+	/**
+	 * Subscribe.
+	 *
+	 * @param topic          the topic
+	 * @param filter         the filter
+	 * @param inboundPortURI the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
 		this.managementOutboundPort.subscribe(topic,filter, inboundPortURI);
 
 	}
 
+	/**
+	 * Modify filter.
+	 *
+	 * @param topic          the topic
+	 * @param newFilter      the new filter
+	 * @param inboundPortURI the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception{
 		this.managementOutboundPort.subscribe(topic, newFilter, inboundPortURI);
 
 	}
 
+	/**
+	 * Unsubscribe.
+	 *
+	 * @param topic          the topic
+	 * @param inboundPortUri the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
 		this.managementOutboundPort.unsubscribe(topic, inboundPortUri);
 	}
 
+	/**
+	 * Create topic.
+	 *
+	 * @param topic the topic
+	 * @throws Exception the exception
+	 */
 	public void createTopic(String topic)throws Exception {
 		this.managementOutboundPort.createTopic(topic);
 	}
 
+	/**
+	 * Create topics.
+	 *
+	 * @param topics the topics
+	 * @throws Exception the exception
+	 */
 	public void createTopics(String[] topics) throws Exception{
 		this.managementOutboundPort.createTopics(topics);
 	}
 
+	/**
+	 * Destroy topic.
+	 *
+	 * @param topic the topic
+	 * @throws Exception the exception
+	 */
 	public void destroyTopic(String topic)throws Exception {
 		this.managementOutboundPort.destroyTopic(topic);
 	}
 
+	/**
+	 * Is topic boolean.
+	 *
+	 * @param topic the topic
+	 * @return the boolean
+	 * @throws Exception the exception
+	 */
 	public boolean isTopic(String topic) throws Exception{
 		return this.managementOutboundPort.isTopic(topic);
 	}
 
+	/**
+	 * Get topics string [ ].
+	 *
+	 * @return the string [ ]
+	 * @throws Exception the exception
+	 */
 	public String[] getTopics() throws Exception{
 		return this.managementOutboundPort.getTopics();
 	}
 
+	/**
+	 * Gets publication port uri.
+	 *
+	 * @return the publication port uri
+	 * @throws Exception the exception
+	 */
 	public String getPublicationPortURI() throws Exception{
 		return this.managementOutboundPort.getPublicationPortURI();
 	}

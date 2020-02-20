@@ -6,12 +6,28 @@ import baduren.interfaces.MessageFilterI;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
 
+/**
+ * The type ManagementInboundPort.
+ */
 public class ManagementInboundPort extends	AbstractInboundPort implements ManagementCI {
 
+	/**
+	 * Instantiates a new Management inbound port.
+	 *
+	 * @param uri   the uri
+	 * @param owner the owner
+	 * @throws Exception the exception
+	 */
 	public ManagementInboundPort(String uri, ComponentI owner) throws Exception {
 		super(uri, ManagementCI.class, owner);
 	}
-	
+
+	/**
+	 * Instantiates a new Management inbound port.
+	 *
+	 * @param owner the owner
+	 * @throws Exception the exception
+	 */
 	public ManagementInboundPort(ComponentI owner) throws Exception{
 		super(ManagementCI.class, owner); 
 	}

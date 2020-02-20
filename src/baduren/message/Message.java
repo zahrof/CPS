@@ -3,31 +3,38 @@ import java.io.Serializable;
 
 import baduren.interfaces.MessageI;
 
-@FunctionalInterface
-interface MessageFilterI 
-{ 
-	boolean filter(MessageI m); 
-} 
-//@FunctionalInterface
-//interface Square 
-//{ 
-//    int calculate(int x); 
-//} 
-//  
-
+/**
+ * The type Message.
+ */
 public class Message implements MessageI {
 
-	protected String uri; 
-	protected TimeStamp timeStamp; 
-	protected Properties properties; 
-	protected Serializable serializableObject; 
+	/**
+	 * The Uri.
+	 */
+	protected String uri;
+	/**
+	 * The Time stamp.
+	 */
+	protected TimeStamp timeStamp;
+	/**
+	 * The Properties.
+	 */
+	protected Properties properties;
+	/**
+	 * The Serializable object.
+	 */
+	protected Serializable serializableObject;
 
+	/**
+	 * Instantiates a new Message.
+	 *
+	 * @param uri the uri
+	 * @throws Exception the exception
+	 */
 	public Message(String uri) throws Exception {
 		this.uri=uri; 
 		this.timeStamp = new TimeStamp();
 		this.properties = new Properties();
-		// lambda expression to define the calculate method 
-		// Square s = (int x)->x*x; 
 	}
 
 	@Override

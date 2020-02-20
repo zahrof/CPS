@@ -5,17 +5,33 @@ import baduren.interfaces.ReceptionCI;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractOutboundPort;
 
+/**
+ * The type ReceptionOutboundPort.
+ */
 public class ReceptionOutboundPort extends AbstractOutboundPort implements ReceptionCI {
 
 	private static final long serialVersionUID = 1L;
 	
 	// Constructeurs
-	
+
+	/**
+	 * Instantiates a new Reception outbound port.
+	 *
+	 * @param uri   the uri
+	 * @param owner the owner
+	 * @throws Exception the exception
+	 */
 	public ReceptionOutboundPort(String uri, ComponentI owner) throws Exception{
 		super(uri, ReceptionCI.class, owner) ;
 		assert	uri != null && owner != null ;
 	}
-	
+
+	/**
+	 * Instantiates a new Reception outbound port.
+	 *
+	 * @param owner the owner
+	 * @throws Exception the exception
+	 */
 	public ReceptionOutboundPort(ComponentI owner) throws Exception{
 		super(ReceptionCI.class, owner) ;
 		assert	uri != null && owner != null ;

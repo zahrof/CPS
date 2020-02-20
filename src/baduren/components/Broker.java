@@ -19,12 +19,20 @@ import fr.sorbonne_u.components.plugins.dconnection.DynamicConnectionClientSideP
 import fr.sorbonne_u.components.ports.PortI;
 import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
 
+/**
+ * The type Broker.
+ */
 @RequiredInterfaces(required = {ReflectionI.class, ReceptionCI.class})
 @AddPlugin(pluginClass = DynamicConnectionClientSidePlugin.class, pluginURI = Broker.DYNAMIC_CONNECTION_PLUGIN_URI)
 
 public class Broker extends AbstractComponent {
 	
 	private class Subscriber {
+		/**
+		 * Instantiates a new Subscriber.
+		 *
+		 * @param b_instance the Broker instance
+		 */
 		public Subscriber(Broker b_instance) {
 			this.uri = b_instance.uri + compteur;
 			this.topics = new HashMap<String, MessageFilterI>();
@@ -34,22 +42,48 @@ public class Broker extends AbstractComponent {
 				e.printStackTrace();
 			}
 		}
-		
+
+		/**
+		 * The subscriber's Uri.
+		 */
 		public String uri; // uri of outbound port
-		public HashMap<String, MessageFilterI> topics; // topics aquel il est abonée
+		/**
+		 * The Topics which the subscriber is subscribed with the filter (null if no filter).
+		 * Key :	 topic
+		 * Value :	 MessageFilterI
+		 */
+		public HashMap<String, MessageFilterI> topics;
+		/**
+		 * The subscriber's reception outbound port.
+		 */
 		public ReceptionOutboundPort receptionOutboundPort;
 	}
-	
-	
 
+
+	/**
+	 * The constant DYNAMIC_CONNECTION_PLUGIN_URI.
+	 */
 	public final static String	DYNAMIC_CONNECTION_PLUGIN_URI ="clientSidePLuginURI" ;
-	protected String uri; 
-	int compteur; 
-	private HashMap<String, List<MessageI>> messages; //Map between topic and messages (each topic has several messages)
-	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscriber
-	private PublicationInboundPort publicationInboundPort; 
-	
+	/**
+	 * The Broker's uri.
+	 */
+	protected String uri;
 
+	private int compteur; // increments for each new subscriber
+	private HashMap<String, List<MessageI>> messages; // Map between topic and messages (each topic has several messages)
+	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscribe
+	private PublicationInboundPort publicationInboundPort;
+
+
+	/**
+	 * Instantiates a new Broker.
+	 *
+	 * @param uri                        the uri of the new broker
+	 * @param managementInboundPortName  the management inbound port name
+	 * @param publicationInboundPortName the publication inbound port name
+	 * @param receptionOutboundPortName  the reception outbound port name
+	 * @throws Exception the exception
+	 */
 	protected Broker (String uri, String managementInboundPortName,String publicationInboundPortName, String receptionOutboundPortName) throws Exception {
 		super(uri, 1, 0) ;
 		this.uri=uri; 
@@ -125,11 +159,23 @@ public class Broker extends AbstractComponent {
 	@Override
 	public void	finalise() throws Exception
 	{
+
+		for(String subscriber : this.subscribers.keySet()){
+			subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
+		}
+		this.publicationInboundPort.unpublishPort() ;
+
 		this.logMessage("stopping broker component.") ;
 		super.finalise();
-
 	}
-	
+
+	/**
+	 * This method
+	 *
+	 * @param m     It's the message to transmit
+	 * @param topic It's the topic where we want to publish the message m
+	 * @throws Exception the exception
+	 */
 	public void publish(MessageI m, String topic)throws Exception {
 		
 		if(!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
@@ -236,21 +282,42 @@ public class Broker extends AbstractComponent {
 		
 		
 	}
-	
-	
+
+
+	/**
+	 * Publish.
+	 *
+	 * @param m      the m
+	 * @param topics the topics
+	 * @throws Exception the exception
+	 */
 	public void publish(MessageI m, String[] topics) throws Exception{
 		for(String topic : topics)
 			publish(m,topic);
 	}
 
-	
+
+	/**
+	 * Publish.
+	 *
+	 * @param ms     the ms
+	 * @param topics the topics
+	 * @throws Exception the exception
+	 */
 	public void publish(MessageI[] ms, String topics) throws Exception{
 		for(MessageI msg : ms)
 			publish(msg, topics); 
 		
 	}
 
-	
+
+	/**
+	 * Publish.
+	 *
+	 * @param ms     the ms
+	 * @param topics the topics
+	 * @throws Exception the exception
+	 */
 	public void publish(MessageI[] ms, String[] topics) throws Exception{
 		for(MessageI msg : ms) {
 			for(String topic: topics) {
@@ -259,17 +326,39 @@ public class Broker extends AbstractComponent {
 		}
 		
 	}
-	
+
+	/**
+	 * Subscribe.
+	 *
+	 * @param topic          the topic
+	 * @param inboundPortURI the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void subscribe(String topic, String inboundPortURI) throws Exception{
 		subscribe(topic, (MessageFilterI) null, inboundPortURI);
 	}
-	
+
+	/**
+	 * Subscribe.
+	 *
+	 * @param topics         the topics
+	 * @param inboundPortURI the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void subscribe(String[] topics, String inboundPortURI) throws Exception{
 		for(String s: topics)
 			subscribe(s, inboundPortURI); 
 		
 	}
 
+	/**
+	 * Subscribe.
+	 *
+	 * @param topic          the topic
+	 * @param filter         the filter
+	 * @param inboundPortURI the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
 		this.logMessage("Subscribing " + inboundPortURI + " to topic " + topic + " with filter"); 
 		
@@ -295,6 +384,14 @@ public class Broker extends AbstractComponent {
 		
 	}
 
+	/**
+	 * Modify filter.
+	 *
+	 * @param topic          the topic
+	 * @param newFilter      the new filter
+	 * @param inboundPortURI the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
 		if (isTopic(topic)) {
 			if(!subscribers.get(inboundPortURI).topics.containsKey(topic)) {
@@ -304,38 +401,83 @@ public class Broker extends AbstractComponent {
 		
 	}
 
+	/**
+	 * Unsubscribe.
+	 *
+	 * @param topic          the topic
+	 * @param inboundPortUri the inbound port uri
+	 * @throws Exception the exception
+	 */
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception{
+		this.subscribers.get(inboundPortUri).receptionOutboundPort.unpublishPort();
 		this.subscribers.remove(inboundPortUri); 
 	}
 
+	/**
+	 * Create topic.
+	 *
+	 * @param topic the topic
+	 * @throws Exception the exception
+	 */
 	public void createTopic(String topic) throws Exception {
 		logMessage("Creation of topic " + topic);
 		if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); 
 	}
 
-	
+
+	/**
+	 * Create topics.
+	 *
+	 * @param topics the topics
+	 * @throws Exception the exception
+	 */
 	public void createTopics(String[] topics) throws Exception {
 		for (int i=0; i< topics.length; i++) 
 			createTopic(topics[i]); 
 
 	}
 
-	
+
+	/**
+	 * Destroy topic.
+	 *
+	 * @param topic the topic
+	 * @throws Exception the exception
+	 */
 	public void destroyTopic(String topic) throws Exception {
 		this.messages.remove(topic);
 	}
 
-	
+
+	/**
+	 * Is topic boolean.
+	 *
+	 * @param topic the topic
+	 * @return the boolean
+	 * @throws Exception the exception
+	 */
 	public boolean isTopic(String topic) throws Exception {
 		return this.messages.containsKey(topic); 
 	}
 
-	
+
+	/**
+	 * Get topics string [ ].
+	 *
+	 * @return the string [ ]
+	 * @throws Exception the exception
+	 */
 	public String[] getTopics() throws Exception {
 		return messages.keySet().toArray(new String[messages.keySet().size()]); 
 	}
 
-	
+
+	/**
+	 * Gets publication port uri.
+	 *
+	 * @return the publication port uri
+	 * @throws Exception the exception
+	 */
 	public String getPublicationPortURI() throws Exception {
 		return this.publicationInboundPort.getPortURI();
 	}

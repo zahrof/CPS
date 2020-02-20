@@ -9,16 +9,32 @@ import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.examples.basic_cs.components.URIProvider;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
 
+/**
+ * The type PublicationInboundPort.
+ */
 public class PublicationInboundPort extends	AbstractInboundPort implements PublicationCI {
 
 	private static final long serialVersionUID = 1L;
-	
-	public	PublicationInboundPort(String uri, ComponentI owner) 
+
+	/**
+	 * Instantiates a new Publication inbound port.
+	 *
+	 * @param uri   the uri
+	 * @param owner the owner
+	 * @throws Exception the exception
+	 */
+	public	PublicationInboundPort(String uri, ComponentI owner)
 			throws Exception
 		{
 			super(uri, PublicationCI.class, owner) ;
 		}
-	
+
+	/**
+	 * Instantiates a new Publication inbound port.
+	 *
+	 * @param owner the owner
+	 * @throws Exception the exception
+	 */
 	public				PublicationInboundPort(ComponentI owner)
 	throws Exception
 	{

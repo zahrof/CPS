@@ -6,17 +6,31 @@ import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.examples.basic_cs.interfaces.URIConsumerI;
 import fr.sorbonne_u.components.ports.AbstractOutboundPort;
 
+/**
+ * The type ManagementOutboundPort.
+ */
 public class ManagementOutboundPort extends		AbstractOutboundPort implements ManagementCI {
 	
 	private static final long serialVersionUID = 1L;
 
-	// Constructeurs
-	
+	/**
+	 * Instantiates a new Management outbound port.
+	 *
+	 * @param uri   the uri
+	 * @param owner the owner
+	 * @throws Exception the exception
+	 */
 	public ManagementOutboundPort(String uri, ComponentI owner) throws Exception{
 		super(uri, ManagementCI.class, owner) ;
 		assert	uri != null && owner != null ;
 	}
-	
+
+	/**
+	 * Instantiates a new Management outbound port.
+	 *
+	 * @param owner the owner
+	 * @throws Exception the exception
+	 */
 	public ManagementOutboundPort(ComponentI owner) throws Exception{
 		super(ManagementCI.class, owner) ;
 		assert	uri != null && owner != null ;
@@ -74,9 +88,8 @@ public class ManagementOutboundPort extends		AbstractOutboundPort implements Man
 	}
 
 	@Override
-	public boolean isTopic(String topic) {
-		return isRemotelyConnected;
-		//return ((ManagementCI)this.connector).isTopic(topic);
+	public boolean isTopic(String topic) throws Exception {
+		return ((ManagementCI)this.connector).isTopic(topic);
 	}
 
 	@Override
@@ -85,9 +98,8 @@ public class ManagementOutboundPort extends		AbstractOutboundPort implements Man
 	}
 
 	@Override
-	public String getPublicationPortURI() {
-		return serverPortURI;
-		//return ((ManagementCI)this.connector).getPublicationPortURI();
+	public String getPublicationPortURI() throws Exception {
+		return ((ManagementCI)this.connector).getPublicationPortURI();
 	}
 
 

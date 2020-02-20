@@ -12,30 +12,74 @@ import fr.sorbonne_u.components.helpers.CVMDebugModes;
 
 //-----------------------------------------------------------------------------
 
+/**
+ * The type Cvm.
+ */
 public class			CVM
 extends		AbstractCVM
 {
-	protected static final String PUBLISHER_COMPONENT_URI = "my-URI-publisher"; 
-	protected static final String BROKER_COMPONENT_URI = "my-URI-broker"; 
-	protected static final String SUBSCRIBER_COMPONENT_URI = "my-URI-subscriber"; 
-	
+	/**
+	 * The constant PUBLISHER_COMPONENT_URI.
+	 */
+	protected static final String PUBLISHER_COMPONENT_URI = "my-URI-publisher";
+	/**
+	 * The constant BROKER_COMPONENT_URI.
+	 */
+	protected static final String BROKER_COMPONENT_URI = "my-URI-broker";
+	/**
+	 * The constant SUBSCRIBER_COMPONENT_URI.
+	 */
+	protected static final String SUBSCRIBER_COMPONENT_URI = "my-URI-subscriber";
+
+	/**
+	 * The constant ManagementOutboundPortUri.
+	 */
 	protected static final String ManagementOutboundPortUri = "managementOport";
+	/**
+	 * The constant PublicationOutboundPortUri.
+	 */
 	protected static final String PublicationOutboundPortUri = "publicationOport";
+	/**
+	 * The constant ReceptionOutboundPortUri.
+	 */
 	protected static final String ReceptionOutboundPortUri = "receptionOport";
-	
+
+	/**
+	 * The constant ManagementInboundPortUri.
+	 */
 	protected static final String ManagementInboundPortUri = "managementIport";
-		
+
+	/**
+	 * The constant PublicationInboundPortUri.
+	 */
 	protected static final String PublicationInboundPortUri = "publicationIport";
+	/**
+	 * The constant ReceptionInboundPortUri.
+	 */
 	protected static final String ReceptionInboundPortUri = "receptionIport";
 
+	/**
+	 * Instantiates a new Cvm.
+	 *
+	 * @throws Exception the exception
+	 */
 	public	CVM() throws Exception{
 		super() ;
 	}
 
-	
-	protected String uriPublisherURI; 
-	protected String uriBrokerURI; 
-	protected String uriSubscriberURI; 
+
+	/**
+	 * The Uri publisher uri.
+	 */
+	protected String uriPublisherURI;
+	/**
+	 * The Uri broker uri.
+	 */
+	protected String uriBrokerURI;
+	/**
+	 * The Uri subscriber uri.
+	 */
+	protected String uriSubscriberURI;
 
 	@Override
 	public void			deploy() throws Exception
@@ -155,6 +199,11 @@ extends		AbstractCVM
 		super.shutdown();
 	}
 
+	/**
+	 * The entry point of application.
+	 *
+	 * @param args the input arguments
+	 */
 	public static void		main(String[] args)
 	{
 		try {

@@ -1,5 +1,15 @@
 package baduren.interfaces;
 
+/**
+ * The interface MessagefilterI.
+ */
 public interface MessageFilterI {
-	boolean filter(MessageI m)throws Exception;; 
+	/**
+	 * Filter boolean.
+	 *
+	 * @param m the message
+	 * @return the boolean
+	 * @throws Exception the exception
+	 */
+	boolean filter(MessageI m)throws Exception;;
 }
