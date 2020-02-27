@@ -84,6 +84,7 @@ extends		AbstractCVM
 	@Override
 	public void			deploy() throws Exception
 	{
+		assert	!this.deploymentDone() ;
 		AbstractCVM.DEBUG_MODE.add(CVMDebugModes.PUBLIHSING) ;
 		AbstractCVM.DEBUG_MODE.add(CVMDebugModes.CONNECTING) ;
 		AbstractCVM.DEBUG_MODE.add(CVMDebugModes.COMPONENT_DEPLOYMENT) ;
@@ -96,11 +97,11 @@ extends		AbstractCVM
 					new Object[]{PUBLISHER_COMPONENT_URI,
 							ManagementOutboundPortUri,
 							PublicationOutboundPortUri });
+
 		assert	this.isDeployedComponent(this.uriPublisherURI) ;
-		// make it trace its operations; comment and uncomment the line to see
-		// the difference
+
 		this.toggleTracing(this.uriPublisherURI) ;
-		//this.toggleLogging(this.uriPublisherURI) ;
+
 		
 
 		/******* create the broker component ********/
@@ -113,10 +114,9 @@ extends		AbstractCVM
 							PublicationInboundPortUri,
 							ReceptionOutboundPortUri}) ;
 		assert	this.isDeployedComponent(this.uriBrokerURI) ;
-		// make it trace its operations; comment and uncomment the line to see
-		// the difference
+
 		this.toggleTracing(this.uriBrokerURI) ;
-		//this.toggleLogging(this.uriBrokerURI) ;
+
 		
 		/******* create the subscriber component ********/
 		// create the broker component
@@ -127,8 +127,7 @@ extends		AbstractCVM
 							ReceptionInboundPortUri,
 							ManagementOutboundPortUri }) ;
 		assert	this.isDeployedComponent(this.uriSubscriberURI) ;
-		// make it trace its operations; comment and uncomment the line to see
-		// the difference
+
 		this.toggleTracing(this.uriSubscriberURI) ;
 		
 		// --------------------------------------------------------------------
@@ -196,6 +195,7 @@ extends		AbstractCVM
 	@Override
 	public void				shutdown() throws Exception
 	{
+		assert	this.allFinalised() ;
 		super.shutdown();
 	}
 

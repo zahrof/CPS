@@ -2,6 +2,7 @@ package baduren.components;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import baduren.connectors.ReceptionConnector;
 import baduren.interfaces.MessageFilterI;
@@ -11,6 +12,7 @@ import baduren.message.Message;
 import baduren.ports.inboundPorts.ManagementInboundPort;
 import baduren.ports.inboundPorts.PublicationInboundPort;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
+import com.sun.deploy.net.MessageHeader;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.AddPlugin;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
@@ -26,7 +28,9 @@ import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
 @AddPlugin(pluginClass = DynamicConnectionClientSidePlugin.class, pluginURI = Broker.DYNAMIC_CONNECTION_PLUGIN_URI)
 
 public class Broker extends AbstractComponent {
-	
+
+
+
 	private class Subscriber {
 		/**
 		 * Instantiates a new Subscriber.
@@ -69,6 +73,7 @@ public class Broker extends AbstractComponent {
 	 */
 	protected String uri;
 
+	private HashMap<String, List<MessageI>> messages_ready;
 	private int compteur; // increments for each new subscriber
 	private HashMap<String, List<MessageI>> messages; // Map between topic and messages (each topic has several messages)
 	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscribe
@@ -91,6 +96,7 @@ public class Broker extends AbstractComponent {
 		
 		this.messages = new HashMap<>(); 
 		this.subscribers = new HashMap<>();
+		this.messages_ready = new HashMap<>();
 		
 		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this); 
 		this.publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this); 
@@ -117,26 +123,9 @@ public class Broker extends AbstractComponent {
 	public void	execute() throws Exception
 	{
 		super.execute() ;
-		
+
 		/*
-		System.out.println("taille ici :" + this.messages.size()); 
-		System.out.println("ici on a bizarrement : " +  this.subscribers.get("fruits").size());
-		
-		
-		while(this.messages.size()<1 || this.subscribers.get("fruits").size() != 1) {
-			
-			try {
-				//System.out.println(mapMessage.size());
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		System.out.println("hola");
-		this.logMessage("le broker previent les publisher ");
-		//System.out.println("ici c'est bon la taille est bien de " ); //+ mapSubscription.get("banane").size());
-		
+
 		this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(0));
 		this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(1));
 		HashMap<ReceptionOutboundPort,MessageFilterI>hm =new HashMap<>();
@@ -150,9 +139,14 @@ public class Broker extends AbstractComponent {
 		//this.subscribers.get("voiture").get(0).acceptMessage(this.messages.get("voiture").get(1));
 	
 		//this.Map_URIPort.get("fruits").acceptMessage(this.messages.get("fruits").get(0));
-		 * */
-		 
 
+		*/
+
+
+		while(true){
+			Thread.sleep(5000);
+			search_messages_to_send();
+		}
 
 	}
 
@@ -169,67 +163,61 @@ public class Broker extends AbstractComponent {
 		super.finalise();
 	}
 
-	/**
-	 * This method
-	 *
-	 * @param m     It's the message to transmit
-	 * @param topic It's the topic where we want to publish the message m
-	 * @throws Exception the exception
-	 */
-	public void publish(MessageI m, String topic)throws Exception {
-		
-		if(!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
-		this.messages.get(topic).add((Message) m); // On ajoute le message
-		
-		
-		
-		if(!isTopic(topic)) {
-			logMessage("The following message hasn't been published because it's topic (" + topic + ") doesn't exist : " + m.getURI());
-		} else {
-			logMessage("Publishing message "+m.getURI()+" to topic " + topic);
-			
-			for(String inboundPortURI: subscribers.keySet()) {
-				Subscriber subscriber = subscribers.get(inboundPortURI);
-				
-				if(subscriber.topics.containsKey(topic)) {
-					boolean transfer_message = false;
-					
-					if(subscriber.topics.get(topic) == null) {
-						transfer_message = true;
-					} else if (subscriber.topics.get(topic).filter(m)) {
-						transfer_message = true;
-					}
-					
-					if(transfer_message) {
-						// Méthode classique
-						subscriber.receptionOutboundPort.acceptMessage(m);
-						
-						// Méthode greffon
-						
-						
-						
+
+	private synchronized void search_messages_to_send() throws Exception {
+		HashSet<MessageI> sent_messages = new HashSet<>();
+
+		for(String topic: this.messages.keySet()){
+			for(MessageI m : this.messages.get(topic)){
+				for (String inboundPortURI : subscribers.keySet()) {
+					Subscriber subscriber = subscribers.get(inboundPortURI);
+
+					if (subscriber.topics.containsKey(topic)) {
+						boolean transfer_message = false;
+
+						if (subscriber.topics.get(topic) == null) {
+							transfer_message = true;
+						} else if (subscriber.topics.get(topic).filter(m)) {
+							transfer_message = true;
+						}
+
+						if (transfer_message) {
+							// Méthode classique
+							//subscriber.receptionOutboundPort.acceptMessage(m);
+
+							if(!sent_messages.contains(m)){
+								if(!messages_ready.containsKey(inboundPortURI)){
+									messages_ready.put(inboundPortURI, new ArrayList<>());
+								}
+								messages_ready.get(inboundPortURI).add(m);
+								sent_messages.add(m);
+							}
+
+
+							// Méthode greffon
+
 						/*
 						//System.out.println(this.installedPlugins.keySet().toString());
 						//DynamicConnectionClientSidePlugin dconnectionPlugIn = null;
-						
+
 						//for(String plugin : installedPlugins.keySet()) {
 						//	dconnectionPlugIn = (DynamicConnectionClientSidePlugin) installedPlugins.get(plugin);
 						//	System.out.println(installedPlugins.get(plugin).toString());
 						//}
-						
-						
+
+
 						try {
 							// Connecting the dynamic connection plug-ins
-							
+
 							DynamicConnectionClientSidePlugin dconnectionPlugIn =
 									(DynamicConnectionClientSidePlugin)
 											this.getPlugin(DYNAMIC_CONNECTION_PLUGIN_URI) ; // Peut etre faux
 							System.out.println(inboundPortURI);
-							
-							
+
+
 							//DynamicConnectionClientSidePlugin dconnectionPlugIn =
 							//		(DynamicConnectionClientSidePlugin) installedPlugins.get(this.installedPlugins.keySet().toArray()[0]);
-							
+
 							dconnectionPlugIn.connectWithServerSide(inboundPortURI) ;
 
 							// Use the dynamic connection facilities to connect the example
@@ -268,16 +256,39 @@ public class Broker extends AbstractComponent {
 							t.printStackTrace();
 						}
 						*/
-						
+
+						}
 					}
-					
-					
-					
-					
-					
 				}
 			}
 		}
+
+
+		// TODO tout suppimer
+
+	}
+
+	/**
+	 * This method
+	 *
+	 * @param m     It's the message to transmit
+	 * @param topic It's the topic where we want to publish the message m
+	 * @throws Exception the exception
+	 */
+	public void publish(MessageI m, String topic)throws Exception {
+
+			if (!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
+			this.messages.get(topic).add((Message) m); // On ajoute le message
+
+
+			if (!isTopic(topic)) {
+				logMessage("The following message hasn't been published because it's topic (" + topic + ") doesn't exist : " + m.getURI());
+			} else {
+				logMessage("Publishing message " + m.getURI() + " to topic " + topic);
+
+
+			}
+
 		
 		
 		
@@ -367,8 +378,8 @@ public class Broker extends AbstractComponent {
 			subscribers.get(inboundPortURI).receptionOutboundPort.publishPort();
 			
 			this.doPortConnection(
-					subscribers.get(inboundPortURI).uri, 
-					inboundPortURI, 
+					subscribers.get(inboundPortURI).uri,
+					inboundPortURI,
 					ReceptionConnector.class.getCanonicalName()
 			);
 		}
@@ -409,8 +420,7 @@ public class Broker extends AbstractComponent {
 	 * @throws Exception the exception
 	 */
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception{
-		this.subscribers.get(inboundPortUri).receptionOutboundPort.unpublishPort();
-		this.subscribers.remove(inboundPortUri); 
+		this.subscribers.get(inboundPortUri).topics.remove(topic);
 	}
 
 	/**

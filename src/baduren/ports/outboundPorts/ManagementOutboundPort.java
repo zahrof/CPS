@@ -36,17 +36,18 @@ public class ManagementOutboundPort extends		AbstractOutboundPort implements Man
 		assert	uri != null && owner != null ;
 	}
 	
-	// Methodes
 
 	@Override
 	public void subscribe(String topic, String inboundPortURI) throws Exception {
 		((ManagementCI)this.connector).subscribe(topic,inboundPortURI);
+		assert	topic != null && inboundPortURI != null ;
 		
 	}
 
 	@Override
 	public void subscribe(String[] topics, String inboundPortURI) throws Exception {
 		((ManagementCI)this.connector).subscribe(topics,inboundPortURI);
+		assert	topics != null && inboundPortURI != null ;
 		
 	}
 
@@ -60,41 +61,48 @@ public class ManagementOutboundPort extends		AbstractOutboundPort implements Man
 	@Override
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception {
 		((ManagementCI)this.connector).modifyFilter(topic,newFilter,inboundPortURI);
+		assert	topic != null && inboundPortURI != null ;
 		
 	}
 
 	@Override
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
 		((ManagementCI)this.connector).unsubscribe(topic,inboundPortUri);
+		//assert	topic != null && inboundPortURI != null ;
 		
 	}
 
 	@Override
 	public void createTopic(String topic) throws Exception {
 		((ManagementCI)this.connector).createTopic(topic);
+		//assert	topic != null && inboundPortURI != null ;
 		
 	}
 
 	@Override
 	public void createTopics(String[] topics) throws Exception {
 		((ManagementCI)this.connector).createTopics(topics);
+		//assert	topic != null && inboundPortURI != null ;
 		
 	}
 
 	@Override
 	public void destroyTopic(String topic) throws Exception {
 		((ManagementCI)this.connector).destroyTopic(topic);
+		//assert	topic != null && inboundPortURI != null ;
 		
 	}
 
 	@Override
 	public boolean isTopic(String topic) throws Exception {
 		return ((ManagementCI)this.connector).isTopic(topic);
+		//assert	topic != null && inboundPortURI != null ;
 	}
 
 	@Override
 	public String[] getTopics() throws Exception {
 		return ((ManagementCI)this.connector).getTopics();
+		//assert	topic != null && inboundPortURI != null ;
 	}
 
 	@Override
