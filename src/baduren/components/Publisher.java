@@ -76,7 +76,7 @@ public class Publisher extends AbstractComponent {
 		super.execute() ;
 		
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(100);
 			for (int i=0; i <10; i++) {
 				publish(new Message("Banane"+i), "fruits");
 			}
@@ -85,7 +85,26 @@ public class Publisher extends AbstractComponent {
 			Properties p = m.getProperties();
 			p.putProp("can_fly", true);
 			
-			publish(m,topics); 
+			publish(m,topics);
+
+
+
+			System.out.print(" ");
+
+
+
+			Thread.sleep(1000);
+			for (int i=0; i <10; i++) {
+				publish(new Message("Banane2"+i), "fruits");
+			}
+			String topics2[]= {"voiture", "avions"};
+			Message m2 = new Message("voiture-volante2");
+			Properties p2 = m2.getProperties();
+			p2.putProp("can_fly", true);
+
+			publish(m2,topics2);
+
+
 		} catch(Throwable t) {
 			t.printStackTrace();
 		}
