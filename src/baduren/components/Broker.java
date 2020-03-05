@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import baduren.connectors.ReceptionConnector;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
@@ -74,6 +77,7 @@ public class Broker extends AbstractComponent {
 	protected String uri;
 
 	private HashMap<String, List<MessageI>> messages_ready; // Map between inbound port and messages
+	private Lock messages_ready_locker;
 	private int compteur; // increments for each new subscriber
 	private HashMap<String, List<MessageI>> messages; // Map between topic and messages (each topic has several messages)
 	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscribe
@@ -102,6 +106,7 @@ public class Broker extends AbstractComponent {
 		this.messages = new HashMap<>(); 
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
+		this.messages_ready_locker = new ReentrantLock();
 
 		// On vérifie que les ports passés en aprametre sont valides
 		assert managementInboundPortName != null ||  managementInboundPortName != "":
@@ -157,8 +162,6 @@ public class Broker extends AbstractComponent {
 
 
 		// Thread à part entiere qui s'occupe d'envoyer les messages
-
-		/*
 		this.runTask(
 			new AbstractComponent.AbstractTask() {
 				@Override
@@ -166,20 +169,10 @@ public class Broker extends AbstractComponent {
 					while(true){
 						try {Thread.sleep(100);} catch (Throwable e) {}
 						synchronized (this) {
-							if (messages_ready.isEmpty()) {
-								try {
-									System.out.println("objet avant wait");
-									System.out.println(objet);
-									objet.wait();
-									System.out.println("objet après wait");
-
-
-									//System.out.println("avant wait");
-									//messages_ready.wait(5);
-									//System.out.println("après wait");
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
+							if (messages_ready.isEmpty()){
+								System.out.println("avant lock");
+								messages_ready_locker.unlock();
+								System.out.println("après lock");
 							}
 							if (!messages_ready.isEmpty()) {
 								for (String inboundPortI : messages_ready.keySet()) {
@@ -198,26 +191,19 @@ public class Broker extends AbstractComponent {
 				}
 			}
 		);
-		*/
 
 
 
 
 
-
-
+	/*
 		new Thread(() -> {
 			while(true){
 				try {Thread.sleep(100);} catch (Throwable e) {}
 				synchronized (this) {
-					if (true && messages_ready.isEmpty()) {
+					if (false && messages_ready.isEmpty()) {
 						try {
-							System.out.println("objet avant wait");
-							System.out.println(objet);
-							objet.wait();
-							System.out.println("objet après wait");
-
-							//this.wait();
+							this.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -238,7 +224,7 @@ public class Broker extends AbstractComponent {
 			}
 		}).start();
 
-
+	 */
 
 
 
@@ -298,18 +284,13 @@ public class Broker extends AbstractComponent {
 								}
 								messages_ready.get(inboundPortURI).add(m);
 								if(messages_ready.size() == 1){ // Si la liste etait vide avant d'ajouter un element, on notify
-
-									System.out.println("objet avant notify");
-									System.out.println(objet);
-									objet.notify();
-									System.out.println("objet après notify");
-
-									System.out.println("avant notify");
-									messages_ready.notify();
-									System.out.println("après notify");
+									System.out.println("avant unlock");
+									this.messages_ready_locker.lock();
+									System.out.println("après unlock");
 								}
 								sent_messages.add(m);
 							}
+
 							// Méthode greffon
 
 						 /*
