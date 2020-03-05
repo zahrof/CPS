@@ -12,13 +12,12 @@ import baduren.message.Message;
 import baduren.ports.inboundPorts.ManagementInboundPort;
 import baduren.ports.inboundPorts.PublicationInboundPort;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
-import com.sun.deploy.net.MessageHeader;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.AddPlugin;
 import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
+import fr.sorbonne_u.components.exceptions.PreconditionException;
 import fr.sorbonne_u.components.plugins.dconnection.DynamicConnectionClientSidePlugin;
-import fr.sorbonne_u.components.ports.InboundPortI;
 import fr.sorbonne_u.components.ports.PortI;
 import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
 
@@ -81,6 +80,9 @@ public class Broker extends AbstractComponent {
 	private PublicationInboundPort publicationInboundPort;
 
 
+	private Object objet;
+
+
 	/**
 	 * Instantiates a new Broker.
 	 *
@@ -91,13 +93,23 @@ public class Broker extends AbstractComponent {
 	 * @throws Exception the exception
 	 */
 	protected Broker (String uri, String managementInboundPortName,String publicationInboundPortName, String receptionOutboundPortName) throws Exception {
-		super(uri, 2, 0) ;
+		super(uri, 20, 5) ;
 		this.uri=uri; 
-		this.compteur = 0; 
+		this.compteur = 0;
+
+		this.objet = new Object();
 		
 		this.messages = new HashMap<>(); 
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
+
+		// On vérifie que les ports passés en aprametre sont valides
+		assert managementInboundPortName != null ||  managementInboundPortName != "":
+				new PreconditionException("managementInboundPortName is wrong");
+		assert publicationInboundPortName != null ||  publicationInboundPortName != "":
+				new PreconditionException("publicationInboundPortName is wrong");
+		assert receptionOutboundPortName != null ||  receptionOutboundPortName != "":
+				new PreconditionException("receptionOutboundPortName is wrong");
 		
 		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this); 
 		this.publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this); 
@@ -143,14 +155,69 @@ public class Broker extends AbstractComponent {
 
 		*/
 
+
 		// Thread à part entiere qui s'occupe d'envoyer les messages
+
+		/*
+		this.runTask(
+			new AbstractComponent.AbstractTask() {
+				@Override
+				public void run() {
+					while(true){
+						try {Thread.sleep(100);} catch (Throwable e) {}
+						synchronized (this) {
+							if (messages_ready.isEmpty()) {
+								try {
+									System.out.println("objet avant wait");
+									System.out.println(objet);
+									objet.wait();
+									System.out.println("objet après wait");
+
+
+									//System.out.println("avant wait");
+									//messages_ready.wait(5);
+									//System.out.println("après wait");
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							}
+							if (!messages_ready.isEmpty()) {
+								for (String inboundPortI : messages_ready.keySet()) {
+									for (MessageI m : messages_ready.get(inboundPortI)) {
+										try {
+											subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(m);
+											messages_ready.remove(inboundPortI);
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		);
+		*/
+
+
+
+
+
+
+
 		new Thread(() -> {
 			while(true){
 				try {Thread.sleep(100);} catch (Throwable e) {}
 				synchronized (this) {
-					if (messages_ready.isEmpty()) {
+					if (true && messages_ready.isEmpty()) {
 						try {
-							this.wait();
+							System.out.println("objet avant wait");
+							System.out.println(objet);
+							objet.wait();
+							System.out.println("objet après wait");
+
+							//this.wait();
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -170,6 +237,11 @@ public class Broker extends AbstractComponent {
 				}
 			}
 		}).start();
+
+
+
+
+
 
 		Thread.sleep(200);
 		while(true){
@@ -196,7 +268,6 @@ public class Broker extends AbstractComponent {
 
 
 	private synchronized void search_messages_to_send() throws Exception {
-
 		HashSet<MessageI> sent_messages;
 
 		for (String inboundPortURI : subscribers.keySet()) {
@@ -226,8 +297,16 @@ public class Broker extends AbstractComponent {
 									messages_ready.put(inboundPortURI, new ArrayList<>());
 								}
 								messages_ready.get(inboundPortURI).add(m);
-								if(messages_ready.size() == 1){ // Si la liste etait vie avant d'ajouter un element, on notify
-									this.notify();
+								if(messages_ready.size() == 1){ // Si la liste etait vide avant d'ajouter un element, on notify
+
+									System.out.println("objet avant notify");
+									System.out.println(objet);
+									objet.notify();
+									System.out.println("objet après notify");
+
+									System.out.println("avant notify");
+									messages_ready.notify();
+									System.out.println("après notify");
 								}
 								sent_messages.add(m);
 							}
