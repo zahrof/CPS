@@ -96,8 +96,9 @@ public class Broker extends AbstractComponent {
 	 * @param receptionOutboundPortName  the reception outbound port name
 	 * @throws Exception the exception
 	 */
-	protected Broker (String uri, String managementInboundPortName,String publicationInboundPortName, String receptionOutboundPortName) throws Exception {
-		super(uri, 20, 5) ;
+	protected Broker (String uri, String managementInboundPortName,String publicationInboundPortName,
+					  String receptionOutboundPortName, int nbThreads, int nbSchedulableThreads) throws Exception {
+		super(uri, nbThreads, nbSchedulableThreads) ;
 		this.uri=uri; 
 		this.compteur = 0;
 

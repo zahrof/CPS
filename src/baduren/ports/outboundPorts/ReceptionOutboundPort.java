@@ -2,7 +2,10 @@ package baduren.ports.outboundPorts;
 
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
+import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
+import fr.sorbonne_u.components.examples.pingpong.components.Ball;
+import fr.sorbonne_u.components.examples.pingpong.components.PingPongPlayer;
 import fr.sorbonne_u.components.ports.AbstractOutboundPort;
 
 /**
@@ -47,6 +50,15 @@ public class ReceptionOutboundPort extends AbstractOutboundPort implements Recep
 
 	@Override
 	public void acceptMessages(MessageI[] ms)throws Exception {
+		/*this.owner.handleRequestAsync(
+				new AbstractComponent.AbstractService<Void>() {
+					@Override
+					public Void call() throws Exception {
+						((PingPongPlayer)this.getServiceOwner()).
+								playOnDataReception((Ball) d) ;
+						return null;
+					}
+				}) ;*/
 		((ReceptionCI)this.connector).acceptMessages(ms);
 	}
 

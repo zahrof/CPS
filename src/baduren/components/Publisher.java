@@ -42,9 +42,9 @@ public class Publisher extends AbstractComponent {
 	 * @param publicationOutboundPortName the publication outbound port name
 	 * @throws Exception the exception
 	 */
-	protected Publisher(String uri, String managementOutboundPortName, String publicationOutboundPortName)
-			throws Exception {
-		super(uri, 0, 1); 
+	protected Publisher(String uri, String managementOutboundPortName, String publicationOutboundPortName,
+						int nbThreads, int nbSchedulableThreads) throws Exception {
+		super(uri, nbThreads, nbSchedulableThreads);
 		this.uriPrefix = uri;
 
 		this.managementOutboundPort = new ManagementOutboundPort(managementOutboundPortName, this); 

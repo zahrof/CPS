@@ -47,9 +47,9 @@ public class Subscriber extends	AbstractComponent{
 	protected ReceptionInboundPort receptionInboundPort;
 
 
-	protected Subscriber(String uri, String receptionInboundPortName, String managementOutboundPortName)
-			throws Exception {
-		super(uri, 0, 1); 
+	protected Subscriber(String uri, String receptionInboundPortName, String managementOutboundPortName,
+						 int nbThreads, int nbSchedulableThreads) throws Exception {
+		super(uri, nbThreads, nbSchedulableThreads);
 		this.uri = uri; 
 		this.receptionInboundPort  = new ReceptionInboundPort(receptionInboundPortName,this); 
 		this.managementOutboundPort = new ManagementOutboundPort(managementOutboundPortName, this);

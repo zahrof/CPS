@@ -16,6 +16,7 @@ import fr.sorbonne_u.components.helpers.CVMDebugModes;
  * The type Cvm.
  */
 public class			CVM
+
 extends		AbstractCVM
 {
 	/**
@@ -96,7 +97,7 @@ extends		AbstractCVM
 					Publisher.class.getCanonicalName(),
 					new Object[]{PUBLISHER_COMPONENT_URI,
 							ManagementOutboundPortUri,
-							PublicationOutboundPortUri });
+							PublicationOutboundPortUri,1,0});
 
 		assert	this.isDeployedComponent(this.uriPublisherURI) ;
 
@@ -112,7 +113,7 @@ extends		AbstractCVM
 					new Object[]{BROKER_COMPONENT_URI,
 							ManagementInboundPortUri,
 							PublicationInboundPortUri,
-							ReceptionOutboundPortUri}) ;
+							ReceptionOutboundPortUri,1,0}) ;
 		assert	this.isDeployedComponent(this.uriBrokerURI) ;
 
 		this.toggleTracing(this.uriBrokerURI) ;
@@ -125,7 +126,7 @@ extends		AbstractCVM
 					Subscriber.class.getCanonicalName(),
 					new Object[]{SUBSCRIBER_COMPONENT_URI,
 							ReceptionInboundPortUri,
-							ManagementOutboundPortUri }) ;
+							ManagementOutboundPortUri,1,0 }) ;
 		assert	this.isDeployedComponent(this.uriSubscriberURI) ;
 
 		this.toggleTracing(this.uriSubscriberURI) ;
