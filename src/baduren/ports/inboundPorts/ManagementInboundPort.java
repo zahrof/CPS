@@ -3,7 +3,9 @@ package baduren.ports.inboundPorts;
 import baduren.components.Broker;
 import baduren.interfaces.ManagementCI;
 import baduren.interfaces.MessageFilterI;
+import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
+import fr.sorbonne_u.components.examples.basic_cs.components.URIProvider;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
 
 /**
@@ -22,81 +24,137 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 		super(uri, ManagementCI.class, owner);
 	}
 
-	/**
-	 * Instantiates a new Management inbound port.
-	 *
-	 * @param owner the owner
-	 * @throws Exception the exception
-	 */
-	public ManagementInboundPort(ComponentI owner) throws Exception{
-		super(ManagementCI.class, owner); 
-	}
-
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void subscribe(String topic, String inboundPortURI) throws Exception {
-		((Broker)this.owner).subscribe(topic, inboundPortURI);
-		
+		this.getOwner().handleRequestAsync(
+				new AbstractComponent.AbstractService<Void>() {
+					@Override
+					public Void call() throws Exception {
+						((Broker)this.getServiceOwner()).subscribe(topic,inboundPortURI);
+						return null;
+					}
+				}) ;
 	}
 
 	@Override
 	public void subscribe(String[] topics, String inboundPortURI) throws Exception {
-		((Broker)this.owner).subscribe(topics, inboundPortURI);
-		
+		this.getOwner().handleRequestAsync(
+				new AbstractComponent.AbstractService<Void>() {
+					@Override
+					public Void call() throws Exception {
+						((Broker)this.getServiceOwner()).subscribe(topics, inboundPortURI);
+						return null;
+					}
+				}) ;
 	}
 
 	@Override
 	public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
-		((Broker)this.owner).subscribe(topic, filter, inboundPortURI);
-		
+		this.getOwner().handleRequestAsync(
+				new AbstractComponent.AbstractService<Void>() {
+					@Override
+					public Void call() throws Exception {
+						((Broker)this.getServiceOwner()).subscribe(topic, filter, inboundPortURI);
+						return null;
+					}
+				});
 	}
 
 	@Override
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception {
-		((Broker)this.owner).subscribe(topic,newFilter, inboundPortURI);
-		
+		this.getOwner().handleRequestAsync(
+				new AbstractComponent.AbstractService<Void>() {
+					@Override
+					public Void call() throws Exception {
+						((Broker)this.getServiceOwner()).subscribe(topic,newFilter, inboundPortURI);
+						return null;
+					}
+				}) ;
 	}
 
 	@Override
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
-		((Broker)this.owner).subscribe(topic, inboundPortUri);
-		
+		this.getOwner().handleRequestAsync(
+				new AbstractComponent.AbstractService<Void>() {
+					@Override
+					public Void call() throws Exception {
+						((Broker)this.getServiceOwner()).unsubscribe(topic, inboundPortUri);
+						return null;
+					}
+				}) ;
 	}
 
 
 	@Override
 	public void createTopic(String topic) throws Exception {
-		((Broker)this.owner).createTopic(topic);
-		
+		this.getOwner().handleRequestAsync(
+				new AbstractComponent.AbstractService<Void>() {
+					@Override
+					public Void call() throws Exception {
+						((Broker)this.getServiceOwner()).createTopic(topic);
+						return null;
+					}
+				}) ;
 	}
 
 	@Override
 	public void createTopics(String[] topics) throws Exception {
-		((Broker)this.owner).createTopics(topics);
-		
+		this.getOwner().handleRequestAsync(
+				new AbstractComponent.AbstractService<Void>() {
+					@Override
+					public Void call() throws Exception {
+						((Broker)this.getServiceOwner()).createTopics(topics);
+						return null;
+					}
+				}) ;
 	}
 
 	@Override
 	public void destroyTopic(String topic) throws Exception {
-		((Broker)this.owner).destroyTopic(topic);
-		
+		this.getOwner().handleRequestAsync(
+				new AbstractComponent.AbstractService<Void>() {
+					@Override
+					public Void call() throws Exception {
+						((Broker)this.getServiceOwner()).destroyTopic(topic);
+						return null;
+					}
+				}) ;
 	}
 
 	@Override
 	public boolean isTopic(String topic) throws Exception {
-		((Broker)this.owner).isTopic(topic);
-		return false;
+		return this.getOwner().handleRequestSync(
+				new AbstractComponent.AbstractService<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						return((Broker)this.getServiceOwner()).isTopic(topic);
+					}
+				}) ;
 	}
 
 	@Override
 	public String[] getTopics() throws Exception {
-		return ((Broker)this.owner).getTopics();
+		return this.getOwner().handleRequestSync(
+				new AbstractComponent.AbstractService<String[]>() {
+					@Override
+					public String[] call() throws Exception {
+						return ((Broker)this.getServiceOwner()).getTopics();
+					}
+				}) ;
 	}
 
 	@Override
 	public String getPublicationPortURI() throws Exception {
-		return ((Broker)this.owner).getPublicationPortURI();
+		return this.getOwner().handleRequestSync(
+				new AbstractComponent.AbstractService<String>() {
+					@Override
+					public String call() throws Exception {
+						return ((Broker)this.getServiceOwner()).getPublicationPortURI();
+					}
+				}) ;
+
 	}
 
 
