@@ -146,7 +146,7 @@ public class Broker extends AbstractComponent {
 		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
 		this.uri=CVM.BROKER_COMPONENT_URI;
 		this.compteur = 0;
-		this.messages = new HashMap<>(); 
+		this.messages = new HashMap<>();
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
 		this.messages_ready_locker = new ReentrantLock();
@@ -217,8 +217,10 @@ public class Broker extends AbstractComponent {
 	public void	execute() throws Exception
 	{
 		super.execute() ;
-
+		Thread.sleep(500);
+		search_messages_to_send();
 		acceptMessage();
+		//acceptMessage();
 	/*	this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(0));
 		this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(1));*/
 		//HashMap<ReceptionOutboundPort,MessageFilterI>hm =new HashMap<>();
@@ -227,10 +229,10 @@ public class Broker extends AbstractComponent {
 		for(ReceptionOutboundPort up: hm.keySet()) {
 			up.acceptMessage(this.messages.get("voiture").get(0));
 		}*/
-		
+
 		//this.subscribers.get("voiture").get(0).acceptMessage(this.messages.get("voiture").get(0));
 		//this.subscribers.get("voiture").get(0).acceptMessage(this.messages.get("voiture").get(1));
-	
+
 		//this.Map_URIPort.get("fruits").acceptMessage(this.messages.get("fruits").get(0));
 
 
@@ -266,12 +268,12 @@ public class Broker extends AbstractComponent {
 			}
 		);*/
 
-	/*
-		new Thread(() -> {
+
+		/*new Thread(() -> {
 			while(true){
 				try {Thread.sleep(100);} catch (Throwable e) {}
 				synchronized (this) {
-					if (false && messages_ready.isEmpty()) {
+					if (messages_ready.isEmpty()) {
 						try {
 							this.wait();
 						} catch (InterruptedException e) {
@@ -292,9 +294,9 @@ public class Broker extends AbstractComponent {
 					}
 				}
 			}
-		}).start();
+		}).start();*/
 
-	 */
+
 
 	}
 
@@ -321,7 +323,25 @@ public class Broker extends AbstractComponent {
 	public void acceptMessage() throws Exception {
 
 		Thread.sleep(500);
-		acceptMessage();
+	/*	if (messages_ready.isEmpty()) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}*/
+		if (!messages_ready.isEmpty()) {
+			for (String inboundPortI : messages_ready.keySet()) {
+				for (MessageI m : messages_ready.get(inboundPortI)) {
+					try {
+						subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(m);
+						messages_ready.remove(inboundPortI);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 
 	public void acceptMessages() throws Exception {
@@ -360,9 +380,9 @@ public class Broker extends AbstractComponent {
 								}
 								messages_ready.get(inboundPortURI).add(m);
 								if(messages_ready.size() == 1){ // Si la liste etait vide avant d'ajouter un element, on notify
-									System.out.println("avant unlock");
-									this.messages_ready_locker.lock();
-									System.out.println("après unlock");
+									//System.out.println("avant unlock");
+									//this.messages_ready_locker.lock();
+									//System.out.println("après unlock");
 								}
 								sent_messages.add(m);
 							}
@@ -391,24 +411,18 @@ public class Broker extends AbstractComponent {
 	 */
 	public synchronized void publish(MessageI m, String topic)throws Exception {
 
-	/*		USEFULL
+		Thread.sleep(500);
+		if (!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
+		this.messages.get(topic).add(m); // On ajoute le message
 
-	if (!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
-			this.messages.get(topic).add((Message) m); // On ajoute le message
-
-
-			if (!isTopic(topic)) {
-				logMessage("The following message hasn't been published because it's topic (" + topic + ") doesn't exist : " + m.getURI());
-			} else {
-				logMessage("Publishing message " + m.getURI() + " to topic " + topic);
+		this.logMessage("Message " + m.getURI() + " stocked to topic " + topic);
 
 
-			}*/
-
-
+	}
+/*
+		Thread.sleep(500);
 
 		this.messages.get(topic).add((Message) m); // On ajoute le message
-
 
 
 		if(!isTopic(topic)) {
@@ -427,8 +441,8 @@ public class Broker extends AbstractComponent {
 					}
 				}
 			}
-		}
-	}
+		}*/
+
 
 
 	/**
@@ -454,8 +468,8 @@ public class Broker extends AbstractComponent {
 	 */
 	public void publish(MessageI[] ms, String topics) throws Exception{
 		for(MessageI msg : ms)
-			publish(msg, topics); 
-		
+			publish(msg, topics);
+
 	}
 
 
@@ -469,10 +483,10 @@ public class Broker extends AbstractComponent {
 	public void publish(MessageI[] ms, String[] topics) throws Exception{
 		for(MessageI msg : ms) {
 			for(String topic: topics) {
-				publish(msg, topic); 
+				publish(msg, topic);
 			}
 		}
-		
+
 	}
 
 	/*
@@ -504,8 +518,8 @@ public class Broker extends AbstractComponent {
 	 */
 	public void subscribe(String[] topics, String inboundPortURI) throws Exception{
 		for(String s: topics)
-			subscribe(s, inboundPortURI); 
-		
+			subscribe(s, inboundPortURI);
+
 	}
 
 	/**
@@ -517,28 +531,28 @@ public class Broker extends AbstractComponent {
 	 * @throws Exception the exception
 	 */
 	public synchronized void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
-		this.logMessage("Subscribing " + inboundPortURI + " to topic " + topic + " with filter"); 
-		
+		this.logMessage("Subscribing " + inboundPortURI + " to topic " + topic + " with filter");
+
 		if(!subscribers.containsKey(inboundPortURI)) {
 			subscribers.put(inboundPortURI, new Subscriber(this));
 			subscribers.get(inboundPortURI).receptionOutboundPort.publishPort();
-			
+
 			this.doPortConnection(
 					subscribers.get(inboundPortURI).uri,
 					inboundPortURI,
 					ReceptionConnector.class.getCanonicalName()
 			);
 		}
-		
+
 		createTopic(topic);
-		
+
 		if(!subscribers.get(inboundPortURI).topics.containsKey(topic)) {
 			subscribers.get(inboundPortURI).topics.put(topic, filter);
 		}
-		
+
 		this.compteur++;
-		 
-		
+
+
 	}
 
 	/**
@@ -555,7 +569,7 @@ public class Broker extends AbstractComponent {
 				subscribers.get(inboundPortURI).topics.put(topic, newFilter);
 			}
 		}
-		
+
 	}
 
 	/**
@@ -577,7 +591,7 @@ public class Broker extends AbstractComponent {
 	 */
 	public void createTopic(String topic) throws Exception {
 		logMessage("Creation of topic " + topic);
-		if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); 
+		if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>());
 	}
 
 
@@ -588,8 +602,8 @@ public class Broker extends AbstractComponent {
 	 * @throws Exception the exception
 	 */
 	public void createTopics(String[] topics) throws Exception {
-		for (int i=0; i< topics.length; i++) 
-			createTopic(topics[i]); 
+		for (int i=0; i< topics.length; i++)
+			createTopic(topics[i]);
 
 	}
 
@@ -613,7 +627,7 @@ public class Broker extends AbstractComponent {
 	 * @throws Exception the exception
 	 */
 	public boolean isTopic(String topic) throws Exception {
-		return this.messages.containsKey(topic); 
+		return this.messages.containsKey(topic);
 	}
 
 
@@ -624,7 +638,7 @@ public class Broker extends AbstractComponent {
 	 * @throws Exception the exception
 	 */
 	public String[] getTopics() throws Exception {
-		return messages.keySet().toArray(new String[messages.keySet().size()]); 
+		return messages.keySet().toArray(new String[messages.keySet().size()]);
 	}
 
 
