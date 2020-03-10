@@ -7,28 +7,25 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import baduren.CVM;
 import baduren.connectors.ReceptionConnector;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
-import baduren.interfaces.ReceptionCI;
 import baduren.message.Message;
-import baduren.ports.inboundPorts.ManagementInboundPort;
-import baduren.ports.inboundPorts.PublicationInboundPort;
+import baduren.ports.inboundPortsForPlugin.PublicationInboundPortForPlugin;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
-import fr.sorbonne_u.components.annotations.AddPlugin;
-import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.components.exceptions.PreconditionException;
-import fr.sorbonne_u.components.plugins.dconnection.DynamicConnectionClientSidePlugin;
 import fr.sorbonne_u.components.ports.PortI;
-import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
+import plugins.BrokerManagementPlugin;
+import plugins.BrokerPublicationPlugin;
+import plugins.PublisherPublicationPlugin;
+import plugins.PublisherManagementPlugin;
 
 /**
  * The type Broker.
  */
-@RequiredInterfaces(required = {ReflectionI.class, ReceptionCI.class})
-@AddPlugin(pluginClass = DynamicConnectionClientSidePlugin.class, pluginURI = Broker.DYNAMIC_CONNECTION_PLUGIN_URI)
 
 public class Broker extends AbstractComponent {
 
@@ -68,10 +65,6 @@ public class Broker extends AbstractComponent {
 
 
 	/**
-	 * The constant DYNAMIC_CONNECTION_PLUGIN_URI.
-	 */
-	public final static String	DYNAMIC_CONNECTION_PLUGIN_URI ="clientSidePLuginURI" ;
-	/**
 	 * The Broker's uri.
 	 */
 	protected String uri;
@@ -81,7 +74,7 @@ public class Broker extends AbstractComponent {
 	private int compteur; // increments for each new subscriber
 	private HashMap<String, List<MessageI>> messages; // Map between topic and messages (each topic has several messages)
 	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscribe
-	private PublicationInboundPort publicationInboundPort;
+
 
 
 	private Object objet;
@@ -96,10 +89,10 @@ public class Broker extends AbstractComponent {
 	 * @param receptionOutboundPortName  the reception outbound port name
 	 * @throws Exception the exception
 	 */
-	protected Broker (String uri, String managementInboundPortName,String publicationInboundPortName,
+	protected Broker (String managementInboundPortName,String publicationInboundPortName,
 					  String receptionOutboundPortName, int nbThreads, int nbSchedulableThreads) throws Exception {
-		super(uri, nbThreads, nbSchedulableThreads) ;
-		this.uri=uri; 
+		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
+		this.uri=CVM.BROKER_COMPONENT_URI;
 		this.compteur = 0;
 
 		this.objet = new Object();
@@ -117,18 +110,64 @@ public class Broker extends AbstractComponent {
 		assert receptionOutboundPortName != null ||  receptionOutboundPortName != "":
 				new PreconditionException("receptionOutboundPortName is wrong");
 		
-		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this); 
-		this.publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this); 
+		//PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this);
+		//this.publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this);
 		PortI rop = new ReceptionOutboundPort(receptionOutboundPortName,this); 
 		
 		
 		rop.localPublishPort();
-		managementInboundPort.publishPort();
-		publicationInboundPort.publishPort();
+		//managementInboundPort.publishPort();
+		//publicationInboundPort.publishPort();
+
+
+		BrokerManagementPlugin pluginManagement = new BrokerManagementPlugin();
+		pluginManagement.setPluginURI("management-broker-plugin-uri");
+		this.installPlugin(pluginManagement);
+
+		BrokerPublicationPlugin pluginPublication = new BrokerPublicationPlugin();
+		pluginPublication.setPluginURI("publication-broker-plugin-uri");
+		this.installPlugin(pluginPublication);
 		
 		this.tracer.setTitle("broker") ;
 		this.tracer.setRelativePosition(1, 1) ;
 	}
+	protected Broker (String receptionOutboundPortName, int nbThreads, int nbSchedulableThreads) throws Exception {
+		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
+		this.uri=CVM.BROKER_COMPONENT_URI;
+		this.compteur = 0;
+
+		this.objet = new Object();
+
+		this.messages = new HashMap<>();
+		this.subscribers = new HashMap<>();
+		this.messages_ready = new HashMap<>();
+		this.messages_ready_locker = new ReentrantLock();
+
+		// On vérifie que les ports passés en aprametre sont valides
+
+
+		assert receptionOutboundPortName != null ||  receptionOutboundPortName != "":
+				new PreconditionException("receptionOutboundPortName is wrong");
+
+		//PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this);
+		PortI rop = new ReceptionOutboundPort(receptionOutboundPortName,this);
+
+
+		rop.localPublishPort();
+		//managementInboundPort.publishPort();
+		//publicationInboundPort.publishPort();
+		PublisherManagementPlugin pluginManagement = new PublisherManagementPlugin();
+		pluginManagement.setPluginURI("management-broker-plugin-uri");
+		this.installPlugin(pluginManagement);
+
+		PublisherPublicationPlugin pluginPublication = new PublisherPublicationPlugin();
+		pluginPublication.setPluginURI("publication-broker-plugin-uri");
+		this.installPlugin(pluginPublication);
+
+		this.tracer.setTitle("broker") ;
+		this.tracer.setRelativePosition(1, 1) ;
+	}
+
 
 
 	@Override
@@ -247,7 +286,7 @@ public class Broker extends AbstractComponent {
 		for(String subscriber : this.subscribers.keySet()){
 			subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
 		}
-		this.publicationInboundPort.unpublishPort() ;
+		//this.publicationInboundPort.unpublishPort() ;
 
 		this.logMessage("stopping broker component.") ;
 		super.finalise();
@@ -590,7 +629,8 @@ public class Broker extends AbstractComponent {
 	 * @throws Exception the exception
 	 */
 	public String getPublicationPortURI() throws Exception {
-		return this.publicationInboundPort.getPortURI();
+		//return this.publicationInboundPort.getPortURI();
+		return "";
 	}
 
 }

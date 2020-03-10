@@ -1,8 +1,6 @@
 package baduren;
 
-import baduren.components.Broker;
-import baduren.components.Publisher;
-import baduren.components.Subscriber;
+import baduren.components.*;
 import baduren.connectors.ManagementConnector;
 import baduren.connectors.PublicationConnector;
 import baduren.connectors.ReceptionConnector;
@@ -22,42 +20,43 @@ extends		AbstractCVM
 	/**
 	 * The constant PUBLISHER_COMPONENT_URI.
 	 */
-	protected static final String PUBLISHER_COMPONENT_URI = "my-URI-publisher";
+	//public static final String PUBLISHER_COMPONENT_URI = "my-URI-publisher";
+	public static final String PUBLISHER_STUDENT1_COMPONENT_URI = "my-URI-publisher-student1";
 	/**
 	 * The constant BROKER_COMPONENT_URI.
 	 */
-	protected static final String BROKER_COMPONENT_URI = "my-URI-broker";
+	public static final String BROKER_COMPONENT_URI = "my-URI-broker";
 	/**
 	 * The constant SUBSCRIBER_COMPONENT_URI.
 	 */
-	protected static final String SUBSCRIBER_COMPONENT_URI = "my-URI-subscriber";
+	public static final String SUBSCRIBER_COMPONENT_URI = "my-URI-subscriber";
 
 	/**
 	 * The constant ManagementOutboundPortUri.
 	 */
-	protected static final String ManagementOutboundPortUri = "managementOport";
+	public static final String ManagementOutboundPortUri = "managementOport";
 	/**
 	 * The constant PublicationOutboundPortUri.
 	 */
-	protected static final String PublicationOutboundPortUri = "publicationOport";
+	//public static final String PublicationOutboundPortUri = "publicationOport";
 	/**
 	 * The constant ReceptionOutboundPortUri.
 	 */
-	protected static final String ReceptionOutboundPortUri = "receptionOport";
+	public static final String ReceptionOutboundPortUri = "receptionOport";
 
 	/**
 	 * The constant ManagementInboundPortUri.
 	 */
-	protected static final String ManagementInboundPortUri = "managementIport";
+	public static final String ManagementInboundPortUri = "managementIport";
 
 	/**
 	 * The constant PublicationInboundPortUri.
 	 */
-	protected static final String PublicationInboundPortUri = "publicationIport";
+	//public static final String PublicationInboundPortUri = "publicationIport";
 	/**
 	 * The constant ReceptionInboundPortUri.
 	 */
-	protected static final String ReceptionInboundPortUri = "receptionIport";
+	public static final String ReceptionInboundPortUri = "receptionIport";
 
 	/**
 	 * Instantiates a new Cvm.
@@ -72,7 +71,8 @@ extends		AbstractCVM
 	/**
 	 * The Uri publisher uri.
 	 */
-	protected String uriPublisherURI;
+	//protected String uriPublisherURI;
+	protected String uriPublisherIIURI;
 	/**
 	 * The Uri broker uri.
 	 */
@@ -86,47 +86,49 @@ extends		AbstractCVM
 	public void			deploy() throws Exception
 	{
 		assert	!this.deploymentDone() ;
-		AbstractCVM.DEBUG_MODE.add(CVMDebugModes.PUBLIHSING) ;
+		//AbstractCVM.DEBUG_MODE.add(CVMDebugModes.PUBLIHSING) ;
 		AbstractCVM.DEBUG_MODE.add(CVMDebugModes.CONNECTING) ;
 		AbstractCVM.DEBUG_MODE.add(CVMDebugModes.COMPONENT_DEPLOYMENT) ;
-		
+
+		/******* create the broker component ********/
+		//create the broker component
+		this.uriBrokerURI =
+				AbstractComponent.createComponent(
+						Broker.class.getCanonicalName(),
+						new Object[]{
+								ReceptionOutboundPortUri,1,0}) ;
+		assert	this.isDeployedComponent(this.uriBrokerURI) ;
+
+		this.toggleTracing(this.uriBrokerURI) ;
+
 		/******* create the publisher component ********/
 		
-		this.uriPublisherURI =
+		/*this.uriPublisherURI =
 			AbstractComponent.createComponent(
 					Publisher.class.getCanonicalName(),
 					new Object[]{PUBLISHER_COMPONENT_URI,
 							ManagementOutboundPortUri,
-							PublicationOutboundPortUri,1,0});
+							PublicationOutboundPortUri,1,0});*/
 
-		assert	this.isDeployedComponent(this.uriPublisherURI) ;
+		/*assert	this.isDeployedComponent(this.uriPublisherURI) ;
 
-		this.toggleTracing(this.uriPublisherURI) ;
+		this.toggleTracing(this.uriPublisherURI) ;*/
 
+		this.uriPublisherIIURI= AbstractComponent.createComponent(
+				PublisherII.class.getCanonicalName(), new  Object[]{PUBLISHER_STUDENT1_COMPONENT_URI});
+		assert	this.isDeployedComponent(uriPublisherIIURI) ;
+		this.toggleTracing(this.uriPublisherIIURI) ;
 		
 
-		/******* create the broker component ********/
-		 //create the broker component
-		this.uriBrokerURI =
-			AbstractComponent.createComponent(
-					Broker.class.getCanonicalName(),
-					new Object[]{BROKER_COMPONENT_URI,
-							ManagementInboundPortUri,
-							PublicationInboundPortUri,
-							ReceptionOutboundPortUri,1,0}) ;
-		assert	this.isDeployedComponent(this.uriBrokerURI) ;
-
-		this.toggleTracing(this.uriBrokerURI) ;
 
 		
 		/******* create the subscriber component ********/
 		// create the broker component
 		this.uriSubscriberURI =
 			AbstractComponent.createComponent(
-					Subscriber.class.getCanonicalName(),
-					new Object[]{SUBSCRIBER_COMPONENT_URI,
-							ReceptionInboundPortUri,
-							ManagementOutboundPortUri,1,0 }) ;
+					SubscriberII.class.getCanonicalName(),
+					new Object[]{ReceptionInboundPortUri,SUBSCRIBER_COMPONENT_URI,
+							}) ;
 		assert	this.isDeployedComponent(this.uriSubscriberURI) ;
 
 		this.toggleTracing(this.uriSubscriberURI) ;
@@ -136,23 +138,23 @@ extends		AbstractCVM
 		// --------------------------------------------------------------------
 
 		// do the connection
-		this.doPortConnection(
+		/*this.doPortConnection(
 				this.uriPublisherURI,
 				PublicationOutboundPortUri,
 				PublicationInboundPortUri,
-				PublicationConnector.class.getCanonicalName()) ;
+				PublicationConnector.class.getCanonicalName()) ;*/
 //		// do the connection
-		this.doPortConnection(
+/*		this.doPortConnection(
 				this.uriPublisherURI,
 				ManagementOutboundPortUri,
 				ManagementInboundPortUri,
-				ManagementConnector.class.getCanonicalName()) ;
+				ManagementConnector.class.getCanonicalName()) ;*/
 		// do the connection
-		this.doPortConnection(
+/*		this.doPortConnection(
 				this.uriSubscriberURI,
 				ManagementOutboundPortUri,
 				ManagementInboundPortUri,
-				ManagementConnector.class.getCanonicalName()) ;
+				ManagementConnector.class.getCanonicalName()) ;*/
 		// do the connection
 		//logMessage(this.uriSubscriberURI+ReceptionOutboundPortUri+ ReceptionInboundPortUri) ;
 		
@@ -180,9 +182,9 @@ extends		AbstractCVM
 	{
 		// Port disconnections can be done here for static architectures
 		// otherwise, they can be done in the finalise methods of components.
-		this.doPortDisconnection(
+/*		this.doPortDisconnection(
 				this.uriPublisherURI,
-				PublicationOutboundPortUri) ;
+				PublicationOutboundPortUri) ;*/
 //		this.doPortDisconnection(
 //				this.uriBrokerURI,
 //				ManagementOutboundPortUri) ;
