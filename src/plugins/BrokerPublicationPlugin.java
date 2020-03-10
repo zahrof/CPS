@@ -42,7 +42,7 @@ public class BrokerPublicationPlugin extends AbstractPlugin implements Publicati
     @Override
     public void			uninstall() throws Exception
     {
-        this.pip.unpublishPort() ;
+        this.pip.unpublishPort();
         this.pip.destroyPort() ;
         this.removeOfferedInterface(PublicationCI.class) ;
     }
