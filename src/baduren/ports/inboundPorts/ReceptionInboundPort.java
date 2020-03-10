@@ -1,6 +1,6 @@
 package baduren.ports.inboundPorts;
 
-import baduren.components.Subscriber;
+import baduren.components.Subscribers.Subscriber;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
 import fr.sorbonne_u.components.AbstractComponent;

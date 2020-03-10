@@ -1,4 +1,4 @@
-package baduren.components;
+package baduren.components.Broker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,20 +12,33 @@ import baduren.connectors.ReceptionConnector;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.message.Message;
+import baduren.ports.inboundPorts.ManagementInboundPort;
+import baduren.ports.inboundPorts.PublicationInboundPort;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.components.exceptions.PreconditionException;
 import fr.sorbonne_u.components.ports.PortI;
-import plugins.*;
+import baduren.plugins.*;
 
-/**
- * The type Broker.
- */
 
 public class Broker extends AbstractComponent {
+
+	// -------------------------------------------------------------------------
+	// Broker variables and constants
+	// -------------------------------------------------------------------------
 	protected final static String MY_RECEPTION_BROKER_PLUGIN_URI = "reception-broker-client-plugin-uri" ;
 
+	//private final BrokerReceptionPlugin plugin;
+	/**
+	 * The Broker's uri.
+	 */
+	protected String uri;
+	private HashMap<String, List<MessageI>> messages_ready; // Map between inbound port and messages
+	private Lock messages_ready_locker;
+	private int compteur; // increments for each new subscriber
+	private HashMap<String, List<MessageI>> messages; // Map between topic and messages (each topic has several messages)
+	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscribe
 
 	private class Subscriber {
 		/**
@@ -59,106 +72,59 @@ public class Broker extends AbstractComponent {
 		public ReceptionOutboundPort receptionOutboundPort;
 	}
 
-	//private final BrokerReceptionPlugin plugin;
-	/**
-	 * The Broker's uri.
-	 */
-	protected String uri;
-
-	private HashMap<String, List<MessageI>> messages_ready; // Map between inbound port and messages
-	private Lock messages_ready_locker;
-	private int compteur; // increments for each new subscriber
-	private HashMap<String, List<MessageI>> messages; // Map between topic and messages (each topic has several messages)
-	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscribe
-
-
-
-	private Object objet;
-
-
-	/**
-	 * Instantiates a new Broker.
-	 *
-	 *
-	 * @param managementInboundPortName  the management inbound port name
-	 * @param publicationInboundPortName the publication inbound port name
-	 * @param receptionOutboundPortName  the reception outbound port name
-	 * @param plugin
-	 * @throws Exception the exception
-	 */
+	// -------------------------------------------------------------------------
+	// Broker constructors
+	// -------------------------------------------------------------------------
+	/*** BROKER'S CONSTRUCTOR WITHOUT PLUGINS AND WITHOUT CHOOSING THE NUMBER OF THREADS ***/
 	protected Broker(String managementInboundPortName, String publicationInboundPortName,
-					 String receptionOutboundPortName, int nbThreads, int nbSchedulableThreads, BrokerReceptionPlugin plugin) throws Exception {
-		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
-
+					 String receptionOutboundPortName)
+			throws Exception {
+		/** INITIALIZE VARIABLES **/
+		super(CVM.BROKER_COMPONENT_URI, 1, 0) ;
 		this.uri=CVM.BROKER_COMPONENT_URI;
 		this.compteur = 0;
-
-		this.objet = new Object();
-		
-		this.messages = new HashMap<>(); 
+		this.messages = new HashMap<>();
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
 		this.messages_ready_locker = new ReentrantLock();
 
-		// On vérifie que les ports passés en aprametre sont valides
+		/** TESTING VARIABLES **/
 		assert managementInboundPortName != null ||  managementInboundPortName != "":
 				new PreconditionException("managementInboundPortName is wrong");
 		assert publicationInboundPortName != null ||  publicationInboundPortName != "":
 				new PreconditionException("publicationInboundPortName is wrong");
 		assert receptionOutboundPortName != null ||  receptionOutboundPortName != "":
 				new PreconditionException("receptionOutboundPortName is wrong");
-		
-		//PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this);
-		//this.publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this);
-		PortI rop = new ReceptionOutboundPort(receptionOutboundPortName,this); 
-		
-		
-		rop.localPublishPort();
-		//managementInboundPort.publishPort();
-		//publicationInboundPort.publishPort();
 
+		/** CREATING PORTS **/
+		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this);
+		PortI publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this);
+		PortI receptionOutboundPort = new ReceptionOutboundPort(receptionOutboundPortName,this);
 
-		BrokerManagementPlugin pluginManagement = new BrokerManagementPlugin();
-		pluginManagement.setPluginURI("management-broker-plugin-uri");
-		this.installPlugin(pluginManagement);
+		/** PUBLISHING PORTS **/
+		receptionOutboundPort.localPublishPort();
+		managementInboundPort.publishPort();
+		publicationInboundPort.publishPort();
 
-		BrokerPublicationPlugin pluginPublication = new BrokerPublicationPlugin();
-		pluginPublication.setPluginURI("publication-broker-plugin-uri");
-		this.installPlugin(pluginPublication);
-
-		// Install the plug-in.
-/*		this.plugin = new BrokerReceptionPlugin();
-		this.plugin.setPluginURI(MY_RECEPTION_BROKER_PLUGIN_URI) ;
-		this.installPlugin(this.plugin) ;*/
-		
+		/** SETTING TRACER **/
 		this.tracer.setTitle("broker") ;
 		this.tracer.setRelativePosition(1, 1) ;
 	}
-	protected Broker (String receptionOutboundPortName, int nbThreads, int nbSchedulableThreads) throws Exception {
-		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
+
+	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND WITHOUT CHOOSING THE NUMBER OF THREADS ***/
+	protected Broker () throws Exception{
+		/** INITIALIZE VARIABLES **/
+		super(CVM.BROKER_COMPONENT_URI, 1,0 );
 		this.uri=CVM.BROKER_COMPONENT_URI;
 		this.compteur = 0;
-
-		this.objet = new Object();
-
 		this.messages = new HashMap<>();
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
 		this.messages_ready_locker = new ReentrantLock();
 
-		// On vérifie que les ports passés en aprametre sont valides
-
-
-		assert receptionOutboundPortName != null ||  receptionOutboundPortName != "":
-				new PreconditionException("receptionOutboundPortName is wrong");
-
-		//PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this);
-		//PortI rop = new ReceptionOutboundPort(receptionOutboundPortName,this);
-
-
-		//rop.localPublishPort();
-		//managementInboundPort.publishPort();
-		//publicationInboundPort.publishPort();
+		/** TESTING VARIABLES **/
+		// TODO
+		/** INSTALLING PLUGINS **/
 		BrokerManagementPlugin pluginManagement = new BrokerManagementPlugin();
 		pluginManagement.setPluginURI("management-broker-plugin-uri");
 		this.installPlugin(pluginManagement);
@@ -167,15 +133,77 @@ public class Broker extends AbstractComponent {
 		pluginPublication.setPluginURI("publication-broker-plugin-uri");
 		this.installPlugin(pluginPublication);
 
-		// Install the plug-in.
-	/*	this.plugin = new BrokerReceptionPlugin();
-		this.plugin.setPluginURI(MY_RECEPTION_BROKER_PLUGIN_URI) ;
-		this.installPlugin(this.plugin) ;*/
+		/** SETTING TRACER **/
+		this.tracer.setTitle("BROKER") ;
+		this.tracer.setRelativePosition(1, 1) ;
+	}
 
+	/*** BROKER'S CONSTRUCTOR WITHOUT PLUGINS AND CHOOSING THE NUMBER OF THREADS ***/
+	protected Broker(String managementInboundPortName, String publicationInboundPortName,
+					 String receptionOutboundPortName, int nbThreads, int nbSchedulableThreads)
+			throws Exception {
+		/** INITIALIZE VARIABLES **/
+		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
+		this.uri=CVM.BROKER_COMPONENT_URI;
+		this.compteur = 0;
+		this.messages = new HashMap<>(); 
+		this.subscribers = new HashMap<>();
+		this.messages_ready = new HashMap<>();
+		this.messages_ready_locker = new ReentrantLock();
+
+		/** TESTING VARIABLES **/
+		assert managementInboundPortName != null ||  managementInboundPortName != "":
+				new PreconditionException("managementInboundPortName is wrong");
+		assert publicationInboundPortName != null ||  publicationInboundPortName != "":
+				new PreconditionException("publicationInboundPortName is wrong");
+		assert receptionOutboundPortName != null ||  receptionOutboundPortName != "":
+				new PreconditionException("receptionOutboundPortName is wrong");
+
+		/** CREATING PORTS **/
+		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this);
+		PortI publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this);
+		PortI receptionOutboundPort = new ReceptionOutboundPort(receptionOutboundPortName,this);
+
+		/** PUBLISHING PORTS **/
+		receptionOutboundPort.localPublishPort();
+		managementInboundPort.publishPort();
+		publicationInboundPort.publishPort();
+
+		/** SETTING TRACER **/
 		this.tracer.setTitle("broker") ;
 		this.tracer.setRelativePosition(1, 1) ;
 	}
 
+	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
+	protected Broker (int nbThreads, int nbSchedulableThreads) throws Exception {
+		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
+		this.uri=CVM.BROKER_COMPONENT_URI;
+		this.compteur = 0;
+		this.messages = new HashMap<>();
+		this.subscribers = new HashMap<>();
+		this.messages_ready = new HashMap<>();
+		this.messages_ready_locker = new ReentrantLock();
+
+		/** TESTING VARIABLES **/
+		// TODO
+
+		/** INSTALLING PLUGINS **/
+		BrokerManagementPlugin pluginManagement = new BrokerManagementPlugin();
+		pluginManagement.setPluginURI("management-broker-plugin-uri");
+		this.installPlugin(pluginManagement);
+
+		BrokerPublicationPlugin pluginPublication = new BrokerPublicationPlugin();
+		pluginPublication.setPluginURI("publication-broker-plugin-uri");
+		this.installPlugin(pluginPublication);
+
+		/** SETTING TRACER **/
+		this.tracer.setTitle("broker") ;
+		this.tracer.setRelativePosition(1, 1) ;
+	}
+
+	// -------------------------------------------------------------------------
+	// Broker life cycle
+	// -------------------------------------------------------------------------
 
 
 	@Override
@@ -238,10 +266,6 @@ public class Broker extends AbstractComponent {
 			}
 		);*/
 
-
-
-
-
 	/*
 		new Thread(() -> {
 			while(true){
@@ -272,10 +296,6 @@ public class Broker extends AbstractComponent {
 
 	 */
 
-
-
-
-
 	}
 
 	@Override
@@ -291,6 +311,13 @@ public class Broker extends AbstractComponent {
 		super.finalise();
 	}
 
+	// -------------------------------------------------------------------------
+	// Broker services implementation
+	// -------------------------------------------------------------------------
+
+	/*
+		RECEPTION METHODS
+	 */
 	public void acceptMessage() throws Exception {
 
 		Thread.sleep(500);
@@ -350,6 +377,10 @@ public class Broker extends AbstractComponent {
 		}
 
 	}
+
+	/*
+		PUBLICATION METHODS
+	 */
 
 	/**
 	 * This method
@@ -444,11 +475,14 @@ public class Broker extends AbstractComponent {
 		
 	}
 
+	/*
+		MANAGEMENT METHODS
+	 */
+
 	/**
 	 * Subscribe.
 	 *
 	 * @param topic          the topic
-	 * @param inboundPortURI the inbound port uri
 	 * @throws Exception the exception
 	 */
 	public void subscribe(String topic, String inboundPortURIaux) throws Exception{

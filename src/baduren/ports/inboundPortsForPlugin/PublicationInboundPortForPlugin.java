@@ -1,10 +1,9 @@
 package baduren.ports.inboundPortsForPlugin;
 
-import baduren.components.Broker;
+import baduren.components.Broker.Broker;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
 import fr.sorbonne_u.components.ComponentI;
-import fr.sorbonne_u.components.ports.AbstractInboundPort;
 import fr.sorbonne_u.components.ports.forplugins.AbstractInboundPortForPlugin;
 
 public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugin implements PublicationCI{

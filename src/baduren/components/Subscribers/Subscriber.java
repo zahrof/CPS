@@ -1,4 +1,4 @@
-package baduren.components;
+package baduren.components.Subscribers;
 
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;

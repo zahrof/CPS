@@ -1,13 +1,13 @@
-package baduren.components;
+package baduren.components.Publishers;
 
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.message.Message;
+import baduren.plugins.PublisherPublicationPlugin;
+import baduren.plugins.PublisherSubscriberManagementPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
-import plugins.PublisherPublicationPlugin;
-import plugins.PublisherSubscriberManagementPlugin;
 
-public class PublisherII extends AbstractComponent {
+public class Publisher_Teacher2 extends AbstractComponent {
 
 
     // -------------------------------------------------------------------------
@@ -18,22 +18,15 @@ public class PublisherII extends AbstractComponent {
     protected final static String MY_PUBLISHER_PLUGIN_URI = "publisher-client-plugin-uri" ;
     protected final static String MY_MANAGEMENT_PLUGIN_URI = "management-client-plugin-uri" ;
     private final PublisherSubscriberManagementPlugin pluginManagement;
-
     private final PublisherPublicationPlugin plugin;
-    /**
-     * The Management outbound port.
-     */
- //   protected ManagementOutboundPort managementOutboundPort;
+
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    protected PublisherII() throws Exception {
+    protected Publisher_Teacher2() throws Exception {
         super(1, 0);
-
-
-
         // Install the plug-in.
         this.plugin = new PublisherPublicationPlugin() ;
         plugin.setPluginURI(MY_PUBLISHER_PLUGIN_URI) ;
@@ -44,53 +37,12 @@ public class PublisherII extends AbstractComponent {
         pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
         this.installPlugin(pluginManagement) ;
 
-
-
-        this.tracer.setTitle(MY_PUBLISHER_PLUGIN_URI) ;
+        this.tracer.setTitle("Teacher 1") ;
         this.tracer.setRelativePosition(1, 2) ;
     }
 
-    protected PublisherII(String reflectionInboundPortURI,String managementOutboundPortName) throws Exception {
-        super(reflectionInboundPortURI, 1, 0);
-/*        this.managementOutboundPort = new ManagementOutboundPort(managementOutboundPortName, this);
-        managementOutboundPort.localPublishPort();*/
-        this.tracer.setTitle(MY_PUBLISHER_PLUGIN_URI) ;
-        this.tracer.setRelativePosition(1, 2) ;
-
-        // Install the plug-in.
-        this.plugin = new PublisherPublicationPlugin() ;
-        plugin.setPluginURI(MY_PUBLISHER_PLUGIN_URI) ;
-        this.installPlugin(plugin) ;
-
-        // Install the plug-in.
-        this.pluginManagement = new PublisherSubscriberManagementPlugin();
-        pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
-        this.installPlugin(pluginManagement) ;
-
-    }
-    protected PublisherII(int nbThreads, int nbSchedulableThreads,String managementOutboundPortName) throws Exception {
+    protected Publisher_Teacher2(int nbThreads, int nbSchedulableThreads) throws Exception {
         super(nbThreads, nbSchedulableThreads);
-/*        this.managementOutboundPort = new ManagementOutboundPort(managementOutboundPortName, this);
-        managementOutboundPort.localPublishPort();*/
-
-        // Install the plug-in.
-        this.plugin = new PublisherPublicationPlugin() ;
-        plugin.setPluginURI(MY_PUBLISHER_PLUGIN_URI) ;
-        this.installPlugin(plugin) ;
-
-        // Install the plug-in.
-        this.pluginManagement = new PublisherSubscriberManagementPlugin();
-        pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
-        this.installPlugin(pluginManagement) ;
-
-        this.tracer.setTitle(MY_PUBLISHER_PLUGIN_URI) ;
-        this.tracer.setRelativePosition(1, 2) ;
-    }
-
-    protected PublisherII(String reflectionInboundPortURI, int nbThreads, int nbSchedulableThreads,String managementOutboundPortName) throws Exception {
-        super(reflectionInboundPortURI, nbThreads, nbSchedulableThreads);
-/*        this.managementOutboundPort = new ManagementOutboundPort(managementOutboundPortName, this);
-        managementOutboundPort.localPublishPort();*/
 
         // Install the plug-in.
         this.plugin = new PublisherPublicationPlugin() ;

@@ -1,9 +1,8 @@
 package baduren.ports.inboundPortsForPlugin;
 
-import baduren.components.Broker;
+import baduren.components.Broker.Broker;
 import baduren.interfaces.ManagementCI;
 import baduren.interfaces.MessageFilterI;
-import baduren.interfaces.PublicationCI;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.forplugins.AbstractInboundPortForPlugin;

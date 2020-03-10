@@ -1,4 +1,4 @@
-package baduren.components;
+package baduren.components.Publishers;
 
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
@@ -86,12 +86,7 @@ public class Publisher extends AbstractComponent {
 			p.putProp("can_fly", true);
 			
 			publish(m,topics);
-
-
-
 			System.out.print(" ");
-
-
 
 			Thread.sleep(1000);
 			for (int i=0; i <10; i++) {

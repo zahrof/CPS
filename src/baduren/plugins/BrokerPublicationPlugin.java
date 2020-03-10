@@ -1,27 +1,19 @@
-package plugins;
+package baduren.plugins;
 
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
-import baduren.interfaces.ReceptionCI;
-import baduren.ports.inboundPortsForPlugin.ReceptionInboundPortForPlugin;
+import baduren.ports.inboundPortsForPlugin.PublicationInboundPortForPlugin;
 import fr.sorbonne_u.components.AbstractPlugin;
 import fr.sorbonne_u.components.ComponentI;
 
-public class SubscriberReceptionPlugin extends AbstractPlugin implements ReceptionCI {
+public class BrokerPublicationPlugin extends AbstractPlugin implements PublicationCI {
     // -------------------------------------------------------------------------
     // Plug-in variables and constants
     // -------------------------------------------------------------------------
 
     private static final long serialVersionUID = 1L;
     /** the inbound port which calls will be on this plug-in.				*/
-    protected ReceptionInboundPortForPlugin rip;
-    protected String receptionInboundPortUri;
-    protected String myReceptionStudent1SubscriberPluginUri;
-
-    public SubscriberReceptionPlugin(String receptionInboundPortUri, String myReceptionStudent1SubscriberPluginUri) {
-        this.myReceptionStudent1SubscriberPluginUri= myReceptionStudent1SubscriberPluginUri;
-         this.receptionInboundPortUri=receptionInboundPortUri;
-    }
+    protected PublicationInboundPortForPlugin pip ;
 
     // -------------------------------------------------------------------------
     // Life cycle
@@ -35,12 +27,12 @@ public class SubscriberReceptionPlugin extends AbstractPlugin implements Recepti
     {
         super.installOn(owner) ;
 
-        assert	owner instanceof ReceptionCI ;
+      //  assert	owner instanceof PublicationCI ;
 
         // Add interfaces and create ports
-        this.addOfferedInterface(ReceptionCI.class) ;
-        this.rip = new ReceptionInboundPortForPlugin(this.getPluginURI(), this.owner,receptionInboundPortUri) ;
-        this.rip.publishPort() ;
+        this.addOfferedInterface(PublicationCI.class) ;
+        this.pip = new PublicationInboundPortForPlugin(this.getPluginURI(), this.owner) ;
+        this.pip.publishPort() ;
     }
 
     /**
@@ -49,24 +41,35 @@ public class SubscriberReceptionPlugin extends AbstractPlugin implements Recepti
     @Override
     public void			uninstall() throws Exception
     {
-        this.rip.unpublishPort();
-        this.rip.destroyPort() ;
-        this.removeOfferedInterface(ReceptionCI.class) ;
+        this.pip.unpublishPort();
+        this.pip.destroyPort() ;
+        this.removeOfferedInterface(PublicationCI.class) ;
     }
     // -------------------------------------------------------------------------
     // Plug-in services implementation
     // -------------------------------------------------------------------------
-    private ReceptionCI	getOwner()
+    private PublicationCI	getOwner()
     {
-        return ((ReceptionCI)this.owner) ;
-    }
-    @Override
-    public void acceptMessage(MessageI m) throws Exception {
-        this.getOwner().acceptMessage(m);
+        return ((PublicationCI)this.owner) ;
     }
 
     @Override
-    public void acceptMessages(MessageI[] ms) throws Exception {
-        this.getOwner().acceptMessages(ms);
+    public void publish(MessageI m, String topic) throws Exception {
+            this.getOwner().publish(m, topic);
+    }
+
+    @Override
+    public void publish(MessageI m, String[] topics) throws Exception {
+        this.getOwner().publish(m, topics);
+    }
+
+    @Override
+    public void publish(MessageI[] ms, String topics) throws Exception {
+        this.getOwner().publish(ms, topics);
+    }
+
+    @Override
+    public void publish(MessageI[] ms, String[] topics) throws Exception {
+        this.getOwner().publish(ms, topics);
     }
 }

@@ -1,9 +1,9 @@
 package baduren;
 
-import baduren.components.*;
-import baduren.connectors.ManagementConnector;
-import baduren.connectors.PublicationConnector;
-import baduren.connectors.ReceptionConnector;
+import baduren.components.Broker.Broker;
+import baduren.components.Publishers.Publisher_Teacher1;
+import baduren.components.Subscribers.Subscriber_Student1;
+import baduren.components.Subscribers.Subscriber_Student2;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.helpers.CVMDebugModes;
@@ -13,96 +13,74 @@ import fr.sorbonne_u.components.helpers.CVMDebugModes;
 /**
  * The type Cvm.
  */
-public class			CVM
+public class CVM  extends AbstractCVM {
 
-extends		AbstractCVM
-{
-	/**
-	 * The constant PUBLISHER_COMPONENT_URI.
-	 */
+	/****************** COMPONENTS URI CONSTANTS ********************/
+	/** PUBLISHERS URI**/
 	//public static final String PUBLISHER_COMPONENT_URI = "my-URI-publisher";
-	public static final String PUBLISHER_STUDENT1_COMPONENT_URI = "my-URI-publisher-teacher1";
-	/**
-	 * The constant BROKER_COMPONENT_URI.
-	 */
+	public static final String TEACHER1_PUBLISHER_COMPONENT_URI = "my-URI-publisher-teacher1";
+
+	/** BROKER URI**/
 	public static final String BROKER_COMPONENT_URI = "my-URI-broker";
-	/**
-	 * The constant SUBSCRIBER_COMPONENT_URI.
-	 */
+
+	/** SUBSCRIBER URI**/
 	public static final String SUBSCRIBER_COMPONENT_URI = "my-URI-subscriber";
 	public static final String SUBSCRIBER_STUDENT1_COMPONENT_URI = "my-URI-subscriber-student1";
 
-	/**
-	 * The constant ManagementOutboundPortUri.
-	 */
+
+	/******************   PORTS URI CONSTANTS   ********************/
+	/** OUTBOUND PORTS URI**/
 	public static final String ManagementOutboundPortUri = "managementOport";
-	/**
-	 * The constant PublicationOutboundPortUri.
-	 */
-	//public static final String PublicationOutboundPortUri = "publicationOport";
-	/**
-	 * The constant ReceptionOutboundPortUri.
-	 */
+	public static final String PublicationOutboundPortUri = "publicationOport";
 	public static final String ReceptionOutboundPortUri = "receptionOport";
 
-	/**
-	 * The constant ManagementInboundPortUri.
-	 */
+	/** INBOUND PORTS URI**/
 	public static final String ManagementInboundPortUri = "managementIport";
-
-	/**
-	 * The constant PublicationInboundPortUri.
-	 */
-	//public static final String PublicationInboundPortUri = "publicationIport";
-	/**
-	 * The constant ReceptionInboundPortUri.
-	 */
+	public static final String PublicationInboundPortUri = "publicationIport";
 	public static final String ReceptionInboundPortUri = "receptionIport";
 
-	/**
-	 * Instantiates a new Cvm.
-	 *
-	 * @throws Exception the exception
-	 */
+	/***************  COMPONENTS URI ATTRIBUTES   *****************/
+
+	/** PUBLISHERS URI**/
+	//protected String uriPublisherURI;
+	protected String uri_Publisher_Teacher1;
+
+	/** BROKER URI**/
+	protected String uriBrokerURI;
+
+	/** SUBSCRIBER URI**/
+	protected String uri_Subscriber_Student1;
+	private String uri_Subscriber_Student2;
+
+	/*********************   CONSTRUCTOR   **********************/
+
 	public	CVM() throws Exception{
 		super() ;
 	}
 
-
-	/**
-	 * The Uri publisher uri.
-	 */
-	//protected String uriPublisherURI;
-	protected String uriPublisherIIURI;
-	/**
-	 * The Uri broker uri.
-	 */
-	protected String uriBrokerURI;
-	/**
-	 * The Uri subscriber uri.
-	 */
-	protected String uriSubscriberURI;
-
+	/*********************   LIFE CYCLE   **********************/
 	@Override
-	public void			deploy() throws Exception
+	public void	 deploy() throws Exception
 	{
 		assert	!this.deploymentDone() ;
 		//AbstractCVM.DEBUG_MODE.add(CVMDebugModes.PUBLIHSING) ;
 		AbstractCVM.DEBUG_MODE.add(CVMDebugModes.CONNECTING) ;
 		AbstractCVM.DEBUG_MODE.add(CVMDebugModes.COMPONENT_DEPLOYMENT) ;
 
+		// --------------------------------------------------------------------
+		// Component creation phase
+		// --------------------------------------------------------------------
 		/******* create the broker component ********/
-		//create the broker component
 		this.uriBrokerURI =
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
 						new Object[]{
-								ReceptionOutboundPortUri,1,0}) ;
+								1,0}) ;
 		assert	this.isDeployedComponent(this.uriBrokerURI) ;
 
 		this.toggleTracing(this.uriBrokerURI) ;
 
-		/******* create the publisher component ********/
+		/******* create the publishers components ********/
 		
 		/*this.uriPublisherURI =
 			AbstractComponent.createComponent(
@@ -115,41 +93,45 @@ extends		AbstractCVM
 
 		this.toggleTracing(this.uriPublisherURI) ;*/
 
-		this.uriPublisherIIURI= AbstractComponent.createComponent(
-				PublisherII.class.getCanonicalName(), new  Object[]{});
-		assert	this.isDeployedComponent(uriPublisherIIURI) ;
-		this.toggleTracing(this.uriPublisherIIURI) ;
-		
+		this.uri_Publisher_Teacher1 = AbstractComponent.createComponent(
+				Publisher_Teacher1.class.getCanonicalName(), new  Object[]{});
+		assert	this.isDeployedComponent(uri_Publisher_Teacher1) ;
+		this.toggleTracing(this.uri_Publisher_Teacher1) ;
 
 
-		
 		/******* create the subscriber component ********/
-		// create the broker component
-		this.uriSubscriberURI =
-			AbstractComponent.createComponent(
-					SubscriberII.class.getCanonicalName(),
-					new Object[]{ReceptionInboundPortUri,SUBSCRIBER_COMPONENT_URI}) ;
-		assert	this.isDeployedComponent(this.uriSubscriberURI) ;
+		this.uri_Subscriber_Student1 =
+				AbstractComponent.createComponent(
+						Subscriber_Student1.class.getCanonicalName(),
+						new Object[]{ReceptionInboundPortUri}) ;
+		assert	this.isDeployedComponent(this.uri_Subscriber_Student1) ;
 
-		this.toggleTracing(this.uriSubscriberURI) ;
-		
+		this.toggleTracing(this.uri_Subscriber_Student1) ;
+
+		/*this.uri_Subscriber_Student2 =
+				AbstractComponent.createComponent(
+						Subscriber_Student2.class.getCanonicalName(),
+						new Object[]{ReceptionInboundPortUri}) ;
+		assert	this.isDeployedComponent(this.uri_Subscriber_Student2) ;
+
+		this.toggleTracing(this.uri_Subscriber_Student2) ;*/
+
 		// --------------------------------------------------------------------
-		// Connection phase
+		// Connection phase if we are not using plugins
 		// --------------------------------------------------------------------
 
-		// do the connection
 		/*this.doPortConnection(
 				this.uriPublisherURI,
 				PublicationOutboundPortUri,
 				PublicationInboundPortUri,
 				PublicationConnector.class.getCanonicalName()) ;*/
-//		// do the connection
+
 /*		this.doPortConnection(
 				this.uriPublisherURI,
 				ManagementOutboundPortUri,
 				ManagementInboundPortUri,
 				ManagementConnector.class.getCanonicalName()) ;*/
-		// do the connection
+
 /*		this.doPortConnection(
 				this.uriSubscriberURI,
 				ManagementOutboundPortUri,
@@ -163,17 +145,20 @@ extends		AbstractCVM
 				ReceptionOutboundPortUri,
 				ReceptionInboundPortUri,
 				ReceptionConnector.class.getCanonicalName()) ;*/
-				
-		
+
+
 
 		// --------------------------------------------------------------------
-		// Deployment done
+		// Deployment
 		// --------------------------------------------------------------------
 
 		super.deploy();
 		assert	this.deploymentDone() ;
 	}
 
+	// --------------------------------------------------------------------
+	// Finalise if we are not using plugins
+	// --------------------------------------------------------------------
 	/**
 	 * @see fr.sorbonne_u.components.cvm.AbstractCVM#finalise()
 	 */
@@ -188,10 +173,10 @@ extends		AbstractCVM
 //		this.doPortDisconnection(
 //				this.uriBrokerURI,
 //				ManagementOutboundPortUri) ;
-		this.doPortDisconnection(
+	/*	this.doPortDisconnection(
 				this.uriSubscriberURI,
 				ReceptionOutboundPortUri) ;
-		super.finalise();
+		super.finalise();*/
 	}
 
 
@@ -202,6 +187,8 @@ extends		AbstractCVM
 		super.shutdown();
 	}
 
+
+	/*********************   MAIN FUNCTION   **********************/
 	/**
 	 * The entry point of application.
 	 *

@@ -1,15 +1,11 @@
-package plugins;
+package baduren.plugins;
 
-import baduren.CVM;
 import baduren.connectors.PublicationConnector;
 import baduren.interfaces.MessageI;
-import baduren.interfaces.PublicationCI;
 import baduren.interfaces.ReceptionCI;
-import baduren.ports.outboundPorts.PublicationOutboundPort;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractPlugin;
 import fr.sorbonne_u.components.ComponentI;
-import fr.sorbonne_u.components.reflection.connectors.ReflectionConnector;
 import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
 import fr.sorbonne_u.components.reflection.ports.ReflectionOutboundPort;
 

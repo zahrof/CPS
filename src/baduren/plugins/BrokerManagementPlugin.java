@@ -1,9 +1,8 @@
-package plugins;
+package baduren.plugins;
 
 import baduren.interfaces.ManagementCI;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.PublicationCI;
-import baduren.ports.inboundPorts.PublicationInboundPort;
 import baduren.ports.inboundPortsForPlugin.ManagementInboundPortForPlugin;
 import fr.sorbonne_u.components.AbstractPlugin;
 import fr.sorbonne_u.components.ComponentI;

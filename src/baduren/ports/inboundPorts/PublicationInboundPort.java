@@ -1,12 +1,9 @@
 package baduren.ports.inboundPorts;
 
-import baduren.components.Broker;
-import baduren.components.Publisher;
+import baduren.components.Broker.Broker;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
-import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
-import fr.sorbonne_u.components.examples.basic_cs.components.URIProvider;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
 
 /**

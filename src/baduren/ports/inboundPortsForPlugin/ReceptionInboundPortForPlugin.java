@@ -1,15 +1,12 @@
 package baduren.ports.inboundPortsForPlugin;
 
-import baduren.components.Broker;
-import baduren.components.Subscriber;
-import baduren.components.SubscriberII;
-import baduren.interfaces.ManagementCI;
+import baduren.components.Subscribers.Subscriber_Student1;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.forplugins.AbstractInboundPortForPlugin;
-import plugins.SubscriberReceptionPlugin;
+import baduren.plugins.SubscriberReceptionPlugin;
 
 public class ReceptionInboundPortForPlugin extends AbstractInboundPortForPlugin implements ReceptionCI {
 
@@ -40,7 +37,7 @@ public class ReceptionInboundPortForPlugin extends AbstractInboundPortForPlugin 
                         return null;
                     }
                 });*/
-        ((SubscriberII)this.owner).acceptMessage(m);
+        ((Subscriber_Student1)this.owner).acceptMessage(m);
     }
 
     @Override

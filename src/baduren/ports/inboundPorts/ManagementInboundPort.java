@@ -1,11 +1,10 @@
 package baduren.ports.inboundPorts;
 
-import baduren.components.Broker;
+import baduren.components.Broker.Broker;
 import baduren.interfaces.ManagementCI;
 import baduren.interfaces.MessageFilterI;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
-import fr.sorbonne_u.components.examples.basic_cs.components.URIProvider;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
 
 /**

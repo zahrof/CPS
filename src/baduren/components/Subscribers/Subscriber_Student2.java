@@ -1,15 +1,15 @@
-package baduren.components;
+package baduren.components.Subscribers;
 
 import baduren.CVM;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
+import baduren.plugins.PublisherSubscriberManagementPlugin;
+import baduren.plugins.SubscriberReceptionPlugin;
 import baduren.ports.inboundPorts.ReceptionInboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
-import plugins.PublisherSubscriberManagementPlugin;
-import plugins.SubscriberReceptionPlugin;
 
-public class SubscriberII extends	AbstractComponent{
+public class Subscriber_Student2 extends	AbstractComponent{
     protected final static String MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = "management-subscriber-client-plugin-uri";
     protected final static String MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI = "reception-subscriber-client-plugin-uri";
     protected final static String RECEPTION_INBOUND_PORT_URI = "student1" ;
@@ -17,9 +17,8 @@ public class SubscriberII extends	AbstractComponent{
         /**	the outbound port used to call the service.							*/
         protected ReceptionInboundPort receptionInboundPort;
 
-    protected SubscriberII(String receptionInboundPortName,
-                           String reflectionInboundPortURI) throws Exception {
-        super(reflectionInboundPortURI,1, 0);
+    protected Subscriber_Student2(String receptionInboundPortName) throws Exception {
+        super(CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI,1, 0);
         this.uri = CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI;
         this.receptionInboundPort = new ReceptionInboundPort(RECEPTION_INBOUND_PORT_URI,this);
 
@@ -35,20 +34,29 @@ public class SubscriberII extends	AbstractComponent{
         this.installPlugin(pluginReception) ;
 
 
-        this.tracer.setTitle("subscriber2") ;
-        this.tracer.setRelativePosition(1, 3) ;
+        this.tracer.setTitle("Student 2") ;
+        this.tracer.setRelativePosition(2, 3) ;
     }
 
-        protected SubscriberII(String uri, String receptionInboundPortName, String managementOutboundPortName,
-                             int nbThreads, int nbSchedulableThreads) throws Exception {
-            super(uri, nbThreads, nbSchedulableThreads);
-            //this.uri = uri;
-            this.receptionInboundPort  = new ReceptionInboundPort(receptionInboundPortName,this);
-          //  this.managementOutboundPort = new ManagementOutboundPort(managementOutboundPortName, this);
-            receptionInboundPort.publishPort();
-            //managementOutboundPort.publishPort();
+        protected Subscriber_Student2(String receptionInboundPortName, int nbThreads, int nbSchedulableThreads)
+                throws Exception {
+            super(CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI,nbThreads, nbSchedulableThreads);
+            this.uri = CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI;
+            this.receptionInboundPort = new ReceptionInboundPort(RECEPTION_INBOUND_PORT_URI,this);
 
-            this.tracer.setTitle("subscriber") ;
+            // Install the plug-in.
+            PublisherSubscriberManagementPlugin pluginManagement = new PublisherSubscriberManagementPlugin() ;
+            pluginManagement.setPluginURI(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI) ;
+            this.installPlugin(pluginManagement) ;
+
+            // Install the plug-in.
+            SubscriberReceptionPlugin pluginReception = new SubscriberReceptionPlugin(RECEPTION_INBOUND_PORT_URI,
+                    MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
+            pluginReception.setPluginURI(MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
+            this.installPlugin(pluginReception) ;
+
+
+            this.tracer.setTitle("Student 1") ;
             this.tracer.setRelativePosition(1, 3) ;
         }
 
@@ -74,12 +82,6 @@ public class SubscriberII extends	AbstractComponent{
         {
            // super.execute() ;
 
-            subscribe("CPS", this.receptionInboundPort.getPortURI());
-
-            subscribe("CPA",new VehiculeAerien(),this.receptionInboundPort.getPortURI());
-
-            subscribe("APS", new VehiculeAerien(), this.receptionInboundPort.getPortURI());
-            while(true) {}
         }
 
 
