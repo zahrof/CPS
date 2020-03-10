@@ -1,5 +1,6 @@
 package baduren.components;
 
+import baduren.CVM;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.message.Message;
@@ -30,8 +31,8 @@ public class PublisherII extends AbstractComponent {
     // Constructors
     // -------------------------------------------------------------------------
 
-    protected PublisherII(String reflectionInboundPortURI) throws Exception {
-        super(reflectionInboundPortURI,1, 0);
+    protected PublisherII() throws Exception {
+        super(1, 0);
 
 
 
@@ -127,7 +128,6 @@ public class PublisherII extends AbstractComponent {
         System.out.println("" + plugin.get("a")) ;
         System.out.println("" + plugin.get("b")) ;
         System.out.println("" + plugin.get("c")) ;*/
-        super.execute() ;
 
         try {
             Thread.sleep(100);
@@ -177,8 +177,8 @@ public class PublisherII extends AbstractComponent {
      */
     public void publish(MessageI m, String topic) throws Exception {
         logMessage("Publishing message " + m.getURI()+ " to the topic : "+ topic );
-        this.plugin.publish(m,topic);
-        //((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m,topic);
+        //this.plugin.publish(m,topic);
+        ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m,topic);
     }
 
 

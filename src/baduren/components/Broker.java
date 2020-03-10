@@ -156,11 +156,11 @@ public class Broker extends AbstractComponent {
 		rop.localPublishPort();
 		//managementInboundPort.publishPort();
 		//publicationInboundPort.publishPort();
-		PublisherManagementPlugin pluginManagement = new PublisherManagementPlugin();
+		BrokerManagementPlugin pluginManagement = new BrokerManagementPlugin();
 		pluginManagement.setPluginURI("management-broker-plugin-uri");
 		this.installPlugin(pluginManagement);
 
-		PublisherPublicationPlugin pluginPublication = new PublisherPublicationPlugin();
+		BrokerPublicationPlugin pluginPublication = new BrokerPublicationPlugin();
 		pluginPublication.setPluginURI("publication-broker-plugin-uri");
 		this.installPlugin(pluginPublication);
 

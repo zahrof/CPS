@@ -115,7 +115,7 @@ extends		AbstractCVM
 		this.toggleTracing(this.uriPublisherURI) ;*/
 
 		this.uriPublisherIIURI= AbstractComponent.createComponent(
-				PublisherII.class.getCanonicalName(), new  Object[]{PUBLISHER_STUDENT1_COMPONENT_URI});
+				PublisherII.class.getCanonicalName(), new  Object[]{});
 		assert	this.isDeployedComponent(uriPublisherIIURI) ;
 		this.toggleTracing(this.uriPublisherIIURI) ;
 		
