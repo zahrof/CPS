@@ -21,7 +21,7 @@ extends		AbstractCVM
 	 * The constant PUBLISHER_COMPONENT_URI.
 	 */
 	//public static final String PUBLISHER_COMPONENT_URI = "my-URI-publisher";
-	public static final String PUBLISHER_STUDENT1_COMPONENT_URI = "my-URI-publisher-student1";
+	public static final String PUBLISHER_STUDENT1_COMPONENT_URI = "my-URI-publisher-teacher1";
 	/**
 	 * The constant BROKER_COMPONENT_URI.
 	 */
@@ -30,6 +30,7 @@ extends		AbstractCVM
 	 * The constant SUBSCRIBER_COMPONENT_URI.
 	 */
 	public static final String SUBSCRIBER_COMPONENT_URI = "my-URI-subscriber";
+	public static final String SUBSCRIBER_STUDENT1_COMPONENT_URI = "my-URI-subscriber-student1";
 
 	/**
 	 * The constant ManagementOutboundPortUri.
@@ -127,8 +128,7 @@ extends		AbstractCVM
 		this.uriSubscriberURI =
 			AbstractComponent.createComponent(
 					SubscriberII.class.getCanonicalName(),
-					new Object[]{ReceptionInboundPortUri,SUBSCRIBER_COMPONENT_URI,
-							}) ;
+					new Object[]{ReceptionInboundPortUri,SUBSCRIBER_COMPONENT_URI}) ;
 		assert	this.isDeployedComponent(this.uriSubscriberURI) ;
 
 		this.toggleTracing(this.uriSubscriberURI) ;
@@ -158,11 +158,11 @@ extends		AbstractCVM
 		// do the connection
 		//logMessage(this.uriSubscriberURI+ReceptionOutboundPortUri+ ReceptionInboundPortUri) ;
 		
-		this.doPortConnection(
+	/*	this.doPortConnection(
 				this.uriBrokerURI,
 				ReceptionOutboundPortUri,
 				ReceptionInboundPortUri,
-				ReceptionConnector.class.getCanonicalName()) ;
+				ReceptionConnector.class.getCanonicalName()) ;*/
 				
 		
 

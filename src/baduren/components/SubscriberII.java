@@ -1,36 +1,39 @@
 package baduren.components;
 
+import baduren.CVM;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
-import baduren.interfaces.ReceptionCI;
 import baduren.ports.inboundPorts.ReceptionInboundPort;
-import baduren.ports.outboundPorts.ManagementOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
-import fr.sorbonne_u.components.annotations.AddPlugin;
-import fr.sorbonne_u.components.annotations.OfferedInterfaces;
-import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
-import fr.sorbonne_u.components.plugins.dconnection.DynamicConnectionServerSidePlugin;
-import fr.sorbonne_u.components.ports.InboundPortI;
-import plugins.PublisherManagementPlugin;
-import plugins.PublisherPublicationPlugin;
+import plugins.PublisherSubscriberManagementPlugin;
+import plugins.SubscriberReceptionPlugin;
 
 public class SubscriberII extends	AbstractComponent{
-    protected final static String MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = "management-subscriber-client-plugin-uri" ;
-
+    protected final static String MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = "management-subscriber-client-plugin-uri";
+    protected final static String MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI = "reception-subscriber-client-plugin-uri";
+    protected final static String RECEPTION_INBOUND_PORT_URI = "student1" ;
+    protected String uri;
         /**	the outbound port used to call the service.							*/
         protected ReceptionInboundPort receptionInboundPort;
 
     protected SubscriberII(String receptionInboundPortName,
                            String reflectionInboundPortURI) throws Exception {
         super(reflectionInboundPortURI,1, 0);
-       // this.uri = uri;
-        this.receptionInboundPort  = new ReceptionInboundPort(receptionInboundPortName,this);
-        receptionInboundPort.publishPort();
+        this.uri = CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI;
+        this.receptionInboundPort = new ReceptionInboundPort(RECEPTION_INBOUND_PORT_URI,this);
+
         // Install the plug-in.
-        PublisherManagementPlugin pluginManagement = new PublisherManagementPlugin() ;
+        PublisherSubscriberManagementPlugin pluginManagement = new PublisherSubscriberManagementPlugin() ;
         pluginManagement.setPluginURI(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI) ;
         this.installPlugin(pluginManagement) ;
+
+        // Install the plug-in.
+        SubscriberReceptionPlugin pluginReception = new SubscriberReceptionPlugin(RECEPTION_INBOUND_PORT_URI,
+                MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
+        pluginReception.setPluginURI(MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
+        this.installPlugin(pluginReception) ;
+
 
         this.tracer.setTitle("subscriber2") ;
         this.tracer.setRelativePosition(1, 3) ;
@@ -69,13 +72,13 @@ public class SubscriberII extends	AbstractComponent{
         @Override
         public void			execute() throws Exception
         {
-            super.execute() ;
-            subscribe("fruits", this.receptionInboundPort.getPortURI());
-//		Thread.sleep(1000);
-//		System.out.println("let's filterU");
-            subscribe("voiture",new VehiculeAerien(),this.receptionInboundPort.getPortURI());
+           // super.execute() ;
 
-            subscribe("voiture", new VehiculeAerien(), this.receptionInboundPort.getPortURI());
+            subscribe("CPS", this.receptionInboundPort.getPortURI());
+
+            subscribe("CPA",new VehiculeAerien(),this.receptionInboundPort.getPortURI());
+
+            subscribe("APS", new VehiculeAerien(), this.receptionInboundPort.getPortURI());
             while(true) {}
         }
 
@@ -92,64 +95,64 @@ public class SubscriberII extends	AbstractComponent{
 
         public void subscribe(String topic, String inboundPortURI) throws Exception{
             //	logMessage("Ask a subscription at port: "+inboundPortURI+" to topic " + topic);
-            ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic, inboundPortURI);
+            ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic, inboundPortURI);
 
         }
 
         public void subscribe(String[] topics, String inboundPortURI)throws Exception {
-            ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topics, inboundPortURI);
+            ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topics, inboundPortURI);
 
 
         }
 
         public void subscribe(String topic, MessageFilterI filter, String inboundPortURI)throws Exception {
-            ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic,filter,inboundPortURI);
+            ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic,filter,inboundPortURI);
             System.out.println("let's filterU");
 
 
         }
 
         public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
-            ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).modifyFilter(topic,newFilter,inboundPortURI);
+            ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).modifyFilter(topic,newFilter,inboundPortURI);
 
 
         }
 
         public void unsubscribe(String topic, String inboundPortUri)throws Exception {
-            ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).unsubscribe(topic,inboundPortUri);
+            ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).unsubscribe(topic,inboundPortUri);
 
 
         }
 
         public void createTopic(String topic) throws Exception{
-            ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopic(topic);
+            ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopic(topic);
 
 
         }
 
         public void createTopics(String[] topics) throws Exception{
-            ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopics(topics);
+            ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopics(topics);
 
 
         }
 
         public void destroyTopic(String topic) throws Exception{
-            ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).destroyTopic(topic);
+            ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).destroyTopic(topic);
 
 
         }
 
         public boolean isTopic(String topic) throws Exception {
-            return ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).isTopic(topic);
+            return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).isTopic(topic);
 
         }
 
         public String[] getTopics() throws Exception{
-            return ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).getTopics();
+            return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).getTopics();
         }
 
         public String getPublicationPortURI() throws Exception {
-            return ((PublisherManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).getPublicationPortURI();
+            return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).getPublicationPortURI();
         }
 
         // TOUTES LES METHODES DE RECEPTIONCI

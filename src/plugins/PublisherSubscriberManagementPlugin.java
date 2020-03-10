@@ -15,7 +15,7 @@ import fr.sorbonne_u.components.reflection.connectors.ReflectionConnector;
 import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
 import fr.sorbonne_u.components.reflection.ports.ReflectionOutboundPort;
 
-public class PublisherManagementPlugin extends AbstractPlugin implements PluginI {
+public class PublisherSubscriberManagementPlugin extends AbstractPlugin implements PluginI {
 
 
     private static final long serialVersionUID = 1L;

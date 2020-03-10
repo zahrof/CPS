@@ -12,23 +12,19 @@ import baduren.connectors.ReceptionConnector;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.message.Message;
-import baduren.ports.inboundPortsForPlugin.PublicationInboundPortForPlugin;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.components.exceptions.PreconditionException;
 import fr.sorbonne_u.components.ports.PortI;
-import plugins.BrokerManagementPlugin;
-import plugins.BrokerPublicationPlugin;
-import plugins.PublisherPublicationPlugin;
-import plugins.PublisherManagementPlugin;
+import plugins.*;
 
 /**
  * The type Broker.
  */
 
 public class Broker extends AbstractComponent {
-
+	protected final static String MY_RECEPTION_BROKER_PLUGIN_URI = "reception-broker-client-plugin-uri" ;
 
 
 	private class Subscriber {
@@ -63,7 +59,7 @@ public class Broker extends AbstractComponent {
 		public ReceptionOutboundPort receptionOutboundPort;
 	}
 
-
+	//private final BrokerReceptionPlugin plugin;
 	/**
 	 * The Broker's uri.
 	 */
@@ -83,15 +79,17 @@ public class Broker extends AbstractComponent {
 	/**
 	 * Instantiates a new Broker.
 	 *
-	 * @param uri                        the uri of the new broker
+	 *
 	 * @param managementInboundPortName  the management inbound port name
 	 * @param publicationInboundPortName the publication inbound port name
 	 * @param receptionOutboundPortName  the reception outbound port name
+	 * @param plugin
 	 * @throws Exception the exception
 	 */
-	protected Broker (String managementInboundPortName,String publicationInboundPortName,
-					  String receptionOutboundPortName, int nbThreads, int nbSchedulableThreads) throws Exception {
+	protected Broker(String managementInboundPortName, String publicationInboundPortName,
+					 String receptionOutboundPortName, int nbThreads, int nbSchedulableThreads, BrokerReceptionPlugin plugin) throws Exception {
 		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
+
 		this.uri=CVM.BROKER_COMPONENT_URI;
 		this.compteur = 0;
 
@@ -127,6 +125,11 @@ public class Broker extends AbstractComponent {
 		BrokerPublicationPlugin pluginPublication = new BrokerPublicationPlugin();
 		pluginPublication.setPluginURI("publication-broker-plugin-uri");
 		this.installPlugin(pluginPublication);
+
+		// Install the plug-in.
+/*		this.plugin = new BrokerReceptionPlugin();
+		this.plugin.setPluginURI(MY_RECEPTION_BROKER_PLUGIN_URI) ;
+		this.installPlugin(this.plugin) ;*/
 		
 		this.tracer.setTitle("broker") ;
 		this.tracer.setRelativePosition(1, 1) ;
@@ -150,10 +153,10 @@ public class Broker extends AbstractComponent {
 				new PreconditionException("receptionOutboundPortName is wrong");
 
 		//PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this);
-		PortI rop = new ReceptionOutboundPort(receptionOutboundPortName,this);
+		//PortI rop = new ReceptionOutboundPort(receptionOutboundPortName,this);
 
 
-		rop.localPublishPort();
+		//rop.localPublishPort();
 		//managementInboundPort.publishPort();
 		//publicationInboundPort.publishPort();
 		BrokerManagementPlugin pluginManagement = new BrokerManagementPlugin();
@@ -163,6 +166,11 @@ public class Broker extends AbstractComponent {
 		BrokerPublicationPlugin pluginPublication = new BrokerPublicationPlugin();
 		pluginPublication.setPluginURI("publication-broker-plugin-uri");
 		this.installPlugin(pluginPublication);
+
+		// Install the plug-in.
+	/*	this.plugin = new BrokerReceptionPlugin();
+		this.plugin.setPluginURI(MY_RECEPTION_BROKER_PLUGIN_URI) ;
+		this.installPlugin(this.plugin) ;*/
 
 		this.tracer.setTitle("broker") ;
 		this.tracer.setRelativePosition(1, 1) ;
@@ -182,27 +190,25 @@ public class Broker extends AbstractComponent {
 	{
 		super.execute() ;
 
-		/*
-
-		this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(0));
-		this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(1));
-		HashMap<ReceptionOutboundPort,MessageFilterI>hm =new HashMap<>();
-		hm = this.subscribers.get("voiture"); 
+		acceptMessage();
+	/*	this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(0));
+		this.subscribers_without_filters.get("fruits").get(0).acceptMessage(this.messages.get("fruits").get(1));*/
+		//HashMap<ReceptionOutboundPort,MessageFilterI>hm =new HashMap<>();
+/*		hm = this.subscribers.get("voiture");
 		//hm.ge
 		for(ReceptionOutboundPort up: hm.keySet()) {
 			up.acceptMessage(this.messages.get("voiture").get(0));
-		}
+		}*/
 		
 		//this.subscribers.get("voiture").get(0).acceptMessage(this.messages.get("voiture").get(0));
 		//this.subscribers.get("voiture").get(0).acceptMessage(this.messages.get("voiture").get(1));
 	
 		//this.Map_URIPort.get("fruits").acceptMessage(this.messages.get("fruits").get(0));
 
-		*/
 
 
 		// Thread à part entiere qui s'occupe d'envoyer les messages
-		this.runTask(
+		/*this.runTask(
 			new AbstractComponent.AbstractTask() {
 				@Override
 				public void run() {
@@ -230,7 +236,7 @@ public class Broker extends AbstractComponent {
 					}
 				}
 			}
-		);
+		);*/
 
 
 
@@ -269,13 +275,6 @@ public class Broker extends AbstractComponent {
 
 
 
-		Thread.sleep(200);
-		while(true){
-			Thread.sleep(500);
-			search_messages_to_send();
-		}
-
-
 
 	}
 
@@ -290,6 +289,16 @@ public class Broker extends AbstractComponent {
 
 		this.logMessage("stopping broker component.") ;
 		super.finalise();
+	}
+
+	public void acceptMessage() throws Exception {
+
+		Thread.sleep(500);
+		acceptMessage();
+	}
+
+	public void acceptMessages() throws Exception {
+
 	}
 
 
@@ -330,70 +339,6 @@ public class Broker extends AbstractComponent {
 								}
 								sent_messages.add(m);
 							}
-
-							// Méthode greffon
-
-						 /*
-						//System.out.println(this.installedPlugins.keySet().toString());
-						//DynamicConnectionClientSidePlugin dconnectionPlugIn = null;
-
-						//for(String plugin : installedPlugins.keySet()) {
-						//	dconnectionPlugIn = (DynamicConnectionClientSidePlugin) installedPlugins.get(plugin);
-						//	System.out.println(installedPlugins.get(plugin).toString());
-						//}
-
-
-						try {
-							// Connecting the dynamic connection plug-ins
-
-							DynamicConnectionClientSidePlugin dconnectionPlugIn =
-									(DynamicConnectionClientSidePlugin)
-											this.getPlugin(DYNAMIC_CONNECTION_PLUGIN_URI) ; // Peut etre faux
-							System.out.println(inboundPortURI);
-
-
-							//DynamicConnectionClientSidePlugin dconnectionPlugIn =
-							//		(DynamicConnectionClientSidePlugin) installedPlugins.get(this.installedPlugins.keySet().toArray()[0]);
-
-							dconnectionPlugIn.connectWithServerSide(inboundPortURI) ;
-
-							// Use the dynamic connection facilities to connect the example
-							// ports.
-							ReceptionOutboundPort top =
-								(ReceptionOutboundPort)
-									dconnectionPlugIn.doDynamicConnection(
-										ReceptionCI.class, // peut etre ReceptionCI
-										inboundPortURI,
-										ReceptionCI.class,
-										new DynamicConnectionDescriptorI() {
-											@Override
-											public OutboundPortI	 createClientSideDynamicPort(
-													Class<?> requiredInterface,
-													ComponentI owner) {
-												try {
-													assert	requiredInterface.equals(ReceptionCI.class) ;
-													return new ReceptionOutboundPort(owner) ;
-												} catch (Exception e) {
-													throw new RuntimeException(e) ;
-												}
-											}
-
-											@Override
-											public String dynamicConnectorClassName(
-												Class<?> requiredInterface
-												)
-											{
-												assert	requiredInterface.equals(ReceptionCI.class) ;
-												return ReceptionConnector.class.getCanonicalName() ;
-											}
-										}) ;
-
-							top.acceptMessage(m);
-						} catch(Throwable t) {
-							t.printStackTrace();
-						}
-						*/
-
 						}
 					}
 				}
@@ -403,8 +348,6 @@ public class Broker extends AbstractComponent {
 		for(String topic: this.messages.keySet()){
 			this.messages.put(topic, new ArrayList<>());
 		}
-
-
 
 	}
 
@@ -417,7 +360,9 @@ public class Broker extends AbstractComponent {
 	 */
 	public synchronized void publish(MessageI m, String topic)throws Exception {
 
-			if (!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
+	/*		USEFULL
+
+	if (!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
 			this.messages.get(topic).add((Message) m); // On ajoute le message
 
 
@@ -427,11 +372,31 @@ public class Broker extends AbstractComponent {
 				logMessage("Publishing message " + m.getURI() + " to topic " + topic);
 
 
-			}
+			}*/
 
-		
-		
-		
+
+
+		this.messages.get(topic).add((Message) m); // On ajoute le message
+
+
+
+		if(!isTopic(topic)) {
+			logMessage("The following message hasn't been published because it's topic (" + topic + ") doesn't exist : " + m.getURI());
+		} else {
+			logMessage("Publishing message "+m.getURI()+" to topic " + topic);
+
+			for(String inboundPortURI: subscribers.keySet()) {
+				Subscriber subscriber = subscribers.get(inboundPortURI);
+
+				if(subscriber.topics.containsKey(topic)) {
+					if(subscriber.topics.get(topic) == null) {
+						subscriber.receptionOutboundPort.acceptMessage(m);
+					} else if (subscribers.get(inboundPortURI).topics.get(topic).filter(m)) {
+						subscriber.receptionOutboundPort.acceptMessage(m);
+					}
+				}
+			}
+		}
 	}
 
 
@@ -445,6 +410,7 @@ public class Broker extends AbstractComponent {
 	public void publish(MessageI m, String[] topics) throws Exception{
 		for(String topic : topics)
 			publish(m,topic);
+
 	}
 
 
@@ -485,8 +451,14 @@ public class Broker extends AbstractComponent {
 	 * @param inboundPortURI the inbound port uri
 	 * @throws Exception the exception
 	 */
-	public void subscribe(String topic, String inboundPortURI) throws Exception{
-		subscribe(topic, (MessageFilterI) null, inboundPortURI);
+	public void subscribe(String topic, String inboundPortURIaux) throws Exception{
+		subscribe(topic, (MessageFilterI) null, inboundPortURIaux);
+		//subscribers.get(inboundPortURI).a;
+		/*f (subscribers.get(inboundPortURI).topics.get(topic).filter(m)) {
+			subscriber.receptionOutboundPort.acceptMessage(m);*/
+		subscribers.get(inboundPortURIaux).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
+				"te souscrire au topic "+topic));
+		System.out.println("HOLAAAAA");
 	}
 
 	/**

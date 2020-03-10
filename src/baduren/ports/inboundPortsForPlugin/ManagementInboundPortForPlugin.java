@@ -37,14 +37,15 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
 
     @Override
     public void subscribe(String topic, String inboundPortURI) throws Exception {
-        this.getOwner().handleRequestAsync(
+      /*  this.getOwner().handleRequestAsync(
                 new AbstractComponent.AbstractService<Void>() {
                     @Override
                     public Void call() throws Exception {
                         ((Broker)this.getServiceOwner()).subscribe(topic,inboundPortURI);
                         return null;
                     }
-                }) ;
+                }) ;*/
+        ((Broker)this.owner).subscribe(topic,inboundPortURI);
     }
 
     @Override
