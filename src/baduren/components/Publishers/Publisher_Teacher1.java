@@ -7,6 +7,7 @@ import baduren.message.Properties;
 import fr.sorbonne_u.components.AbstractComponent;
 import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
+import fr.sorbonne_u.components.exceptions.ComponentStartException;
 
 public class Publisher_Teacher1 extends AbstractComponent {
 
@@ -39,7 +40,7 @@ public class Publisher_Teacher1 extends AbstractComponent {
         this.installPlugin(pluginManagement) ;
 
         this.tracer.setTitle("Teacher 1") ;
-        this.tracer.setRelativePosition(1, 2) ;
+        this.tracer.setRelativePosition(1, 1) ;
     }
 
     protected Publisher_Teacher1(int nbThreads, int nbSchedulableThreads) throws Exception {
@@ -56,13 +57,18 @@ public class Publisher_Teacher1 extends AbstractComponent {
         this.installPlugin(pluginManagement) ;
 
         this.tracer.setTitle(MY_PUBLISHER_PLUGIN_URI) ;
-        this.tracer.setRelativePosition(1, 2) ;
+        this.tracer.setRelativePosition(1, 1) ;
     }
 
     // -------------------------------------------------------------------------
     // Life cycle
     // -------------------------------------------------------------------------
-
+    @Override
+    public void			start() throws ComponentStartException
+    {
+        super.start() ;
+        this.logMessage("starting teacher 2 component.") ;
+    }
     @Override
     public void			execute() throws Exception
     {
@@ -74,13 +80,13 @@ public class Publisher_Teacher1 extends AbstractComponent {
             for (int i=0; i <5; i++) {
                 publish(new Message("Le cours "+i+" est prévu pour le partiel"), "APS");
             }
-            String topics[]= {"CPS", "CPA"};
+        /*    String topics[]= {"CPS", "CPA"};
             Message m = new Message("Cours annulés");
             Properties p = m.getProperties();
             p.putProp("A rattrapper : ", false);
             publish(m,topics);
 
-            publish(new Message("Demain il y a pas cours"), "CPS");
+            publish(new Message("Demain il y a pas cours"), "CPS");*/
 
         } catch(Throwable t) {
             t.printStackTrace();

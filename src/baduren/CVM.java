@@ -2,6 +2,7 @@ package baduren;
 
 import baduren.components.Broker.Broker;
 import baduren.components.Publishers.Publisher_Teacher1;
+import baduren.components.Publishers.Publisher_Teacher2;
 import baduren.components.Subscribers.Subscriber_Student1;
 import baduren.components.Subscribers.Subscriber_Student2;
 import fr.sorbonne_u.components.AbstractComponent;
@@ -44,6 +45,7 @@ public class CVM  extends AbstractCVM {
 	/** PUBLISHERS URI**/
 	//protected String uriPublisherURI;
 	protected String uri_Publisher_Teacher1;
+	protected String uri_Publisher_Teacher2;
 
 	/** BROKER URI**/
 	protected String uriBrokerURI;
@@ -51,6 +53,7 @@ public class CVM  extends AbstractCVM {
 	/** SUBSCRIBER URI**/
 	protected String uri_Subscriber_Student1;
 	private String uri_Subscriber_Student2;
+
 
 	/*********************   CONSTRUCTOR   **********************/
 
@@ -75,7 +78,7 @@ public class CVM  extends AbstractCVM {
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
 						new Object[]{
-								3,0}) ;
+								5,0}) ;
 		assert	this.isDeployedComponent(this.uriBrokerURI) ;
 
 		this.toggleTracing(this.uriBrokerURI) ;
@@ -98,21 +101,21 @@ public class CVM  extends AbstractCVM {
 		assert	this.isDeployedComponent(uri_Publisher_Teacher1) ;
 		this.toggleTracing(this.uri_Publisher_Teacher1) ;
 
-		/*this.uri_Publisher_Teacher2 = AbstractComponent.createComponent(
+		this.uri_Publisher_Teacher2 = AbstractComponent.createComponent(
 				Publisher_Teacher2.class.getCanonicalName(), new  Object[]{});
 		assert	this.isDeployedComponent(uri_Publisher_Teacher2) ;
-		this.toggleTracing(this.uri_Publisher_Teacher2) ;*/
+		this.toggleTracing(this.uri_Publisher_Teacher2) ;
 
 		/******* create the subscriber component ********/
 		this.uri_Subscriber_Student1 =
 				AbstractComponent.createComponent(
 						Subscriber_Student1.class.getCanonicalName(),
-						new Object[]{ReceptionInboundPortUri,5,0}) ;
+						new Object[]{ReceptionInboundPortUri,2,0}) ;
 		assert	this.isDeployedComponent(this.uri_Subscriber_Student1) ;
 
 		this.toggleTracing(this.uri_Subscriber_Student1) ;
 
-		/*this.uri_Subscriber_Student2 =
+	/*	this.uri_Subscriber_Student2 =
 				AbstractComponent.createComponent(
 						Subscriber_Student2.class.getCanonicalName(),
 						new Object[]{ReceptionInboundPortUri}) ;

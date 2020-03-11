@@ -81,14 +81,12 @@ public class Subscriber_Student1 extends	AbstractComponent implements ReceptionC
         @Override
         public void			execute() throws Exception
         {
-           // super.execute() ;
 
             subscribe("CPS", this.receptionInboundPort.getPortURI());
 
-            subscribe("CPA",new VehiculeAerien(),this.receptionInboundPort.getPortURI());
+            subscribe("CPA",this.receptionInboundPort.getPortURI());
 
-            subscribe("APS", new VehiculeAerien(), this.receptionInboundPort.getPortURI());
-            while(true) {}
+            subscribe("APS", this.receptionInboundPort.getPortURI());
         }
 
 

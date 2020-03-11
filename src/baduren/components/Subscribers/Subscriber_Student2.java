@@ -36,7 +36,7 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
 
 
         this.tracer.setTitle("Student 2") ;
-        this.tracer.setRelativePosition(2, 3) ;
+        this.tracer.setRelativePosition(1, 4) ;
     }
 
         protected Subscriber_Student2(String receptionInboundPortName, int nbThreads, int nbSchedulableThreads)

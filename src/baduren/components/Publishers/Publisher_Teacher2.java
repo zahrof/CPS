@@ -6,6 +6,7 @@ import baduren.message.Message;
 import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
+import fr.sorbonne_u.components.exceptions.ComponentStartException;
 
 public class Publisher_Teacher2 extends AbstractComponent {
 
@@ -37,7 +38,7 @@ public class Publisher_Teacher2 extends AbstractComponent {
         pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
         this.installPlugin(pluginManagement) ;
 
-        this.tracer.setTitle("Teacher 1") ;
+        this.tracer.setTitle("Teacher 2") ;
         this.tracer.setRelativePosition(1, 2) ;
     }
 
@@ -61,21 +62,21 @@ public class Publisher_Teacher2 extends AbstractComponent {
     // -------------------------------------------------------------------------
     // Life cycle
     // -------------------------------------------------------------------------
+    @Override
+    public void			start() throws ComponentStartException
+    {
+        super.start() ;
+        this.logMessage("starting teacher 2 component.") ;
+    }
 
     @Override
     public void			execute() throws Exception
     {
-
         // Test scenario
-
-        try {
-            Thread.sleep(100);
-            publish(new Message("Demain il y a pas cours"), "CPS");
-
-        } catch(Throwable t) {
-            t.printStackTrace();
+     /*   for (int i=0; i <7; i++) {
+            publish(new Message("Le sujet "+i+" n'est pas prévu à l'examen"), "CPA");
         }
-
+        publish(new Message("Le projet est à faire en binôme"),"CPS");*/
     }
 
     // TOUTES LES METHODES DE PUBLICATIONSCI
