@@ -3,6 +3,7 @@ package baduren.components.Publishers;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.message.Message;
+import baduren.message.Properties;
 import fr.sorbonne_u.components.AbstractComponent;
 import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
@@ -70,6 +71,16 @@ public class Publisher_Teacher1 extends AbstractComponent {
 
         try {
             //Thread.sleep(100);
+            for (int i=0; i <5; i++) {
+                publish(new Message("Le cours "+i+" est prévu pour le partiel"), "APS");
+            }
+            String topics[]= {"CPS", "CPA"};
+            Message m = new Message("Cours annulés");
+            publish(m, topics);
+            Properties p = m.getProperties();
+            p.putProp("A rattrapper : ", false);
+            publish(m,topics);
+
             publish(new Message("Demain il y a pas cours"), "CPS");
 
         } catch(Throwable t) {
@@ -106,7 +117,7 @@ public class Publisher_Teacher1 extends AbstractComponent {
         for (String s : topics) {
             str += s+ " ";
         }
-        logMessage("Publishing message " + m.getURI()+ " to the topic : "+str);
+        logMessage("Publishing message " + m.getURI()+ " to the topics : "+str);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m,topics);;
     }
 
@@ -123,7 +134,7 @@ public class Publisher_Teacher1 extends AbstractComponent {
         for (MessageI s : ms) {
             str += s.getURI()+ " ";
         }
-        logMessage("Publishing message " + str+ " to the topic : "+topics);
+        logMessage("Publishing messages " + str+ " to the topic : "+topics);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(ms,topics);
     }
 
@@ -144,7 +155,7 @@ public class Publisher_Teacher1 extends AbstractComponent {
         for (String s : topics) {
             str2 += s+ " ";
         }
-        logMessage("Publishing message " + str+ " to the topic : "+str2);
+        logMessage("Publishing messages " + str+ " to the topics : "+str2);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(ms,topics);
     }
 
@@ -253,7 +264,7 @@ public class Publisher_Teacher1 extends AbstractComponent {
      * @throws Exception the exception
      */
     public boolean isTopic(String topic) throws Exception{
-       return  ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).isTopic(topic);
+        return  ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).isTopic(topic);
 
     }
 

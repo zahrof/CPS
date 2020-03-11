@@ -75,7 +75,7 @@ public class CVM  extends AbstractCVM {
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
 						new Object[]{
-								5,0}) ;
+								3,0}) ;
 		assert	this.isDeployedComponent(this.uriBrokerURI) ;
 
 		this.toggleTracing(this.uriBrokerURI) ;

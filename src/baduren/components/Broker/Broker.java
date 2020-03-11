@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import baduren.CVM;
 import baduren.connectors.ReceptionConnector;
@@ -28,6 +29,7 @@ public class Broker extends AbstractComponent {
 	// Broker variables and constants
 	// -------------------------------------------------------------------------
 	protected final static String MY_RECEPTION_BROKER_PLUGIN_URI = "reception-broker-client-plugin-uri" ;
+	private static final String PUBLICATION_ACCESS_HANDLER_URI = "pah";
 
 	//private final BrokerReceptionPlugin plugin;
 	/**
@@ -35,7 +37,7 @@ public class Broker extends AbstractComponent {
 	 */
 	protected String uri;
 	private HashMap<String, List<MessageI>> messages_ready; // Map between inbound port and messages
-	private Lock messages_ready_locker;
+	protected final ReentrantReadWriteLock messages_ready_locker;
 	private int compteur; // increments for each new subscriber
 	private HashMap<String, List<MessageI>> messages; // Map between topic and messages (each topic has several messages)
 	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscribe
@@ -86,7 +88,7 @@ public class Broker extends AbstractComponent {
 		this.messages = new HashMap<>();
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
-		this.messages_ready_locker = new ReentrantLock();
+		this.messages_ready_locker = new ReentrantReadWriteLock();
 
 		/** TESTING VARIABLES **/
 		assert managementInboundPortName != null ||  managementInboundPortName != "":
@@ -120,7 +122,7 @@ public class Broker extends AbstractComponent {
 		this.messages = new HashMap<>();
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
-		this.messages_ready_locker = new ReentrantLock();
+		this.messages_ready_locker = new ReentrantReadWriteLock();
 
 		/** TESTING VARIABLES **/
 		// TODO
@@ -149,7 +151,7 @@ public class Broker extends AbstractComponent {
 		this.messages = new HashMap<>();
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
-		this.messages_ready_locker = new ReentrantLock();
+		this.messages_ready_locker = new ReentrantReadWriteLock();
 
 		/** TESTING VARIABLES **/
 		assert managementInboundPortName != null ||  managementInboundPortName != "":
@@ -182,8 +184,17 @@ public class Broker extends AbstractComponent {
 		this.messages = new HashMap<>();
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
-		this.messages_ready_locker = new ReentrantLock();
+		this.messages_ready_locker = new ReentrantReadWriteLock();
 
+		/** CREATING THREADS GROUPS**/
+		this.createNewExecutorService(PUBLICATION_ACCESS_HANDLER_URI,
+				nbReadingThreads,
+				false) ;
+		this.createNewExecutorService(ACCEPT_ACCESS_HANDLER_URI, 1, false) ;
+		this.createNewExecutorService(SUBSCRIBE_ACCESS_HANDLER_URI,
+				nbReadingThreads,
+				false) ;
+		this.createNewExecutorService(WRITE_ACCESS_HANDLER_URI, 1, false) ;
 		/** TESTING VARIABLES **/
 		// TODO
 
@@ -217,7 +228,7 @@ public class Broker extends AbstractComponent {
 	public void	execute() throws Exception
 	{
 		super.execute() ;
-		Thread.sleep(500);
+		Thread.sleep(20000);
 		search_messages_to_send();
 		acceptMessage();
 		//acceptMessage();
@@ -323,13 +334,13 @@ public class Broker extends AbstractComponent {
 	public void acceptMessage() throws Exception {
 
 		Thread.sleep(500);
-	/*	if (messages_ready.isEmpty()) {
-			try {
-				this.wait();
+		if (messages_ready.isEmpty()) {
+	/*		try {
+				//this..wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
-		}*/
+			}*/
+		}
 		if (!messages_ready.isEmpty()) {
 			for (String inboundPortI : messages_ready.keySet()) {
 				for (MessageI m : messages_ready.get(inboundPortI)) {
@@ -342,10 +353,6 @@ public class Broker extends AbstractComponent {
 				}
 			}
 		}
-	}
-
-	public void acceptMessages() throws Exception {
-
 	}
 
 
@@ -409,9 +416,8 @@ public class Broker extends AbstractComponent {
 	 * @param topic It's the topic where we want to publish the message m
 	 * @throws Exception the exception
 	 */
-	public synchronized void publish(MessageI m, String topic)throws Exception {
+	public void publish(MessageI m, String topic)throws Exception {
 
-		Thread.sleep(500);
 		if (!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
 		this.messages.get(topic).add(m); // On ajoute le message
 

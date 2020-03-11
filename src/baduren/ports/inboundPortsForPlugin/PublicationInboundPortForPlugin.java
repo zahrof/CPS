@@ -3,6 +3,7 @@ package baduren.ports.inboundPortsForPlugin;
 import baduren.components.Broker.Broker;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
+import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.forplugins.AbstractInboundPortForPlugin;
 
@@ -36,53 +37,52 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 
         @Override
         public void publish(MessageI m, String topic) throws Exception {
-	/*	this.getOwner().handleRequestSync(
+		this.getOwner().handleRequestSync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
 						((Broker)this.getServiceOwner()).publish(m, topic);
 						return null;
 					}
-				}) ;*/
-            ((Broker)this.owner).publish(m, topic);
+				}) ;
+           // ((Broker)this.owner).publish(m, topic);
         }
 
         @Override
         public void publish(MessageI m, String[] topics) throws Exception {
-/*		this.getOwner().handleRequestAsync(
+		this.getOwner().handleRequestAsync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).destroyTopic(topic);
+						((Broker)this.getServiceOwner()).publish(m, topics);
 						return null;
 					}
-				}) ;*/
-            ((Broker)this.owner).publish(m, topics);
+				}) ;
         }
 
         @Override
         public void publish(MessageI[] ms, String topics) throws Exception {
-/*		this.getOwner().handleRequestAsync(
+		this.getOwner().handleRequestAsync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).destroyTopic(topic);
+						((Broker)this.getServiceOwner()).publish(ms, topics);
 						return null;
 					}
-				}) ;*/
+				}) ;
             ((Broker)this.owner).publish(ms, topics);
         }
 
         @Override
         public void publish(MessageI[] ms, String[] topics) throws Exception {
-/*		this.getOwner().handleRequestAsync(
+		this.getOwner().handleRequestAsync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).destroyTopic(topic);
+						((Broker)this.getServiceOwner()).publish(ms, topics);
 						return null;
 					}
-				}) ;*/
+				}) ;
             ((Broker)this.owner).publish(ms, topics);
         }
     }

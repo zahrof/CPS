@@ -77,7 +77,6 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
      * @throws Exception the exception
      */
     public void publish(MessageI m, String topic) throws Exception {
-        logMessage("Publishing message " + m.getURI()+ " to the topic : "+ topic );
         this.publicationOutboundPort.publish(m, topic);
     }
 
@@ -90,11 +89,6 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
      * @throws Exception the exception
      */
     public void publish(MessageI m, String[] topics) throws Exception {
-        String str= " ";
-        for (String s : topics) {
-            str += s+ " ";
-        }
-        logMessage("Publishing message " + m.getURI()+ " to the topic : "+str);
         this.publicationOutboundPort.publish(m, topics);
 
     }
@@ -108,11 +102,7 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
      * @throws Exception the exception
      */
     public void publish(MessageI[] ms, String topics) throws Exception {
-        String str= " ";
-        for (MessageI s : ms) {
-            str += s.getURI()+ " ";
-        }
-        logMessage("Publishing message " + str+ " to the topic : "+topics);
+
         this.publicationOutboundPort.publish(ms, topics);
 
     }
@@ -126,15 +116,7 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
      * @throws Exception the exception
      */
     public void publish(MessageI[] ms, String[] topics) throws Exception {
-        String str= " ";
-        for (MessageI s : ms) {
-            str += s.getURI()+ " ";
-        }
-        String str2= " ";
-        for (String s : topics) {
-            str2 += s+ " ";
-        }
-        logMessage("Publishing message " + str+ " to the topic : "+str2);
+
         this.publicationOutboundPort.publish(ms, topics);
 
     }
