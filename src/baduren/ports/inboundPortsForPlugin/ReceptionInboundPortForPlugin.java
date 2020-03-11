@@ -29,15 +29,15 @@ public class ReceptionInboundPortForPlugin extends AbstractInboundPortForPlugin 
 
     @Override
     public void acceptMessage(MessageI m) throws Exception {
-      /*  this.getOwner().handleRequestAsync(
+        this.getOwner().handleRequestAsync(
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {
                         ((SubscriberReceptionPlugin) this.getServiceProviderReference()).acceptMessage(m);
                         return null;
                     }
-                });*/
-        ((Subscriber_Student1)this.owner).acceptMessage(m);
+                });
+       // ((Subscriber_Student1)this.owner).acceptMessage(m);
     }
 
     @Override

@@ -3,6 +3,8 @@ package baduren.ports.inboundPortsForPlugin;
 import baduren.components.Broker.Broker;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
+import baduren.plugins.BrokerManagementPlugin;
+import baduren.plugins.BrokerPublicationPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.forplugins.AbstractInboundPortForPlugin;
@@ -38,20 +40,21 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
         @Override
         public void publish(MessageI m, String topic) throws Exception {
 		this.getOwner().handleRequestSync(
-				new AbstractComponent.AbstractService<Void>() {
+				new AbstractComponent.AbstractService<Void>(this.pluginURI) {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).publish(m, topic);
+						((BrokerPublicationPlugin)this.getServiceProviderReference()).publish(m, topic);
 						return null;
 					}
 				}) ;
            // ((Broker)this.owner).publish(m, topic);
+			//((BrokerPublicationPlugin)this.getSer).publish(m, topic);
         }
 
         @Override
         public void publish(MessageI m, String[] topics) throws Exception {
 		this.getOwner().handleRequestAsync(
-				new AbstractComponent.AbstractService<Void>() {
+				new AbstractComponent.AbstractService<Void>(this.pluginURI) {
 					@Override
 					public Void call() throws Exception {
 						((Broker)this.getServiceOwner()).publish(m, topics);
@@ -63,7 +66,7 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
         @Override
         public void publish(MessageI[] ms, String topics) throws Exception {
 		this.getOwner().handleRequestAsync(
-				new AbstractComponent.AbstractService<Void>() {
+				new AbstractComponent.AbstractService<Void>(this.pluginURI) {
 					@Override
 					public Void call() throws Exception {
 						((Broker)this.getServiceOwner()).publish(ms, topics);
@@ -76,7 +79,7 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
         @Override
         public void publish(MessageI[] ms, String[] topics) throws Exception {
 		this.getOwner().handleRequestAsync(
-				new AbstractComponent.AbstractService<Void>() {
+				new AbstractComponent.AbstractService<Void>(this.pluginURI) {
 					@Override
 					public Void call() throws Exception {
 						((Broker)this.getServiceOwner()).publish(ms, topics);

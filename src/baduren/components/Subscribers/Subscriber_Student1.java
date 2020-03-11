@@ -3,13 +3,14 @@ package baduren.components.Subscribers;
 import baduren.CVM;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
+import baduren.interfaces.ReceptionCI;
 import baduren.ports.inboundPorts.ReceptionInboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
 import baduren.plugins.SubscriberReceptionPlugin;
 
-public class Subscriber_Student1 extends	AbstractComponent{
+public class Subscriber_Student1 extends	AbstractComponent implements ReceptionCI {
     protected final static String MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = "management-subscriber-client-plugin-uri";
     protected final static String MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI = "reception-subscriber-client-plugin-uri";
     protected final static String RECEPTION_INBOUND_PORT_URI = "student1" ;

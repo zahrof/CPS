@@ -32,6 +32,7 @@ public class BrokerReceptionPlugin extends AbstractPlugin {
         this.addRequiredInterface(ReflectionI.class) ;
         ReflectionOutboundPort ropPublisher = new ReflectionOutboundPort(this.owner) ;
         ropPublisher.publishPort() ;
+
         String[] urisPublisher = ropPublisher.findPortURIsFromInterface(ReceptionCI.class) ;
         assert	urisPublisher != null && urisPublisher.length == 1 ;
 

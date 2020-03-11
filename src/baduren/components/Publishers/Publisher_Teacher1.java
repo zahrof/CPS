@@ -76,7 +76,6 @@ public class Publisher_Teacher1 extends AbstractComponent {
             }
             String topics[]= {"CPS", "CPA"};
             Message m = new Message("Cours annulés");
-            publish(m, topics);
             Properties p = m.getProperties();
             p.putProp("A rattrapper : ", false);
             publish(m,topics);
