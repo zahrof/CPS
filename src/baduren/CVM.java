@@ -107,7 +107,7 @@ public class CVM  extends AbstractCVM {
 		this.uri_Subscriber_Student1 =
 				AbstractComponent.createComponent(
 						Subscriber_Student1.class.getCanonicalName(),
-						new Object[]{ReceptionInboundPortUri,3,0}) ;
+						new Object[]{ReceptionInboundPortUri,5,0}) ;
 		assert	this.isDeployedComponent(this.uri_Subscriber_Student1) ;
 
 		this.toggleTracing(this.uri_Subscriber_Student1) ;

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import baduren.CVM;
@@ -15,13 +13,9 @@ import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
 import baduren.message.Message;
-import baduren.ports.inboundPorts.ManagementInboundPort;
-import baduren.ports.inboundPorts.PublicationInboundPort;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
-import fr.sorbonne_u.components.exceptions.PreconditionException;
-import fr.sorbonne_u.components.ports.PortI;
 import baduren.plugins.*;
 
 
@@ -44,7 +38,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	private int compteur; // increments for each new subscriber
 	private HashMap<String, List<MessageI>> messages; // Map between topic and messages (each topic has several messages)
 	private HashMap<String, Subscriber> subscribers; // Map between the receptionInboundport and the subscribe
-
+	protected final ReentrantReadWriteLock messagessHashMapLock;
+	protected final ReentrantReadWriteLock subscribersHashMapLock;
 	private class Subscriber {
 		/**
 		 * Instantiates a new Subscriber.
@@ -180,14 +175,17 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	}*/
 
 	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
-	protected Broker (int nbThreads, int nbSchedulableThreads) throws Exception {
+	protected Broker(int nbThreads, int nbSchedulableThreads) throws Exception {
 		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
+
 		this.uri=CVM.BROKER_COMPONENT_URI;
 		this.compteur = 0;
 		this.messages = new HashMap<>();
 		this.subscribers = new HashMap<>();
 		this.messages_ready = new HashMap<>();
 		this.messages_ready_locker = new ReentrantReadWriteLock();
+		this.subscribersHashMapLock =  new ReentrantReadWriteLock();
+		this.messagessHashMapLock =new ReentrantReadWriteLock();
 
 		/** CREATING THREADS GROUPS**/
 	/*	this.createNewExecutorService(PUBLICATION_ACCESS_HANDLER_URI, 1, false) ;
@@ -415,8 +413,10 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @throws Exception the exception
 	 */
 	public void publish(MessageI m, String topic)throws Exception {
+		this.messagessHashMapLock.writeLock().lock();
 		if (!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
 		this.messages.get(topic).add(m); // On ajoute le message
+		this.messagessHashMapLock.writeLock().unlock();
 		this.logMessage("Message " + m.getURI() + " stocked to topic " + topic);
 	}
 
