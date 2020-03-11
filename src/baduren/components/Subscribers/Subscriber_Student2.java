@@ -11,15 +11,15 @@ import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 
 public class Subscriber_Student2 extends	AbstractComponent implements ReceptionCI {
-    protected final static String MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = "management-subscriber-client-plugin-uri";
-    protected final static String MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI = "reception-subscriber-client-plugin-uri";
-    protected final static String RECEPTION_INBOUND_PORT_URI = "student1" ;
+    protected final static String MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = "management-subscriber2-client-plugin-uri";
+    protected final static String MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI = "reception-subscriber2-client-plugin-uri";
+    protected final static String RECEPTION_INBOUND_PORT_URI = "student2" ;
     protected String uri;
         /**	the outbound port used to call the service.							*/
         protected ReceptionInboundPort receptionInboundPort;
 
     protected Subscriber_Student2(String receptionInboundPortName) throws Exception {
-        super(CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI,1, 0);
+        super(CVM.SUBSCRIBER_STUDENT2_COMPONENT_URI,1, 0);
         this.uri = CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI;
         this.receptionInboundPort = new ReceptionInboundPort(RECEPTION_INBOUND_PORT_URI,this);
 
@@ -57,7 +57,7 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
             this.installPlugin(pluginReception) ;
 
 
-            this.tracer.setTitle("Student 1") ;
+            this.tracer.setTitle("Student 2") ;
             this.tracer.setRelativePosition(1, 3) ;
         }
 
@@ -72,7 +72,6 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
 
             @Override
             public boolean filter(MessageI m) throws Exception {
-                //System.out.println()
                 return m.getProperties().getBooleanProp("can_fly");
             }
 
@@ -82,7 +81,7 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
         public void			execute() throws Exception
         {
            // super.execute() ;
-
+            subscribe("APS",this.receptionInboundPort.getPortURI());
         }
 
 

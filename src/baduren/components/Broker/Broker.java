@@ -187,10 +187,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	protected Broker(int nbThreads, int nbSchedulableThreads) throws Exception {
 		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
 
-		/** CREATING THREADS GROUPS**/
-	/*	this.createNewExecutorService(PUBLICATION_ACCESS_HANDLER_URI, 1, false) ;
-		this.createNewExecutorService(ACCEPT_ACCESS_HANDLER_URI, 1, false) ;
-		this.createNewExecutorService(SUBSCRIBE_ACCESS_HANDLER_URI, 1, false) ;*/
 		/** TESTING VARIABLES **/
 		// TODO
 
@@ -224,8 +220,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	public void	execute() throws Exception
 	{
 		super.execute() ;
-		this.createNewExecutorService(SELECT_MESSAGES_HANDLER_URI, 1, false) ;
-		this.createNewExecutorService(ACCEPT_ACCESS_HANDLER_URI, 1, false) ;
+		this.createNewExecutorService(SELECT_MESSAGES_HANDLER_URI, 2, false) ;
+		this.createNewExecutorService(ACCEPT_ACCESS_HANDLER_URI, 2, false) ;
 
 		handleRequestAsync(SELECT_MESSAGES_HANDLER_URI,new AbstractComponent.AbstractService<Void>() {
 			@Override

@@ -27,6 +27,7 @@ public class CVM  extends AbstractCVM {
 	/** SUBSCRIBER URI**/
 	public static final String SUBSCRIBER_COMPONENT_URI = "my-URI-subscriber";
 	public static final String SUBSCRIBER_STUDENT1_COMPONENT_URI = "my-URI-subscriber-student1";
+	public static final String SUBSCRIBER_STUDENT2_COMPONENT_URI = "my-URI-subscriber-student2";
 
 
 	/******************   PORTS URI CONSTANTS   ********************/
@@ -39,6 +40,7 @@ public class CVM  extends AbstractCVM {
 	public static final String ManagementInboundPortUri = "managementIport";
 	public static final String PublicationInboundPortUri = "publicationIport";
 	public static final String ReceptionInboundPortUri = "receptionIport";
+
 
 	/***************  COMPONENTS URI ATTRIBUTES   *****************/
 
@@ -115,13 +117,13 @@ public class CVM  extends AbstractCVM {
 
 		this.toggleTracing(this.uri_Subscriber_Student1) ;
 
-	/*	this.uri_Subscriber_Student2 =
+		this.uri_Subscriber_Student2 =
 				AbstractComponent.createComponent(
 						Subscriber_Student2.class.getCanonicalName(),
 						new Object[]{ReceptionInboundPortUri}) ;
 		assert	this.isDeployedComponent(this.uri_Subscriber_Student2) ;
 
-		this.toggleTracing(this.uri_Subscriber_Student2) ;*/
+		this.toggleTracing(this.uri_Subscriber_Student2) ;
 
 		// --------------------------------------------------------------------
 		// Connection phase if we are not using plugins

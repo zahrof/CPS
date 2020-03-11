@@ -77,7 +77,7 @@ public class Publisher_Teacher1 extends AbstractComponent {
 
         try {
             //Thread.sleep(100);
-            for (int i=0; i <5; i++) {
+            for (int i=0; i <20; i++) {
                 publish(new Message("Le cours "+i+" est prévu pour le partiel"), "APS");
             }
         /*    String topics[]= {"CPS", "CPA"};
