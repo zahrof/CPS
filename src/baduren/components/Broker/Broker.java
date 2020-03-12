@@ -308,14 +308,14 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 
 			//there should be data now
 			System.out.println("Il y a des subscribers");
-
+			this.messagesLock.lock();
 			for (String inboundPortURI : subscribers.keySet()) {
 				Subscriber subscriber = subscribers.get(inboundPortURI);
 				//sent_messages = new HashSet<>();
 
 				for(String topic : subscriber.topics.keySet()){
 					System.out.println("Select avant de prendre le messageLock");
-					this.messagesLock.lock();
+
 					for(MessageI m : this.messages.get(topic)){
 						System.out.println("Select avant de prendre le messageReady");
 						this.messagesReadyLock.lock();
@@ -325,19 +325,12 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 						}
 						messagesReady.get(inboundPortURI).add(m);
 						this.messagesReadyLock.unlock();
-
-						/*	if (messages_ready.size() == 1) { // Si la liste etait vide avant d'ajouter un element, on notify
-								this.messagesReadyLock.notify();
-								System.out.println("PATATE notifié");
-								//System.out.println("après unlock");
-							}*/
-						//sent_messages.add(m);
 					}
-					this.messagesLock.unlock();
+					//this.messagesLock.unlock();
 					System.out.println("Select après de rendre le messageLock");
 				}
 			}
-			this.messagesLock.lock();
+			//this.messagesLock.lock();
 			for (String topic : this.messages.keySet())
 				this.messages.put(topic, new ArrayList<>());
 			this.messagesLock.unlock();
