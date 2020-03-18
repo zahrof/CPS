@@ -331,7 +331,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 							System.out.println("avant prendre message_ready Lock dans SELECT Message TOPIC "+topic);
 
 							System.out.println("j'ai pris message_ready Lock dans SELECT Message TOPIC "+topic);
-							//if (subscriber.topics.get(topic).filter(m)) {
+							if (subscriber.topics.get(topic)==null) {
 								System.out.println("il y a des trucs à ajouter pour le topic "+topic);
 								if (!this.messagesReady.containsKey(inboundPortURI)) {
 									System.out.println("pUTTING SOME CONTENT");
@@ -340,8 +340,19 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 
 								messagesReady.get(inboundPortURI).add(m);
 								System.out.println("MESSAGE READY"+ messagesReady.toString());
-								//Thread.sleep(1000);
-							//}
+							}
+							else{
+								if(subscriber.topics.get(topic).filter(m)) {
+									System.out.println("il y a des trucs à ajouter pour le topic " + topic);
+									if (!this.messagesReady.containsKey(inboundPortURI)) {
+										System.out.println("pUTTING SOME CONTENT");
+										messagesReady.put(inboundPortURI, new ArrayList<>());
+									}
+
+									messagesReady.get(inboundPortURI).add(m);
+									System.out.println("MESSAGE READY" + messagesReady.toString());
+								}
+							}
 
 							System.out.println("avant rendre message_ready Lock dans SELECT Message TOPIC "+topic);
 

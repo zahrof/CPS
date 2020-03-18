@@ -88,6 +88,13 @@ public class Publisher_Teacher1 extends AbstractComponent {
                 publish(m,"CPS");
             }
             publish(new Message("L'équipe baduren a bien travaillé!"),"CPS");
+
+            for (int i=0; i <5; i++) {
+                Message m = new Message("Le Sujet "+i+" est important ");
+                Properties p = m.getProperties();
+                p.putProp("Prévu à l'examen", true);
+                publish(m,"CPS");
+            }
         /*    String topics[]= {"CPS", "CPA"};
             Message m = new Message("Cours annulés");
             Properties p = m.getProperties();

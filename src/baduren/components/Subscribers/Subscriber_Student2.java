@@ -80,7 +80,6 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
         @Override
         public void			execute() throws Exception
         {
-           // super.execute() ;
             Thread.sleep(100);
             subscribe("APS",this.receptionInboundPort.getPortURI());
             subscribe("CPS",new ConcerneExamens(), this.receptionInboundPort.getPortURI());

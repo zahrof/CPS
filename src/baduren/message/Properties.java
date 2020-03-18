@@ -142,7 +142,8 @@ public class Properties implements java.io.Serializable{
 	 * @return the boolean prop
 	 */
 	public boolean getBooleanProp(String name) {
-		return this.booleanProperties.get(name); 
+		if(this.booleanProperties.get(name)== null) return false;
+		return true;
 	}
 
 	/**
