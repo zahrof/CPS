@@ -76,10 +76,18 @@ public class Publisher_Teacher1 extends AbstractComponent {
         // Test scenario
 
         try {
-            //Thread.sleep(100);
-            for (int i=0; i <20; i++) {
-                publish(new Message("Le cours "+i+" est prévu pour le partiel"), "APS");
+            Thread.sleep(200);
+
+            for (int i=0; i <5; i++) {
+                publish(new Message("Je vais pas faire cours de APS demain"+ i),"APS");
             }
+            for (int i=0; i <5; i++) {
+                Message m = new Message("Le TD aura lieu le jour "+i+" ");
+                Properties p = m.getProperties();
+                p.putProp("Prévu à l'examen", true);
+                publish(m,"CPS");
+            }
+            publish(new Message("L'équipe baduren a bien travaillé!"),"CPS");
         /*    String topics[]= {"CPS", "CPA"};
             Message m = new Message("Cours annulés");
             Properties p = m.getProperties();

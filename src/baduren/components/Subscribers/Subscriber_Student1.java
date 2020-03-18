@@ -36,7 +36,7 @@ public class Subscriber_Student1 extends	AbstractComponent implements ReceptionC
 
 
         this.tracer.setTitle("Student 1") ;
-        this.tracer.setRelativePosition(1, 3) ;
+        this.tracer.setRelativePosition(3, 3) ;
     }
 
         protected Subscriber_Student1(String receptionInboundPortName, int nbThreads, int nbSchedulableThreads)
@@ -58,7 +58,7 @@ public class Subscriber_Student1 extends	AbstractComponent implements ReceptionC
 
 
             this.tracer.setTitle("Student 1") ;
-            this.tracer.setRelativePosition(1, 3) ;
+            this.tracer.setRelativePosition(2, 3) ;
         }
 
         @Override
@@ -82,12 +82,7 @@ public class Subscriber_Student1 extends	AbstractComponent implements ReceptionC
         public void			execute() throws Exception
         {
 
-         /*   subscribe("CPS", this.receptionInboundPort.getPortURI());
-
-            subscribe("CPA",this.receptionInboundPort.getPortURI());
-            Thread.sleep(200);
-
-            subscribe("APS", this.receptionInboundPort.getPortURI());*/
+            subscribe("CPS", this.receptionInboundPort.getPortURI());
         }
 
 
@@ -109,15 +104,10 @@ public class Subscriber_Student1 extends	AbstractComponent implements ReceptionC
 
         public void subscribe(String[] topics, String inboundPortURI)throws Exception {
             ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topics, inboundPortURI);
-
-
         }
 
         public void subscribe(String topic, MessageFilterI filter, String inboundPortURI)throws Exception {
             ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic,filter,inboundPortURI);
-            System.out.println("let's filterU");
-
-
         }
 
         public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {

@@ -73,10 +73,10 @@ public class Publisher_Teacher2 extends AbstractComponent {
     public void			execute() throws Exception
     {
         // Test scenario
-    /*    for (int i=0; i <7; i++) {
-            publish(new Message("Le sujet "+i+" n'est pas prévu à l'examen"), "CPA");
-        }*/
-       // publish(new Message("Le projet est à faire en binôme"),"CPS");
+        for (int i=0; i <7; i++) {
+            publish(new Message("CPA Le sujet "+i+" n'est pas prévu à l'examen"), "CPA");
+        }
+       publish(new Message("CPS Le projet est à faire en binôme"),"CPS");
     }
 
     // TOUTES LES METHODES DE PUBLICATIONSCI

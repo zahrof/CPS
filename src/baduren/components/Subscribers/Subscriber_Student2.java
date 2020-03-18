@@ -68,11 +68,11 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
             this.logMessage("starting subscriber component.") ;
         }
 
-        public class VehiculeAerien implements MessageFilterI {
+        public class ConcerneExamens implements MessageFilterI {
 
             @Override
             public boolean filter(MessageI m) throws Exception {
-                return m.getProperties().getBooleanProp("can_fly");
+                return m.getProperties().getBooleanProp("Prévu à l'examen");
             }
 
         }
@@ -83,6 +83,7 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
            // super.execute() ;
             Thread.sleep(100);
             subscribe("APS",this.receptionInboundPort.getPortURI());
+            subscribe("CPS",new ConcerneExamens(), this.receptionInboundPort.getPortURI());
         }
 
 
