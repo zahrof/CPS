@@ -163,7 +163,7 @@ public class Properties implements java.io.Serializable{
 	 * @return the char prop
 	 */
 	public char getCharProp(String name) {
-		return this.characterProperties.get(name); 
+		return this.characterProperties.get(name);
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class Properties implements java.io.Serializable{
 	 * @return the double prop
 	 */
 	public double getDoubleProp(String name) {
-		return this.doubleProperties.get(name); 
+		return this.doubleProperties.get(name);
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class Properties implements java.io.Serializable{
 	 * @return the float prop
 	 */
 	public float getFloatProp(String name) {
-		return this.floatProperties.get(name); 
+		return this.floatProperties.get(name);
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class Properties implements java.io.Serializable{
 	 * @return the int prop
 	 */
 	public int getIntProp(String name) {
-		return this.integerProperties.get(name); 
+		return this.integerProperties.get(name);
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class Properties implements java.io.Serializable{
 	 * @return the long prop
 	 */
 	public long getLongProp(String name) {
-		return this.longProperties.get(name); 
+		return this.longProperties.get(name);
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class Properties implements java.io.Serializable{
 	 * @return the short prop
 	 */
 	public short getShortProp(String name) {
-		return this.shortProperties.get(name); 
+		return this.shortProperties.get(name);
 	}
 
 	/**
@@ -223,6 +223,8 @@ public class Properties implements java.io.Serializable{
 	 * @return the string prop
 	 */
 	public String getStringProp(String name) {
-		return this.stringProperties.get(name); 
+		String res = this.stringProperties.get(name);
+		if(res == null) return "";
+		return res;
 	} 
 }

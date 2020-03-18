@@ -72,17 +72,30 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
 
             @Override
             public boolean filter(MessageI m) throws Exception {
-                return m.getProperties().getBooleanProp("Prévu à l'examen");
+                if(m.getProperties().getBooleanProp("Prévu à l'examen")) return true;
+                return false;
+                //return m.getProperties().getBooleanProp("Prévu à l'examen");
             }
 
         }
+    public class EnseigneParMalenfant implements MessageFilterI {
+
+        @Override
+        public boolean filter(MessageI m) throws Exception {
+            if(m.getProperties().getStringProp("professeur").equals("Malenfant")==true)
+                return true;
+            return false;
+        }
+
+    }
 
         @Override
         public void			execute() throws Exception
         {
             Thread.sleep(100);
             subscribe("APS",this.receptionInboundPort.getPortURI());
-            subscribe("CPS",new ConcerneExamens(), this.receptionInboundPort.getPortURI());
+            //subscribe("CPS",new ConcerneExamens(), this.receptionInboundPort.getPortURI());
+            subscribe("CPS",new EnseigneParMalenfant(), this.receptionInboundPort.getPortURI());
         }
 
 

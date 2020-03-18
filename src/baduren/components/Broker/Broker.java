@@ -224,8 +224,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		super.execute() ;
 		this.createNewExecutorService(SELECT_MESSAGES_HANDLER_URI, 4, false) ;
 		this.createNewExecutorService(ACCEPT_ACCESS_HANDLER_URI, 4, false) ;
-		this.createNewExecutorService(SUBSCRIBE_ACCESS_HANDLER_URI, 4, false) ;
-		this.createNewExecutorService(PUBLICATION_ACCESS_HANDLER_URI, 4, false) ;
+		// pas besoin de faire plusieurs threads pour le publieur car elle éxécuterai la méthode publish
+		// qui est locké du début à la fin du coup pas trop de parallelisation
 
 		handleRequestAsync(SELECT_MESSAGES_HANDLER_URI,new AbstractComponent.AbstractService<Void>() {
 			@Override
@@ -267,8 +267,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		RECEPTION METHODS
 	 */
 	public void acceptMessage() throws Exception {
-		Thread.sleep(2000);
-		//this.messages_ready_locker.readLock().lock();
+
+
 		while(true) {
 			System.out.println("avant lock dans accept message pour subscribers");
 			this.subscribersLock.lock(); //blocks writers only
@@ -278,7 +278,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 				hasSubscribers.await();
 			}
 			System.out.println("avant prendre message Ready dans ACCEPT Message");
-			messagesReadyLock.lock();
+
 			System.out.println("après prendre message Ready dans ACCEPT Message");
 			for (String inboundPortI : subscribers.keySet()) {
 
@@ -287,20 +287,30 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 					System.out.println("pour tous les subscriber dans messageReady");
 					if(inboundPortI.equals(inboundPortII)){
 						System.out.println("Equals");
-						for(MessageI m: messagesReady.get(inboundPortI)){
-							this.logMessage("Envoi du message "+m.toString()+ "au port "+ inboundPortI);
-							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(m);
-							System.out.println("je viens de l'envoyer à accept message le message "+ m.toString());
+						messagesReadyLock.lock();
+						if(messagesReady.get(inboundPortI).size()==1){
+							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(messagesReady.get(inboundPortI).get(0));
 						}
+
+						else {
+							for (MessageI m : messagesReady.get(inboundPortI)) {
+								this.logMessage("Envoi du message " + m.toString() + "au port " + inboundPortI);
+								subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(m);
+								System.out.println("je viens de l'envoyer à accept message le message " + m.toString());
+							}
+						}messagesReadyLock.unlock();
 					}
 
 				}
+				messagesReadyLock.lock();
 				System.out.println("je vais supprimer inbound Port ACCEPT");
 				messagesReady.remove(inboundPortI);
+				messagesReadyLock.unlock();
+
 				System.out.println("je l'ai supprimmé ds ACCEPT");
 			}
 			System.out.println("avant rendre message Ready dans ACCEPT Message");
-			messagesReadyLock.unlock();
+
 			System.out.println("avant rendre subscriber Lock dans ACCEPT Message");
 			this.subscribersLock.unlock();
 		}
@@ -455,12 +465,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 */
 	public void subscribe(String topic, String inboundPortURIaux) throws Exception{
 		subscribe(topic, (MessageFilterI) null, inboundPortURIaux);
-		//subscribers.get(inboundPortURI).a;
-		/*f (subscribers.get(inboundPortURI).topics.get(topic).filter(m)) {
-			subscriber.receptionOutboundPort.acceptMessage(m);*/
-		/*((BrokerReceptionPlugin)this.getPlugin(MY_RECEPTION_BROKER_PLUGIN_URI)).acceptMessage((new Message("Bravo tu viens de " +
-				"te souscrire au topic "+topic)));*/
-
 	}
 
 	/**
@@ -517,12 +521,13 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 			subscribers.get(inboundPortURI).topics.put(topic, filter);
 		}
 		System.out.println("subscribe avant de rendre le lock subscribedlock");
-		this.subscribersLock.unlock();
+
 		System.out.println("subscribe après de rendre le lock subscribedlock");
 
 		this.compteur++;
 		subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
 				"te souscrire au topic "+topic));
+		this.subscribersLock.unlock();
 		if (filter == null) {
 			this.logMessage("Subscribed " + inboundPortURI + " to topic " + topic + " with no filter");
 		}

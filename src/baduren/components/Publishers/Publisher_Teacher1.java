@@ -95,6 +95,13 @@ public class Publisher_Teacher1 extends AbstractComponent {
                 p.putProp("Prévu à l'examen", true);
                 publish(m,"CPS");
             }
+
+            for (int i=0; i <5; i++) {
+                Message m = new Message("Je ferai un appel vidéo pour faire le CM le jour "+i);
+                Properties p = m.getProperties();
+                p.putProp("professeur", "Malenfant");
+                publish(m,"CPS");
+            }
         /*    String topics[]= {"CPS", "CPA"};
             Message m = new Message("Cours annulés");
             Properties p = m.getProperties();
