@@ -68,21 +68,13 @@ public class Subscriber_Student1 extends	AbstractComponent implements ReceptionC
             this.logMessage("starting subscriber component.") ;
         }
 
-        public class VehiculeAerien implements MessageFilterI {
 
-            @Override
-            public boolean filter(MessageI m) throws Exception {
-                //System.out.println()
-                return m.getProperties().getBooleanProp("can_fly");
-            }
-
-        }
 
         @Override
         public void			execute() throws Exception
         {
 
-            subscribe("CPS", this.receptionInboundPort.getPortURI());
+            subscribe(new String[]{"PC3R", "PAF"}, this.receptionInboundPort.getPortURI());
         }
 
 
@@ -130,8 +122,6 @@ public class Subscriber_Student1 extends	AbstractComponent implements ReceptionC
 
         public void createTopics(String[] topics) throws Exception{
             ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopics(topics);
-
-
         }
 
         public void destroyTopic(String topic) throws Exception{

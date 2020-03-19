@@ -9,6 +9,8 @@ import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 
+import java.util.List;
+
 public class Publisher_Teacher1 extends AbstractComponent {
 
 
@@ -77,26 +79,21 @@ public class Publisher_Teacher1 extends AbstractComponent {
 
         try {
             Thread.sleep(200);
+            MessageI[] msg;
 
-            for (int i=0; i <5; i++) {
-                publish(new Message("Je vais pas faire cours de APS demain"+ i),"APS");
-            }
-            for (int i=0; i <5; i++) {
+            publish(new Message[]{new Message("Je vais pas faire cours de APS demain"),
+                    new Message("Vous devez finir le typeur chez vous"),
+                    new Message("J'espère que vous allez bien")},"APS");
+
+            for (int i=0; i <3; i++) {
                 Message m = new Message("Le TD aura lieu le jour "+i+" ");
                 Properties p = m.getProperties();
-                p.putProp("Prévu à l'examen", true);
+                p.putProp("Sera évaluée à l'examen réparti 1 ", true);
                 publish(m,"CPS");
             }
             publish(new Message("L'équipe baduren a bien travaillé!"),"CPS");
 
-            for (int i=0; i <5; i++) {
-                Message m = new Message("Le Sujet "+i+" est important ");
-                Properties p = m.getProperties();
-                p.putProp("Prévu à l'examen", true);
-                publish(m,"CPS");
-            }
-
-            for (int i=0; i <5; i++) {
+            for (int i=0; i <3; i++) {
                 Message m = new Message("Je ferai un appel vidéo pour faire le CM le jour "+i);
                 Properties p = m.getProperties();
                 p.putProp("professeur", "Malenfant");
@@ -159,7 +156,7 @@ public class Publisher_Teacher1 extends AbstractComponent {
     public void publish(MessageI[] ms, String topics) throws Exception {
         String str= " ";
         for (MessageI s : ms) {
-            str += s.getURI()+ " ";
+            str += s.getURI()+ " \n";
         }
         logMessage("Publishing messages " + str+ " to the topic : "+topics);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(ms,topics);

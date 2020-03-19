@@ -68,16 +68,16 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
             this.logMessage("starting subscriber component.") ;
         }
 
-        public class ConcerneExamens implements MessageFilterI {
+    public class SeraEvalueeAER1 implements MessageFilterI {
 
-            @Override
-            public boolean filter(MessageI m) throws Exception {
-                if(m.getProperties().getBooleanProp("Prévu à l'examen")) return true;
-                return false;
-                //return m.getProperties().getBooleanProp("Prévu à l'examen");
-            }
-
+        @Override
+        public boolean filter(MessageI m) throws Exception {
+            // Nous devons le programmer ainsi car la condition re
+            if(m.getProperties().getBooleanProp("Sera évaluée à l'examen réparti 1 ")) return  true;
+            else return false;
         }
+
+    }
     public class EnseigneParMalenfant implements MessageFilterI {
 
         @Override
@@ -92,9 +92,8 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
         @Override
         public void			execute() throws Exception
         {
-            Thread.sleep(100);
             subscribe("APS",this.receptionInboundPort.getPortURI());
-            //subscribe("CPS",new ConcerneExamens(), this.receptionInboundPort.getPortURI());
+            subscribe("PAF",new SeraEvalueeAER1(), this.receptionInboundPort.getPortURI());
             subscribe("CPS",new EnseigneParMalenfant(), this.receptionInboundPort.getPortURI());
         }
 

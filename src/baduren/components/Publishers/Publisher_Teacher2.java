@@ -3,6 +3,7 @@ package baduren.components.Publishers;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.message.Message;
+import baduren.message.Properties;
 import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
@@ -39,7 +40,7 @@ public class Publisher_Teacher2 extends AbstractComponent {
         this.installPlugin(pluginManagement) ;
 
         this.tracer.setTitle("Teacher 2") ;
-        this.tracer.setRelativePosition(1, 2) ;
+        this.tracer.setRelativePosition(2, 2) ;
     }
 
     protected Publisher_Teacher2(int nbThreads, int nbSchedulableThreads) throws Exception {
@@ -73,10 +74,14 @@ public class Publisher_Teacher2 extends AbstractComponent {
     public void			execute() throws Exception
     {
         // Test scenario
-        for (int i=0; i <7; i++) {
-            publish(new Message("CPA Le sujet "+i+" n'est pas prévu à l'examen"), "CPA");
+        for (int i=0; i <3; i++) {
+            Message m = new Message(" PAF -> Le sujet "+i+" est prévu à l'examen réparti 1 ");
+            Properties p = m.getProperties();
+            p.putProp("Sera évaluée à l'examen réparti 1 ", true);
+            publish(m,"PAF");
         }
-       publish(new Message("CPS Le projet est à faire en binôme"),"CPS");
+       publish(new Message("PC3R -> La semaine prochaine nous verrons PROMELA"),"PC3R");
+        publish(new Message(" Je ferai cours sur TWITCH "), new String[]{"PC3R", "PAF"});
     }
 
     // TOUTES LES METHODES DE PUBLICATIONSCI

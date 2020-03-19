@@ -289,6 +289,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 						System.out.println("Equals");
 						messagesReadyLock.lock();
 						if(messagesReady.get(inboundPortI).size()==1){
+							this.logMessage("Envoi du message " + messagesReady.get(inboundPortI).get(0).toString() + "au port " + inboundPortI);
 							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(messagesReady.get(inboundPortI).get(0));
 						}
 
@@ -307,7 +308,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 				messagesReady.remove(inboundPortI);
 				messagesReadyLock.unlock();
 
-				System.out.println("je l'ai supprimmé ds ACCEPT");
 			}
 			System.out.println("avant rendre message Ready dans ACCEPT Message");
 
@@ -331,8 +331,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 			System.out.println("messages "+messages.toString());
 			if(!messages.isEmpty()) {
 				for (String topic : messages.keySet()) {
-					if(topic.equals("APS"))
-						System.out.println("TOPIC "+ topic + " subscribers "+ subscribers.toString()+ "messages "+messages.toString());
 					for (String inboundPortURI : subscribers.keySet()) {
 						Subscriber subscriber = subscribers.get(inboundPortURI);
 						if(!subscriber.topics.keySet().contains(topic)) continue;
@@ -370,6 +368,9 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 						}
 
 					}
+					for (MessageI m : this.messages.get(topic)) {
+						this.logMessage("Suppression des messages "+m.toString()+" du topic " + topic);
+					}
 					this.messages.put(topic, new ArrayList<>());
 				}
 				//Thread.sleep(1000);
@@ -403,11 +404,11 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		if (!isTopic(topic)) createTopic(topic); // Si le topic n'existait pas déjà on le crée
 
 		this.messages.get(topic).add(m); // On ajoute le message
-		if(topic.equals("APS")) System.out.println("PUBLISH" +messages.toString());
+		this.logMessage("Message " + m.getURI() + " stocked to topic " + topic+ " at the moment "+m.getTimeStamp().getTime() );
 		this.messagesLock.unlock();
 		System.out.println("publish rend le lock pour messages "+m.toString());
 
-		this.logMessage("Message " + m.getURI() + " stocked to topic " + topic+ " at the moment "+m.getTimeStamp().getTime() );
+
 		//Thread.sleep(1000);
 	}
 
