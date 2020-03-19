@@ -16,7 +16,7 @@ import fr.sorbonne_u.components.ports.PortI;
 import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
 
 
-public class Subscriber extends	AbstractComponent{
+public class  Subscriber extends	AbstractComponent{
 	public final static String	DYNAMIC_CONNECTION_PLUGIN_URI =
 			"serverSidePLuginURI" ;
 

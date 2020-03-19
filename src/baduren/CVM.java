@@ -1,6 +1,7 @@
 package baduren;
 
 import baduren.components.Broker.Broker;
+import baduren.components.Publishers.Publisher_Teacher;
 import baduren.components.Publishers.Publisher_Teacher1;
 import baduren.components.Publishers.Publisher_Teacher2;
 import baduren.components.Subscribers.Subscriber_Student1;
@@ -97,14 +98,16 @@ public class CVM  extends AbstractCVM {
 		/*assert	this.isDeployedComponent(this.uriPublisherURI) ;
 
 		this.toggleTracing(this.uriPublisherURI) ;*/
+		Object args1[] = {1, 0, 1};
+		Object args2[] = {1, 0, 2};
 
 		this.uri_Publisher_Teacher1 = AbstractComponent.createComponent(
-				Publisher_Teacher1.class.getCanonicalName(), new  Object[]{});
+				Publisher_Teacher.class.getCanonicalName(), args1);
 		assert	this.isDeployedComponent(uri_Publisher_Teacher1) ;
 		this.toggleTracing(this.uri_Publisher_Teacher1) ;
 
 		this.uri_Publisher_Teacher2 = AbstractComponent.createComponent(
-				Publisher_Teacher2.class.getCanonicalName(), new  Object[]{});
+				Publisher_Teacher.class.getCanonicalName(), args2);
 		assert	this.isDeployedComponent(uri_Publisher_Teacher2) ;
 		this.toggleTracing(this.uri_Publisher_Teacher2) ;
 
@@ -209,7 +212,7 @@ public class CVM  extends AbstractCVM {
 			// Create an instance of the defined component virtual machine.
 			CVM a = new CVM() ;
 			// Execute the application.
-			a.startStandardLifeCycle(2000L) ;
+			a.startStandardLifeCycle(2000000L) ;
 			// Give some time to see the traces (convenience).
 			Thread.sleep(5000L) ;
 			// Simplifies the termination (termination has yet to be treated
