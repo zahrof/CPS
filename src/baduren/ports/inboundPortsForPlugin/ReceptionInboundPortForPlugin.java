@@ -1,6 +1,5 @@
 package baduren.ports.inboundPortsForPlugin;
 
-import baduren.components.Subscribers.Subscriber_Student1;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
 import fr.sorbonne_u.components.AbstractComponent;

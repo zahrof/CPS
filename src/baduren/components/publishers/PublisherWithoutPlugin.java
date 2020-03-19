@@ -1,4 +1,4 @@
-package baduren.components.Publishers;
+package baduren.components.publishers;
 
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
@@ -13,7 +13,7 @@ import fr.sorbonne_u.components.exceptions.ComponentStartException;
 /**
  * The type Publisher.
  */
-public class Publisher extends AbstractComponent {
+public class PublisherWithoutPlugin extends AbstractComponent {
 
 
 	// ------------------------------------------------------------------------
@@ -42,8 +42,8 @@ public class Publisher extends AbstractComponent {
 	 * @param publicationOutboundPortName the publication outbound port name
 	 * @throws Exception the exception
 	 */
-	protected Publisher(String uri, String managementOutboundPortName, String publicationOutboundPortName,
-						int nbThreads, int nbSchedulableThreads) throws Exception {
+	protected PublisherWithoutPlugin(String uri, String managementOutboundPortName, String publicationOutboundPortName,
+									 int nbThreads, int nbSchedulableThreads) throws Exception {
 		super(uri, nbThreads, nbSchedulableThreads);
 		this.uriPrefix = uri;
 

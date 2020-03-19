@@ -1,4 +1,4 @@
-package baduren.components.Publishers;
+package baduren.components.publishers;
 
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
@@ -9,9 +9,7 @@ import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 
-import java.util.List;
-
-public class Publisher_Teacher1 extends AbstractComponent {
+public class PublisherTeacherWithPlugin extends AbstractComponent {
 
 
     // -------------------------------------------------------------------------
@@ -24,30 +22,32 @@ public class Publisher_Teacher1 extends AbstractComponent {
     private final PublisherSubscriberManagementPlugin pluginManagement;
     private final PublisherPublicationPlugin plugin;
 
+    private int number_teacher; // To know what senario each teacher should follow
+
+
+    // -------------------------------------------------------------------------
+    // Utility method for empty constructor
+    // -------------------------------------------------------------------------
+
+    private static int number_of_teachers = 0;
+
+    private static Integer[] get_a_teacher_number(){
+        Integer args[] = {number_of_teachers++};
+        return args;
+    }
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
-    protected Publisher_Teacher1() throws Exception {
-        super(1, 0);
-        // Install the plug-in.
-        this.plugin = new PublisherPublicationPlugin() ;
-        plugin.setPluginURI(MY_PUBLISHER_PLUGIN_URI) ;
-        this.installPlugin(plugin) ;
 
-        // Install the plug-in.
-        this.pluginManagement = new PublisherSubscriberManagementPlugin();
-        pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
-        this.installPlugin(pluginManagement) ;
 
-        this.tracer.setTitle("Teacher 1") ;
-        this.tracer.setRelativePosition(1, 1) ;
-    }
 
-    protected Publisher_Teacher1(int nbThreads, int nbSchedulableThreads) throws Exception {
+    protected PublisherTeacherWithPlugin(int nbThreads, int nbSchedulableThreads, int number_teacher) throws Exception {
         super(nbThreads, nbSchedulableThreads);
 
+        this.number_teacher = number_teacher;
+
         // Install the plug-in.
         this.plugin = new PublisherPublicationPlugin() ;
         plugin.setPluginURI(MY_PUBLISHER_PLUGIN_URI) ;
@@ -58,8 +58,13 @@ public class Publisher_Teacher1 extends AbstractComponent {
         pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
         this.installPlugin(pluginManagement) ;
 
-        this.tracer.setTitle(MY_PUBLISHER_PLUGIN_URI) ;
-        this.tracer.setRelativePosition(1, 1) ;
+        //this.tracer.setTitle(MY_PUBLISHER_PLUGIN_URI) ;
+        this.tracer.setTitle("Teacher " + this.number_teacher) ;
+        this.tracer.setRelativePosition(1, this.number_teacher + 1) ;
+    }
+
+    protected PublisherTeacherWithPlugin() throws Exception {
+        this(1, 0, 1);
     }
 
     // -------------------------------------------------------------------------
@@ -75,40 +80,54 @@ public class Publisher_Teacher1 extends AbstractComponent {
     public void			execute() throws Exception
     {
 
-        // Test scenario
+        switch(this.number_teacher){
+            case 1:
+                /*                          TEST SCENARIO:
+                 Dans ce test on va tester tous les tests, le souscripteur 1
+                 va s'abonner au topic "CPS" avec tous ces filtres et va bien recevoir exclusivement
+                 le message "Bonjour, je vais tester tous les filtres." et non pas le message
+                "Bonjour, je ne teste pas de filtre moi". Notez qu'il y a une sémantique
+                d'entrelacement où le souscripteur 1 ne reçoit pas ce message. Cela est juste
+                dû à que les threads d'envoi des message à envoyer le message avant que le
+                souscripteur 1 ait eu le temps de se souscrire au topic CPS avec filtres */
 
-        try {
-            Thread.sleep(200);
-            MessageI[] msg;
-
-            publish(new Message[]{new Message("Je vais pas faire cours de APS demain"),
-                    new Message("Vous devez finir le typeur chez vous"),
-                    new Message("J'espère que vous allez bien")},"APS");
-
-            for (int i=0; i <3; i++) {
-                Message m = new Message("Le TD aura lieu le jour "+i+" ");
+                Message m = new Message("Bonjour, je vais tester tous les filtres. ");
                 Properties p = m.getProperties();
-                p.putProp("Sera évaluée à l'examen réparti 1 ", true);
+                p.putProp("UE obligatoire", true);
+                p.putProp("Première lettre de l'UE",'c');
+                p.putProp("Random Double ",2.00);
+                p.putProp("Random Float ",(float) 2.50);
+                p.putProp("Random Integer ", 3);
+                p.putProp("Random Long ",(long) 3);
+                p.putProp("Random Short ",(short) 3);
+                p.putProp("Random String ","random");
                 publish(m,"CPS");
-            }
-            publish(new Message("L'équipe baduren a bien travaillé!"),"CPS");
+                break;
 
-            for (int i=0; i <3; i++) {
-                Message m = new Message("Je ferai un appel vidéo pour faire le CM le jour "+i);
-                Properties p = m.getProperties();
-                p.putProp("professeur", "Malenfant");
-                publish(m,"CPS");
-            }
-        /*    String topics[]= {"CPS", "CPA"};
-            Message m = new Message("Cours annulés");
-            Properties p = m.getProperties();
-            p.putProp("A rattrapper : ", false);
-            publish(m,topics);
+            case 2:
+                /*                          TEST SCENARIO:
+                 Dans ce test on va tester toutes les méthodes de Publication CI. Nous pouvons faire
+                 la vérification de la sauverade de ces messages en regardant dans la JVM du Broker,
+                 nous voyons bien que Broker affiche "Message 'uri du message' sauvegardé dans le
+                  sujet 'topic' au moment "+m.getTimeStamp().getTime() ); pour ces 12 messages.
+                  Ces messages vont être effacé dans le Broker au fûr et à mesure. Pour plus de
+                  détails voir la classe du Broker. */
 
-            publish(new Message("Demain il y a pas cours"), "CPS");*/
+                publish(new Message("La semaine prochaine nous verrons PROMELA"),"PC3R");
+                publish(new Message("Je ferai cours sur TWITCH"), new String[]{"PC3R", "PAF"});
+                publish(new MessageI[]{
+                        new Message("Le sujet 0 sera à l'examen"),
+                        new Message("Le sujet 1 sera à l'examen"),
+                        new Message("Le sujet 2 sera à l'examen")
+                }, "PAF");
+                publish(new MessageI[]{
+                        new Message("Je ferai cours sur TWITCH lundi "),
+                        new Message("Je ferai cours sur TWITCH jeudi"),
+                        new Message("Je ferai cours sur TWITCH vendredi")
+                },  new String[]{"PC3R", "PAF"});
+                break;
 
-        } catch(Throwable t) {
-            t.printStackTrace();
+
         }
 
     }
@@ -156,7 +175,7 @@ public class Publisher_Teacher1 extends AbstractComponent {
     public void publish(MessageI[] ms, String topics) throws Exception {
         String str= " ";
         for (MessageI s : ms) {
-            str += s.getURI()+ " \n";
+            str += s.getURI()+ " ";
         }
         logMessage("Publishing messages " + str+ " to the topic : "+topics);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(ms,topics);

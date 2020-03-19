@@ -1,10 +1,12 @@
 package baduren.plugins;
 
 import baduren.CVM;
+import baduren.components.Broker.Broker;
 import baduren.connectors.PublicationConnector;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
 import baduren.ports.outboundPorts.PublicationOutboundPort;
+import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.AbstractPlugin;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.reflection.connectors.ReflectionConnector;
@@ -102,7 +104,6 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
      * @throws Exception the exception
      */
     public void publish(MessageI[] ms, String topics) throws Exception {
-
         this.publicationOutboundPort.publish(ms, topics);
 
     }

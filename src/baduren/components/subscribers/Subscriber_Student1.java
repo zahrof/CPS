@@ -1,25 +1,25 @@
-package baduren.components.Subscribers;
+package baduren.components.subscribers;
 
 import baduren.CVM;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
-import baduren.plugins.PublisherSubscriberManagementPlugin;
-import baduren.plugins.SubscriberReceptionPlugin;
 import baduren.ports.inboundPorts.ReceptionInboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
+import baduren.plugins.PublisherSubscriberManagementPlugin;
+import baduren.plugins.SubscriberReceptionPlugin;
 
-public class Subscriber_Student2 extends	AbstractComponent implements ReceptionCI {
-    protected final static String MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = "management-subscriber2-client-plugin-uri";
-    protected final static String MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI = "reception-subscriber2-client-plugin-uri";
-    protected final static String RECEPTION_INBOUND_PORT_URI = "student2" ;
+public class Subscriber_Student1 extends	AbstractComponent implements ReceptionCI {
+    protected final static String MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = "management-subscriber-client-plugin-uri";
+    protected final static String MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI = "reception-subscriber-client-plugin-uri";
+    protected final static String RECEPTION_INBOUND_PORT_URI = "student1" ;
     protected String uri;
         /**	the outbound port used to call the service.							*/
         protected ReceptionInboundPort receptionInboundPort;
 
-    protected Subscriber_Student2(String receptionInboundPortName) throws Exception {
-        super(CVM.SUBSCRIBER_STUDENT2_COMPONENT_URI,1, 0);
+    protected Subscriber_Student1(String receptionInboundPortName) throws Exception {
+        super(CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI,1, 0);
         this.uri = CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI;
         this.receptionInboundPort = new ReceptionInboundPort(RECEPTION_INBOUND_PORT_URI,this);
 
@@ -35,11 +35,11 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
         this.installPlugin(pluginReception) ;
 
 
-        this.tracer.setTitle("Student 2") ;
-        this.tracer.setRelativePosition(1, 4) ;
+        this.tracer.setTitle("Student 1") ;
+        this.tracer.setRelativePosition(3, 3) ;
     }
 
-        protected Subscriber_Student2(String receptionInboundPortName, int nbThreads, int nbSchedulableThreads)
+        protected Subscriber_Student1(String receptionInboundPortName, int nbThreads, int nbSchedulableThreads)
                 throws Exception {
             super(CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI,nbThreads, nbSchedulableThreads);
             this.uri = CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI;
@@ -57,8 +57,8 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
             this.installPlugin(pluginReception) ;
 
 
-            this.tracer.setTitle("Student 2") ;
-            this.tracer.setRelativePosition(1, 3) ;
+            this.tracer.setTitle("Student 1") ;
+            this.tracer.setRelativePosition(2, 3) ;
         }
 
         @Override
@@ -68,33 +68,13 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
             this.logMessage("starting subscriber component.") ;
         }
 
-    public class SeraEvalueeAER1 implements MessageFilterI {
 
-        @Override
-        public boolean filter(MessageI m) throws Exception {
-            // Nous devons le programmer ainsi car la condition re
-            if(m.getProperties().getBooleanProp("Sera évaluée à l'examen réparti 1 ")) return  true;
-            else return false;
-        }
-
-    }
-    public class EnseigneParMalenfant implements MessageFilterI {
-
-        @Override
-        public boolean filter(MessageI m) throws Exception {
-            if(m.getProperties().getStringProp("professeur").equals("Malenfant")==true)
-                return true;
-            return false;
-        }
-
-    }
 
         @Override
         public void			execute() throws Exception
         {
-            subscribe("APS",this.receptionInboundPort.getPortURI());
-            subscribe("PAF",new SeraEvalueeAER1(), this.receptionInboundPort.getPortURI());
-            subscribe("CPS",new EnseigneParMalenfant(), this.receptionInboundPort.getPortURI());
+
+            subscribe(new String[]{"PC3R", "PAF"}, this.receptionInboundPort.getPortURI());
         }
 
 
@@ -116,15 +96,10 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
 
         public void subscribe(String[] topics, String inboundPortURI)throws Exception {
             ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topics, inboundPortURI);
-
-
         }
 
         public void subscribe(String topic, MessageFilterI filter, String inboundPortURI)throws Exception {
             ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic,filter,inboundPortURI);
-            System.out.println("let's filterU");
-
-
         }
 
         public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
@@ -147,8 +122,6 @@ public class Subscriber_Student2 extends	AbstractComponent implements ReceptionC
 
         public void createTopics(String[] topics) throws Exception{
             ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopics(topics);
-
-
         }
 
         public void destroyTopic(String topic) throws Exception{

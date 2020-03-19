@@ -1,22 +1,15 @@
-package baduren.components.Subscribers;
+package baduren.components.subscribers;
 
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
-import baduren.interfaces.ReceptionCI;
 import baduren.ports.inboundPorts.ReceptionInboundPort;
 import baduren.ports.outboundPorts.ManagementOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
-import fr.sorbonne_u.components.annotations.AddPlugin;
-import fr.sorbonne_u.components.annotations.OfferedInterfaces;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
-import fr.sorbonne_u.components.plugins.dconnection.DynamicConnectionServerSidePlugin;
-import fr.sorbonne_u.components.ports.InboundPortI;
-import fr.sorbonne_u.components.ports.PortI;
-import fr.sorbonne_u.components.reflection.interfaces.ReflectionI;
 
 
-public class  Subscriber extends	AbstractComponent{
+public class SubscriberWithPlugin extends	AbstractComponent{
 	public final static String	DYNAMIC_CONNECTION_PLUGIN_URI =
 			"serverSidePLuginURI" ;
 
@@ -27,8 +20,8 @@ public class  Subscriber extends	AbstractComponent{
 	protected ReceptionInboundPort receptionInboundPort;
 
 
-	protected Subscriber(String uri, String receptionInboundPortName, String managementOutboundPortName,
-						 int nbThreads, int nbSchedulableThreads) throws Exception {
+	protected SubscriberWithPlugin(String uri, String receptionInboundPortName, String managementOutboundPortName,
+								   int nbThreads, int nbSchedulableThreads) throws Exception {
 		super(uri, nbThreads, nbSchedulableThreads);
 		this.uri = uri; 
 		this.receptionInboundPort  = new ReceptionInboundPort(receptionInboundPortName,this); 

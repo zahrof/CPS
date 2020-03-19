@@ -1,11 +1,9 @@
 package baduren;
 
 import baduren.components.Broker.Broker;
-import baduren.components.Publishers.Publisher_Teacher;
-import baduren.components.Publishers.Publisher_Teacher1;
-import baduren.components.Publishers.Publisher_Teacher2;
-import baduren.components.Subscribers.Subscriber_Student1;
-import baduren.components.Subscribers.Subscriber_Student2;
+import baduren.components.publishers.PublisherTeacherWithPlugin;
+import baduren.components.subscribers.Subscriber_Student1;
+import baduren.components.subscribers.Subscriber_Student2;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.helpers.CVMDebugModes;
@@ -30,17 +28,16 @@ public class CVM  extends AbstractCVM {
 	public static final String SUBSCRIBER_STUDENT1_COMPONENT_URI = "my-URI-subscriber-student1";
 	public static final String SUBSCRIBER_STUDENT2_COMPONENT_URI = "my-URI-subscriber-student2";
 
-
 	/******************   PORTS URI CONSTANTS   ********************/
 	/** OUTBOUND PORTS URI**/
-	public static final String ManagementOutboundPortUri = "managementOport";
-	public static final String PublicationOutboundPortUri = "publicationOport";
-	public static final String ReceptionOutboundPortUri = "receptionOport";
+	public static final String MANAGEMENT_OUTBOUND_PORT_URI = "managementOport";
+	public static final String PUBLICATION_OUTBOUND_PORT_URI = "publicationOport";
+	public static final String RECEPTION_OUTBOUND_PORT_URI = "receptionOport";
 
 	/** INBOUND PORTS URI**/
-	public static final String ManagementInboundPortUri = "managementIport";
-	public static final String PublicationInboundPortUri = "publicationIport";
-	public static final String ReceptionInboundPortUri = "receptionIport";
+	public static final String MANAGEMENT_INBOUND_PORT_URI = "managementIport";
+	public static final String PUBLICATION_INBOUND_PORT_URI = "publicationIport";
+	public static final String RECEPTION_INBOUND_PORT_URI = "receptionIport";
 
 
 	/***************  COMPONENTS URI ATTRIBUTES   *****************/
@@ -81,7 +78,7 @@ public class CVM  extends AbstractCVM {
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
 						new Object[]{
-								5,0}) ;
+								10,0}) ;
 		assert	this.isDeployedComponent(this.uriBrokerURI) ;
 
 		this.toggleTracing(this.uriBrokerURI) ;
@@ -102,12 +99,12 @@ public class CVM  extends AbstractCVM {
 		Object args2[] = {1, 0, 2};
 
 		this.uri_Publisher_Teacher1 = AbstractComponent.createComponent(
-				Publisher_Teacher.class.getCanonicalName(), args1);
+				PublisherTeacherWithPlugin.class.getCanonicalName(), args1);
 		assert	this.isDeployedComponent(uri_Publisher_Teacher1) ;
 		this.toggleTracing(this.uri_Publisher_Teacher1) ;
 
 		this.uri_Publisher_Teacher2 = AbstractComponent.createComponent(
-				Publisher_Teacher.class.getCanonicalName(), args2);
+				PublisherTeacherWithPlugin.class.getCanonicalName(), args2);
 		assert	this.isDeployedComponent(uri_Publisher_Teacher2) ;
 		this.toggleTracing(this.uri_Publisher_Teacher2) ;
 
@@ -115,7 +112,7 @@ public class CVM  extends AbstractCVM {
 		this.uri_Subscriber_Student1 =
 				AbstractComponent.createComponent(
 						Subscriber_Student1.class.getCanonicalName(),
-						new Object[]{ReceptionInboundPortUri,2,0}) ;
+						new Object[]{RECEPTION_INBOUND_PORT_URI,2,0}) ;
 		assert	this.isDeployedComponent(this.uri_Subscriber_Student1) ;
 
 		this.toggleTracing(this.uri_Subscriber_Student1) ;
@@ -123,7 +120,7 @@ public class CVM  extends AbstractCVM {
 		this.uri_Subscriber_Student2 =
 				AbstractComponent.createComponent(
 						Subscriber_Student2.class.getCanonicalName(),
-						new Object[]{ReceptionInboundPortUri}) ;
+						new Object[]{RECEPTION_INBOUND_PORT_URI}) ;
 		assert	this.isDeployedComponent(this.uri_Subscriber_Student2) ;
 
 		this.toggleTracing(this.uri_Subscriber_Student2) ;

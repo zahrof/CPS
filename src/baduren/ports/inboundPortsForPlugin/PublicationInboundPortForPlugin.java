@@ -73,7 +73,6 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 						return null;
 					}
 				}) ;
-            ((Broker)this.owner).publish(ms, topics);
         }
 
         @Override
@@ -86,7 +85,6 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 						return null;
 					}
 				}) ;
-            ((Broker)this.owner).publish(ms, topics);
         }
     }
 

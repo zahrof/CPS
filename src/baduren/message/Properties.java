@@ -142,8 +142,11 @@ public class Properties implements java.io.Serializable{
 	 * @return the boolean prop
 	 */
 	public boolean getBooleanProp(String name) {
-		if(this.booleanProperties.get(name)== null) return false;
-		return true;
+		/*
+		Nous devons le spécifier ainsi car la méthode get dans une map renvoie null ou la valeur associé
+		à la clé name.
+		 */
+		return this.booleanProperties.get(name);
 	}
 
 	/**
