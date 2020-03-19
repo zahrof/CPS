@@ -1,9 +1,8 @@
 package baduren;
 
 import baduren.components.Broker.Broker;
-import baduren.components.publishers.PublisherTeacherWithPlugin;
-import baduren.components.subscribers.Subscriber_Student1;
-import baduren.components.subscribers.Subscriber_Student2;
+import baduren.components.Publishers.PublisherTeacher;
+import baduren.components.Subscribers.SubscriberStudent;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.helpers.CVMDebugModes;
@@ -27,6 +26,7 @@ public class CVM  extends AbstractCVM {
 	public static final String SUBSCRIBER_COMPONENT_URI = "my-URI-subscriber";
 	public static final String SUBSCRIBER_STUDENT1_COMPONENT_URI = "my-URI-subscriber-student1";
 	public static final String SUBSCRIBER_STUDENT2_COMPONENT_URI = "my-URI-subscriber-student2";
+
 
 	/******************   PORTS URI CONSTANTS   ********************/
 	/** OUTBOUND PORTS URI**/
@@ -52,7 +52,7 @@ public class CVM  extends AbstractCVM {
 
 	/** SUBSCRIBER URI**/
 	protected String uri_Subscriber_Student1;
-	private String uri_Subscriber_Student2;
+	protected String uri_Subscriber_Student2;
 
 
 	/*********************   CONSTRUCTOR   **********************/
@@ -84,7 +84,7 @@ public class CVM  extends AbstractCVM {
 		this.toggleTracing(this.uriBrokerURI) ;
 
 		/******* create the publishers components ********/
-		
+
 		/*this.uriPublisherURI =
 			AbstractComponent.createComponent(
 					Publisher.class.getCanonicalName(),
@@ -95,32 +95,35 @@ public class CVM  extends AbstractCVM {
 		/*assert	this.isDeployedComponent(this.uriPublisherURI) ;
 
 		this.toggleTracing(this.uriPublisherURI) ;*/
-		Object args1[] = {1, 0, 1};
-		Object args2[] = {1, 0, 2};
 
-		this.uri_Publisher_Teacher1 = AbstractComponent.createComponent(
-				PublisherTeacherWithPlugin.class.getCanonicalName(), args1);
+		// arguments : { nbThreads , nbSchedulableThreads , number_teacher }
+		this.uri_Publisher_Teacher1 =
+				AbstractComponent.createComponent(
+						PublisherTeacher.class.getCanonicalName(),
+						new Object[]{1, 0, 1});
 		assert	this.isDeployedComponent(uri_Publisher_Teacher1) ;
 		this.toggleTracing(this.uri_Publisher_Teacher1) ;
 
-		this.uri_Publisher_Teacher2 = AbstractComponent.createComponent(
-				PublisherTeacherWithPlugin.class.getCanonicalName(), args2);
+		this.uri_Publisher_Teacher2 =
+				AbstractComponent.createComponent(
+						PublisherTeacher.class.getCanonicalName(),
+						new Object[]{1, 0, 2});
 		assert	this.isDeployedComponent(uri_Publisher_Teacher2) ;
 		this.toggleTracing(this.uri_Publisher_Teacher2) ;
 
 		/******* create the subscriber component ********/
 		this.uri_Subscriber_Student1 =
 				AbstractComponent.createComponent(
-						Subscriber_Student1.class.getCanonicalName(),
-						new Object[]{RECEPTION_INBOUND_PORT_URI,2,0}) ;
+						SubscriberStudent.class.getCanonicalName(),
+						new Object[]{RECEPTION_INBOUND_PORT_URI, 2 ,0, 1}) ;
 		assert	this.isDeployedComponent(this.uri_Subscriber_Student1) ;
 
 		this.toggleTracing(this.uri_Subscriber_Student1) ;
 
 		this.uri_Subscriber_Student2 =
 				AbstractComponent.createComponent(
-						Subscriber_Student2.class.getCanonicalName(),
-						new Object[]{RECEPTION_INBOUND_PORT_URI}) ;
+						SubscriberStudent.class.getCanonicalName(),
+						new Object[]{RECEPTION_INBOUND_PORT_URI, 1, 0, 2}) ;
 		assert	this.isDeployedComponent(this.uri_Subscriber_Student2) ;
 
 		this.toggleTracing(this.uri_Subscriber_Student2) ;
