@@ -78,7 +78,7 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {
-                        ((BrokerManagementPlugin)this.getServiceProviderReference()).subscribe(topic,newFilter, inboundPortURI);
+                        ((BrokerManagementPlugin)this.getServiceProviderReference()).modifyFilter(topic,newFilter, inboundPortURI);
                         return null;
                     }
                 }) ;

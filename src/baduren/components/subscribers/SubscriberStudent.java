@@ -93,9 +93,9 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
         @Override
         public boolean filter(MessageI m) throws Exception {
-            if(m.getProperties().getStringProp("professeur").equals("Malenfant")==true)
-                return true;
-            return false;
+            boolean filtreVerifie=true;
+            if(!m.getProperties().getStringProp("professeur").equals("Malenfant"))filtreVerifie=false;
+           return filtreVerifie;
         }
 
     }
@@ -106,7 +106,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
         public boolean filter(MessageI m) throws Exception {
             boolean filtreVerifie=true;
             if( m.getProperties().getBooleanProp("UE obligatoire")!=true) filtreVerifie=false;
-            if( m.getProperties().getStringProp("UE obligatoire").equals("random")) filtreVerifie=false;
+            if(! m.getProperties().getStringProp("Random String").equals("random")) filtreVerifie=false;
             if(m.getProperties().getCharProp("Première lettre de l'UE") != 'c') filtreVerifie=false;
             if( Double.compare(m.getProperties().getDoubleProp("Random Double"),2.00)!=0) filtreVerifie=false;
             if( Float.compare(m.getProperties().getFloatProp("Random Float"),(float) 2.50)!=0) filtreVerifie=false;
@@ -141,10 +141,12 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
         switch(this.number_student) {
             case 1:
                 subscribe("CPS", new TestTousLesFiltres(), this.receptionInboundPort.getPortURI());
+                modifyFilter("CPS", new EnseigneParMalenfant(), this.receptionInboundPort.getPortURI());
                 break;
             case 2:
                 subscribe("PAF", this.receptionInboundPort.getPortURI());
                 subscribe("PC3R", this.receptionInboundPort.getPortURI());
+                subscribe("CPS", this.receptionInboundPort.getPortURI());
                 break;
         }
 

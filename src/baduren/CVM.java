@@ -212,7 +212,7 @@ public class CVM  extends AbstractCVM {
 			// Create an instance of the defined component virtual machine.
 			CVM a = new CVM() ;
 			// Execute the application.
-			a.startStandardLifeCycle(20000000L) ;
+			a.startStandardLifeCycle(1000L) ;
 			System.out.println("Messages supprimés : "+Broker.messagesSupprimes);
 			System.out.println("Messages qui ont passé le filtre : "+Broker.messagesFiltres);
 			// Give some time to see the traces (convenience).

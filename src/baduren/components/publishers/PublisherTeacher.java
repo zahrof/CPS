@@ -86,19 +86,27 @@ public class PublisherTeacher extends AbstractComponent {
                 dû à que les threads d'envoi des message à envoyer le message avant que le
                 souscripteur 1 ait eu le temps de se souscrire au topic CPS avec filtres */
 
-                Message m = new Message("Bonjour, je vais tester tous les filtres. ");
-                Properties p = m.getProperties();
+                Message m1 = new Message("Bonjour, je vais tester tous les filtres. ");
+                Properties p1 = m1.getProperties();
 
-                p.putProp("UE obligatoire", true);
-                p.putProp("Première lettre de l'UE",'c');
-                p.putProp("Random Double",2.00);
-                p.putProp("Random Float",(float) 2.50);
-                p.putProp("Random Integer", 3);
-                p.putProp("Random Long",(long) 3);
-                p.putProp("Random Short",(short) 3);
-                p.putProp("Random String","random");
+                p1.putProp("UE obligatoire", true);
+                p1.putProp("Première lettre de l'UE",'c');
+                p1.putProp("Random Double",2.00);
+                p1.putProp("Random Float",(float) 2.50);
+                p1.putProp("Random Integer", 3);
+                p1.putProp("Random Long",(long) 3);
+                p1.putProp("Random Short",(short) 3);
+                p1.putProp("Random String","random");
 
-                publish(m,"CPS");
+                publish(m1,"CPS");
+
+                Message m2 = new Message("Bonjour, je vais tester le filtre de EnseigneParMalenfant ");
+                Properties p2 = m2.getProperties();
+
+                p2.putProp("professeur", "Malenfant");
+
+                publish(m2,"CPS");
+
                 break;
 
             case 2:
@@ -122,6 +130,10 @@ public class PublisherTeacher extends AbstractComponent {
                         new Message("Je ferai cours sur TWITCH jeudi"),
                         new Message("Je ferai cours sur TWITCH vendredi")
                 },  new String[]{"PC3R", "PAF"});
+
+                /*for(int i=0; i <100; i++){
+                    publish (new Message("Le Coronavirus est partout "+i), "CPS");
+                }*/
                 break;
 
 

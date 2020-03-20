@@ -125,7 +125,7 @@ public class PublisherSubscriberManagementPlugin extends AbstractPlugin implemen
      * @throws Exception the exception
      */
     public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception{
-        this.managementOutboundPort.subscribe(topic, newFilter, inboundPortURI);
+        this.managementOutboundPort.modifyFilter(topic, newFilter, inboundPortURI);
 
     }
 
