@@ -104,8 +104,15 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
         @Override
         public boolean filter(MessageI m) throws Exception {
-            boolean filtreVerifie=false;
+            boolean filtreVerifie=true;
             if( m.getProperties().getBooleanProp("UE obligatoire")!=true) filtreVerifie=false;
+            if( m.getProperties().getStringProp("UE obligatoire").equals("random")) filtreVerifie=false;
+            if(m.getProperties().getCharProp("Première lettre de l'UE") != 'c') filtreVerifie=false;
+            if( Double.compare(m.getProperties().getDoubleProp("Random Double"),2.00)!=0) filtreVerifie=false;
+            if( Float.compare(m.getProperties().getFloatProp("Random Float"),(float) 2.50)!=0) filtreVerifie=false;
+            if(m.getProperties().getIntProp("Random Integer") != 3) filtreVerifie=false;
+            if(m.getProperties().getLongProp("Random Long") != (long) 3) filtreVerifie=false;
+            if(m.getProperties().getShortProp("Random Short") != (short) 3) filtreVerifie=false;
             return filtreVerifie;
         }
 

@@ -98,7 +98,7 @@ public class PublisherTeacher extends AbstractComponent {
                 p.putProp("Random Short",(short) 3);
                 p.putProp("Random String","random");
 
-               // publish(m,"CPS");
+                publish(m,"CPS");
                 break;
 
             case 2:
