@@ -9,7 +9,7 @@ import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 
 
-public class SubscriberWithPlugin extends	AbstractComponent{
+public class SubscriberWithoutPlugin extends	AbstractComponent{
 	public final static String	DYNAMIC_CONNECTION_PLUGIN_URI =
 			"serverSidePLuginURI" ;
 
@@ -20,8 +20,8 @@ public class SubscriberWithPlugin extends	AbstractComponent{
 	protected ReceptionInboundPort receptionInboundPort;
 
 
-	protected SubscriberWithPlugin(String uri, String receptionInboundPortName, String managementOutboundPortName,
-								   int nbThreads, int nbSchedulableThreads) throws Exception {
+	protected SubscriberWithoutPlugin(String uri, String receptionInboundPortName, String managementOutboundPortName,
+									  int nbThreads, int nbSchedulableThreads) throws Exception {
 		super(uri, nbThreads, nbSchedulableThreads);
 		this.uri = uri; 
 		this.receptionInboundPort  = new ReceptionInboundPort(receptionInboundPortName,this); 

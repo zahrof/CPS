@@ -9,7 +9,7 @@ import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 
-public class PublisherTeacherWithPlugin extends AbstractComponent {
+public class PublisherTeacher extends AbstractComponent {
 
 
     // -------------------------------------------------------------------------
@@ -17,36 +17,34 @@ public class PublisherTeacherWithPlugin extends AbstractComponent {
     // -------------------------------------------------------------------------
 
     /** the URI that will be used for the plug-in (assumes a singleton).	*/
-    protected final static String MY_PUBLISHER_PLUGIN_URI = "publisher-client-plugin-uri" ;
-    protected final static String MY_MANAGEMENT_PLUGIN_URI = "management-client-plugin-uri" ;
+    protected String MY_PUBLISHER_PLUGIN_URI = "publisher-client-plugin-uri" ;
+    protected String MY_MANAGEMENT_PLUGIN_URI = "management-client-plugin-uri" ;
     private final PublisherSubscriberManagementPlugin pluginManagement;
     private final PublisherPublicationPlugin plugin;
 
-    private int number_teacher; // To know what senario each teacher should follow
+    // To know what senario each teacher should follow
+    private int number_teacher;
 
-
-    // -------------------------------------------------------------------------
-    // Utility method for empty constructor
-    // -------------------------------------------------------------------------
-
+    // To differentiate each students created with the empty constructor
     private static int number_of_teachers = 0;
 
-    private static Integer[] get_a_teacher_number(){
-        Integer args[] = {number_of_teachers++};
-        return args;
-    }
 
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
 
 
+    protected PublisherTeacher() throws Exception {
+        this(1, 0, number_of_teachers++);
+    }
 
-
-    protected PublisherTeacherWithPlugin(int nbThreads, int nbSchedulableThreads, int number_teacher) throws Exception {
+    protected PublisherTeacher(int nbThreads, int nbSchedulableThreads, int number_teacher) throws Exception {
         super(nbThreads, nbSchedulableThreads);
 
         this.number_teacher = number_teacher;
+
+        this.MY_PUBLISHER_PLUGIN_URI = this.MY_PUBLISHER_PLUGIN_URI + number_teacher;
+        this.MY_MANAGEMENT_PLUGIN_URI = this.MY_MANAGEMENT_PLUGIN_URI + number_teacher;
 
         // Install the plug-in.
         this.plugin = new PublisherPublicationPlugin() ;
@@ -60,12 +58,9 @@ public class PublisherTeacherWithPlugin extends AbstractComponent {
 
         //this.tracer.setTitle(MY_PUBLISHER_PLUGIN_URI) ;
         this.tracer.setTitle("Teacher " + this.number_teacher) ;
-        this.tracer.setRelativePosition(1, this.number_teacher + 1) ;
+        this.tracer.setRelativePosition(this.number_teacher, 1) ;
     }
 
-    protected PublisherTeacherWithPlugin() throws Exception {
-        this(1, 0, 1);
-    }
 
     // -------------------------------------------------------------------------
     // Life cycle
@@ -93,15 +88,17 @@ public class PublisherTeacherWithPlugin extends AbstractComponent {
 
                 Message m = new Message("Bonjour, je vais tester tous les filtres. ");
                 Properties p = m.getProperties();
+
                 p.putProp("UE obligatoire", true);
                 p.putProp("Première lettre de l'UE",'c');
-                p.putProp("Random Double ",2.00);
-                p.putProp("Random Float ",(float) 2.50);
-                p.putProp("Random Integer ", 3);
-                p.putProp("Random Long ",(long) 3);
-                p.putProp("Random Short ",(short) 3);
-                p.putProp("Random String ","random");
-                publish(m,"CPS");
+                p.putProp("Random Double",2.00);
+                p.putProp("Random Float",(float) 2.50);
+                p.putProp("Random Integer", 3);
+                p.putProp("Random Long",(long) 3);
+                p.putProp("Random Short",(short) 3);
+                p.putProp("Random String","random");
+
+               // publish(m,"CPS");
                 break;
 
             case 2:

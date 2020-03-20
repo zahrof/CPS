@@ -36,7 +36,6 @@ public class ReceptionInboundPortForPlugin extends AbstractInboundPortForPlugin 
                         return null;
                     }
                 });
-       // ((Subscriber_Student1)this.owner).acceptMessage(m);
     }
 
     @Override

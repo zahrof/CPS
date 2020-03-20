@@ -20,7 +20,6 @@ import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import baduren.plugins.*;
-import sun.lwawt.macosx.CSystemTray;
 
 
 public class Broker extends AbstractComponent implements PublicationCI, ManagementCI {
@@ -33,6 +32,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	private static final String ACCEPT_ACCESS_HANDLER_URI = "aah";
 	private static final String SUBSCRIBE_ACCESS_HANDLER_URI = "sah";
 	private static final String SELECT_MESSAGES_HANDLER_URI = "smh";
+	public static int messagesSupprimes;
+	public static int messagesFiltres;
 
 	/**
 	 * The Broker's uri.
@@ -362,6 +363,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 							}
 							else{
 								if(subscriber.topics.get(topic).filter(m)) {
+									messagesFiltres++;
 									//System.out.println("il y a des trucs à ajouter pour le topic " + topic);
 									if (!this.messagesReady.containsKey(inboundPortURI)) {
 										//System.out.println("pUTTING SOME CONTENT");
@@ -380,6 +382,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 
 					}
 					for (MessageI m : this.messages.get(topic)) {
+						messagesSupprimes++;
 						this.logMessage("Suppression des messages "+m.toString()+" du topic " + topic);
 					}
 					this.messages.put(topic, new ArrayList<>());

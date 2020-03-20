@@ -1,8 +1,8 @@
 package baduren;
 
 import baduren.components.Broker.Broker;
-import baduren.components.Publishers.PublisherTeacher;
-import baduren.components.Subscribers.SubscriberStudent;
+import baduren.components.publishers.PublisherTeacher;
+import baduren.components.subscribers.SubscriberStudent;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.cvm.AbstractCVM;
 import fr.sorbonne_u.components.helpers.CVMDebugModes;
@@ -212,7 +212,9 @@ public class CVM  extends AbstractCVM {
 			// Create an instance of the defined component virtual machine.
 			CVM a = new CVM() ;
 			// Execute the application.
-			a.startStandardLifeCycle(2000000L) ;
+			a.startStandardLifeCycle(200L) ;
+			System.out.println("Messages supprimés : "+Broker.messagesSupprimes);
+			System.out.println("Messages qui ont passé le filtre : "+Broker.messagesFiltres);
 			// Give some time to see the traces (convenience).
 			Thread.sleep(5000L) ;
 			// Simplifies the termination (termination has yet to be treated

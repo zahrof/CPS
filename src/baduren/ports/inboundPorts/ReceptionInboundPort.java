@@ -1,6 +1,6 @@
 package baduren.ports.inboundPorts;
 
-import baduren.components.subscribers.SubscriberWithPlugin;
+import baduren.components.subscribers.SubscriberWithoutPlugin;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
 import fr.sorbonne_u.components.AbstractComponent;
@@ -44,7 +44,7 @@ public class ReceptionInboundPort extends		AbstractInboundPort implements Recept
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((SubscriberWithPlugin)this.getServiceOwner()).acceptMessage(m);
+						((SubscriberWithoutPlugin)this.getServiceOwner()).acceptMessage(m);
 						return null;
 					}
 				}) ;
@@ -56,7 +56,7 @@ public class ReceptionInboundPort extends		AbstractInboundPort implements Recept
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((SubscriberWithPlugin)this.getServiceOwner()).acceptMessages(ms);
+						((SubscriberWithoutPlugin)this.getServiceOwner()).acceptMessages(ms);
 						return null;
 					}
 				}) ;
