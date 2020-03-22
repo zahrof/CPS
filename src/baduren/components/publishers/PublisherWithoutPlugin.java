@@ -1,7 +1,9 @@
 package baduren.components.publishers;
 
+import baduren.interfaces.ManagementCI;
 import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
+import baduren.interfaces.PublicationCI;
 import baduren.message.Message;
 import baduren.message.Properties;
 import baduren.ports.outboundPorts.ManagementOutboundPort;
@@ -46,7 +48,8 @@ public class PublisherWithoutPlugin extends AbstractComponent {
 									 int nbThreads, int nbSchedulableThreads) throws Exception {
 		super(uri, nbThreads, nbSchedulableThreads);
 		this.uriPrefix = uri;
-
+		this.addRequiredInterface(PublicationCI.class);
+		this.addRequiredInterface(ManagementCI.class);
 		this.managementOutboundPort = new ManagementOutboundPort(managementOutboundPortName, this); 
 		this.publicationOutboundPort = new PublicationOutboundPort(publicationOutboundPortName,this); 
 		managementOutboundPort.localPublishPort();

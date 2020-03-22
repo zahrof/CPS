@@ -1,7 +1,6 @@
 package baduren.components.subscribers;
 
-import baduren.interfaces.MessageFilterI;
-import baduren.interfaces.MessageI;
+import baduren.interfaces.*;
 import baduren.ports.inboundPorts.ReceptionInboundPort;
 import baduren.ports.outboundPorts.ManagementOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
@@ -28,7 +27,8 @@ public class SubscriberWithoutPlugin extends	AbstractComponent{
 		this.managementOutboundPort = new ManagementOutboundPort(managementOutboundPortName, this);
 		receptionInboundPort.publishPort();
 		managementOutboundPort.publishPort();
-		
+		this.addRequiredInterface(ManagementCI.class);
+		this.addOfferedInterface(ReceptionCI.class);
 		if (AbstractCVM.isDistributed) {
 			this.executionLog.setDirectory(System.getProperty("user.dir")) ;
 		}else {
