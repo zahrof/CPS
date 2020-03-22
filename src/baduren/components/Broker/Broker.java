@@ -431,7 +431,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	/**
 	 * Publish.
 	 *
-	 * @param m      the m
+	 * @param m      the message
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
@@ -445,7 +445,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	/**
 	 * Publish.
 	 *
-	 * @param ms     the ms
+	 * @param ms     the messages
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
@@ -458,7 +458,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	/**
 	 * Publish.
 	 *
-	 * @param ms     the ms
+	 * @param ms     the messages
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
@@ -506,6 +506,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @throws Exception the exception
 	 */
 	public  void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
+
+		System.out.println("reception d'une demande de " + inboundPortURI + " pour " + topic);
 
 
 		// Si le subscriber était pas présent encore on le crée et connecte

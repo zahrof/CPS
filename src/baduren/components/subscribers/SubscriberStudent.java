@@ -11,16 +11,33 @@ import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
 import baduren.plugins.SubscriberReceptionPlugin;
 
+/**
+ * The type Subscriber student.
+ */
 public class SubscriberStudent extends	AbstractComponent implements ReceptionCI {
 
     // -------------------------------------------------------------------------
     // Component variables and constants
     // -------------------------------------------------------------------------
 
+    /**
+     * The My management subscriber plugin uri.
+     */
     protected String MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = "management-subscriber-client-plugin-uri";
+    /**
+     * The My reception student 1 subscriber plugin uri.
+     */
     protected String MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI = "reception-subscriber-client-plugin-uri";
+    /**
+     * The Reception inbound port uri.
+     */
     protected String RECEPTION_INBOUND_PORT_URI = "student" ;
+    /**
+     * The Uri.
+     */
     protected String uri;
+
+
     /**	the outbound port used to call the service.							*/
     protected ReceptionInboundPortForPlugin receptionInboundPort;
 
@@ -36,10 +53,25 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     // -------------------------------------------------------------------------
 
 
+    /**
+     * Instantiates a new Subscriber student.
+     *
+     * @param receptionInboundPortName the reception inbound port name
+     * @throws Exception the exception
+     */
     protected SubscriberStudent(String receptionInboundPortName) throws Exception {
         this(receptionInboundPortName,1, 0, number_of_students++);
     }
 
+    /**
+     * Instantiates a new Subscriber student.
+     *
+     * @param receptionInboundPortName the reception inbound port name
+     * @param nbThreads                the nb threads
+     * @param nbSchedulableThreads     the nb schedulable threads
+     * @param number_student           the number student
+     * @throws Exception the exception
+     */
     protected SubscriberStudent(String receptionInboundPortName, int nbThreads, int nbSchedulableThreads, int number_student)
             throws Exception {
         super(CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI + number_student, nbThreads, nbSchedulableThreads);
@@ -58,7 +90,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
 
 
-
+        // Display to logs in to right position
         this.tracer.setTitle("Student " + this.number_student) ;
         this.tracer.setRelativePosition(this.number_student, 2) ;
     }
@@ -71,6 +103,9 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     // -------------------------------------------------------------------------
 
 
+    /**
+     * The type Sera evaluee aer 1.
+     */
     public class SeraEvalueeAER1 implements MessageFilterI {
 
         @Override
@@ -81,6 +116,10 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
         }
 
     }
+
+    /**
+     * The type Enseigne par malenfant.
+     */
     public class EnseigneParMalenfant implements MessageFilterI {
 
         @Override
@@ -92,6 +131,9 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
     }
 
+    /**
+     * The type Test tous les filtres.
+     */
     public class TestTousLesFiltres implements MessageFilterI {
 
         @Override
@@ -143,10 +185,16 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
         switch(this.number_student) {
             case 1:
+                /*                          TEST SCENARIO:
+
+                 */
                 subscribe("CPS", new TestTousLesFiltres(), pluginReception.receptionInboundPortUri);
                 modifyFilter("CPS", new EnseigneParMalenfant(), pluginReception.receptionInboundPortUri);
                 break;
             case 2:
+                /*                          TEST SCENARIO:
+
+                 */
                 subscribe("PAF",  pluginReception.receptionInboundPortUri);
                 subscribe("PC3R",  pluginReception.receptionInboundPortUri);
                 subscribe("CPS",  pluginReception.receptionInboundPortUri);
@@ -167,57 +215,131 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     // TOUTES LES METHODES DE MANAGEMENTCI
 
 
+    /**
+     * Subscribe.
+     *
+     * @param topic          the topic
+     * @param inboundPortURI the inbound port uri
+     * @throws Exception the exception
+     */
     public void subscribe(String topic, String inboundPortURI) throws Exception{
-        //	logMessage("Ask a subscription at port: "+inboundPortURI+" to topic " + topic);
+        logMessage("Ask a subscription at port: "+inboundPortURI+" to topic " + topic);
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic, inboundPortURI);
 
     }
 
+    /**
+     * Subscribe.
+     *
+     * @param topics         the topics
+     * @param inboundPortURI the inbound port uri
+     * @throws Exception the exception
+     */
     public void subscribe(String[] topics, String inboundPortURI)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topics, inboundPortURI);
     }
 
+    /**
+     * Subscribe.
+     *
+     * @param topic          the topic
+     * @param filter         the filter
+     * @param inboundPortURI the inbound port uri
+     * @throws Exception the exception
+     */
     public void subscribe(String topic, MessageFilterI filter, String inboundPortURI)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic,filter,inboundPortURI);
     }
 
+    /**
+     * Method to modify a filter.
+     *
+     * @param topic          the topic
+     * @param newFilter      the new filter
+     * @param inboundPortURI the inbound port uri
+     * @throws Exception the exception
+     */
     public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).modifyFilter(topic,newFilter,inboundPortURI);
 
 
     }
 
+    /**
+     * Unsubscribe.
+     *
+     * @param topic          the topic
+     * @param inboundPortUri the inbound port uri
+     * @throws Exception the exception
+     */
     public void unsubscribe(String topic, String inboundPortUri)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).unsubscribe(topic,inboundPortUri);
 
 
     }
 
+    /**
+     * Create topic.
+     *
+     * @param topic the topic
+     * @throws Exception the exception
+     */
     public void createTopic(String topic) throws Exception{
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopic(topic);
 
 
     }
 
+    /**
+     * Create topics.
+     *
+     * @param topics the topics
+     * @throws Exception the exception
+     */
     public void createTopics(String[] topics) throws Exception{
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopics(topics);
     }
 
+    /**
+     * Destroy topic.
+     *
+     * @param topic the topic
+     * @throws Exception the exception
+     */
     public void destroyTopic(String topic) throws Exception{
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).destroyTopic(topic);
 
 
     }
 
+    /**
+     * Is topic boolean.
+     *
+     * @param topic the topic
+     * @return the boolean
+     * @throws Exception the exception
+     */
     public boolean isTopic(String topic) throws Exception {
         return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).isTopic(topic);
 
     }
 
+    /**
+     * Get topics string [ ].
+     *
+     * @return the string [ ]
+     * @throws Exception the exception
+     */
     public String[] getTopics() throws Exception{
         return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).getTopics();
     }
 
+    /**
+     * Gets publication port uri.
+     *
+     * @return the publication port uri
+     * @throws Exception the exception
+     */
     public String getPublicationPortURI() throws Exception {
         return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).getPublicationPortURI();
     }
