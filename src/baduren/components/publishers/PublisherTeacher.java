@@ -11,6 +11,8 @@ import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import fr.sorbonne_u.components.helpers.Logger;
 
+import java.io.File;
+
 public class PublisherTeacher extends AbstractComponent {
 
 

@@ -9,6 +9,8 @@ import baduren.plugins.PublisherSubscriberManagementPlugin;
 import baduren.plugins.SubscriberReceptionPlugin;
 import fr.sorbonne_u.components.helpers.Logger;
 
+import java.io.File;
+
 /**
  * The type Subscriber student.
  */

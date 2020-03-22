@@ -13,6 +13,7 @@ public class TestsIntegration {
     public static void main(String [] args){
 
         // On vérifie que le dossier qui contiendra les résulats de tests existe bien
+        if(! new File(LOG_FOLDER).exists()) new File(LOG_FOLDER).mkdir();
         assert new File(LOG_FOLDER).exists();
 
 
