@@ -42,6 +42,7 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
                 ropPublisher.getPortURI(),
                 CVM.BROKER_COMPONENT_URI,
                 ReflectionConnector.class.getCanonicalName()) ;
+
         String[] urisPublisher = ropPublisher.findPortURIsFromInterface(PublicationCI.class) ;
         System.out.println("uriPublisher "+urisPublisher.toString());
         assert	urisPublisher != null && urisPublisher.length == 1 ;
@@ -50,7 +51,6 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
         ropPublisher.unpublishPort() ;
         ropPublisher.destroyPort() ;
         this.removeRequiredInterface(ReflectionI.class) ;
-
         // connect the outbound port.
         this.owner.doPortConnection(
                 this.publicationOutboundPort.getPortURI(),
@@ -64,7 +64,7 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
     {
         this.owner.doPortDisconnection(this.publicationOutboundPort.getPortURI()) ;
     }
-    public void unistall() throws Exception
+    public void uninstall() throws Exception
     {
         this.publicationOutboundPort.unpublishPort() ;
         this.publicationOutboundPort.destroyPort() ;

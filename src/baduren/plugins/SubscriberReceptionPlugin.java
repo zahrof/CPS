@@ -22,6 +22,12 @@ public class SubscriberReceptionPlugin extends AbstractPlugin implements Recepti
          this.receptionInboundPortUri=receptionInboundPortUri;
     }
 
+    @Override
+    public void initialise() throws Exception {
+        super.initialise();
+        this.rip = new ReceptionInboundPortForPlugin(this.getPluginURI(), this.owner,receptionInboundPortUri) ;
+        this.rip.publishPort() ;
+    }
     // -------------------------------------------------------------------------
     // Life cycle
     // -------------------------------------------------------------------------
@@ -38,8 +44,7 @@ public class SubscriberReceptionPlugin extends AbstractPlugin implements Recepti
 
         // Add interfaces and create ports
         this.addOfferedInterface(ReceptionCI.class) ;
-        this.rip = new ReceptionInboundPortForPlugin(this.getPluginURI(), this.owner,receptionInboundPortUri) ;
-        this.rip.publishPort() ;
+
     }
 
     /**

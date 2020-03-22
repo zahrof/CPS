@@ -26,6 +26,7 @@ public class ReceptionOutboundPort extends AbstractOutboundPort implements Recep
 	 */
 	public ReceptionOutboundPort(String uri, ComponentI owner) throws Exception{
 		super(uri, ReceptionCI.class, owner) ;
+
 		assert	uri != null && owner != null ;
 	}
 
