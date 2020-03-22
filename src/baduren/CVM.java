@@ -188,7 +188,8 @@ public class CVM  extends AbstractCVM {
 	/*	this.doPortDisconnection(
 				this.uriSubscriberURI,
 				ReceptionOutboundPortUri) ;
-		super.finalise();*/
+		*/
+		super.finalise();
 	}
 
 
@@ -212,7 +213,7 @@ public class CVM  extends AbstractCVM {
 			// Create an instance of the defined component virtual machine.
 			CVM a = new CVM() ;
 			// Execute the application.
-			a.startStandardLifeCycle(1000L) ;
+			a.startStandardLifeCycle(50000000L) ;
 			System.out.println("Messages supprimés : "+Broker.messagesSupprimes);
 			System.out.println("Messages qui ont passé le filtre : "+Broker.messagesFiltres);
 			// Give some time to see the traces (convenience).

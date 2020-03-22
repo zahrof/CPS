@@ -13,8 +13,8 @@ public class SubscriberReceptionPlugin extends AbstractPlugin implements Recepti
 
     private static final long serialVersionUID = 1L;
     /** the inbound port which calls will be on this plug-in.				*/
-    protected ReceptionInboundPortForPlugin rip;
-    protected String receptionInboundPortUri;
+    public ReceptionInboundPortForPlugin rip;
+    public String receptionInboundPortUri;
     protected String myReceptionStudent1SubscriberPluginUri;
 
     public SubscriberReceptionPlugin(String receptionInboundPortUri, String myReceptionStudent1SubscriberPluginUri) {

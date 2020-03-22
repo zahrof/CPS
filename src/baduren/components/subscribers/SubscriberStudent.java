@@ -5,6 +5,7 @@ import baduren.interfaces.MessageFilterI;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
 import baduren.ports.inboundPorts.ReceptionInboundPort;
+import baduren.ports.inboundPortsForPlugin.ReceptionInboundPortForPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
@@ -21,7 +22,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     protected String RECEPTION_INBOUND_PORT_URI = "student" ;
     protected String uri;
     /**	the outbound port used to call the service.							*/
-    protected ReceptionInboundPort receptionInboundPort;
+    protected ReceptionInboundPortForPlugin receptionInboundPort;
 
     // To know what senario each student should follow
     private int number_student;
@@ -53,18 +54,9 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
 
         this.uri = CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI + number_student;
-        this.receptionInboundPort = new ReceptionInboundPort(RECEPTION_INBOUND_PORT_URI,this);
+     //   this.receptionInboundPort = new ReceptionInboundPortForPlugin(RECEPTION_INBOUND_PORT_URI,this);
 
-        // Install the plug-in.
-        PublisherSubscriberManagementPlugin pluginManagement = new PublisherSubscriberManagementPlugin() ;
-        pluginManagement.setPluginURI(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI) ;
-        this.installPlugin(pluginManagement) ;
 
-        // Install the plug-in.
-        SubscriberReceptionPlugin pluginReception = new SubscriberReceptionPlugin(RECEPTION_INBOUND_PORT_URI,
-                MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
-        pluginReception.setPluginURI(MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
-        this.installPlugin(pluginReception) ;
 
 
         this.tracer.setTitle("Student " + this.number_student) ;
@@ -135,18 +127,29 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     @Override
     public void			execute() throws Exception
     {
+        // Install the plug-in.
+        PublisherSubscriberManagementPlugin pluginManagement = new PublisherSubscriberManagementPlugin() ;
+        pluginManagement.setPluginURI(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI) ;
+        this.installPlugin(pluginManagement) ;
+
+        // Install the plug-in.
+        SubscriberReceptionPlugin pluginReception = new SubscriberReceptionPlugin(RECEPTION_INBOUND_PORT_URI,
+                MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
+        pluginReception.setPluginURI(MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
+        this.installPlugin(pluginReception) ;
+
         System.out.println("number_student (execute)" + number_student);
 
 
         switch(this.number_student) {
             case 1:
-                subscribe("CPS", new TestTousLesFiltres(), this.receptionInboundPort.getPortURI());
-                modifyFilter("CPS", new EnseigneParMalenfant(), this.receptionInboundPort.getPortURI());
+                subscribe("CPS", new TestTousLesFiltres(), pluginReception.receptionInboundPortUri);
+                modifyFilter("CPS", new EnseigneParMalenfant(), pluginReception.receptionInboundPortUri);
                 break;
             case 2:
-                subscribe("PAF", this.receptionInboundPort.getPortURI());
-                subscribe("PC3R", this.receptionInboundPort.getPortURI());
-                subscribe("CPS", this.receptionInboundPort.getPortURI());
+                subscribe("PAF",  pluginReception.receptionInboundPortUri);
+                subscribe("PC3R",  pluginReception.receptionInboundPortUri);
+                subscribe("CPS",  pluginReception.receptionInboundPortUri);
                 break;
         }
 

@@ -7,7 +7,10 @@ import baduren.message.Properties;
 import fr.sorbonne_u.components.AbstractComponent;
 import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
+import fr.sorbonne_u.components.examples.basic_cs.interfaces.URIProviderI;
+import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
+import fr.sorbonne_u.components.ports.PortI;
 
 public class PublisherTeacher extends AbstractComponent {
 
@@ -19,8 +22,8 @@ public class PublisherTeacher extends AbstractComponent {
     /** the URI that will be used for the plug-in (assumes a singleton).	*/
     protected String MY_PUBLISHER_PLUGIN_URI = "publisher-client-plugin-uri" ;
     protected String MY_MANAGEMENT_PLUGIN_URI = "management-client-plugin-uri" ;
-    private final PublisherSubscriberManagementPlugin pluginManagement;
-    private final PublisherPublicationPlugin plugin;
+    private PublisherSubscriberManagementPlugin pluginManagement;
+    private PublisherPublicationPlugin plugin;
 
     // To know what senario each teacher should follow
     private int number_teacher;
@@ -46,15 +49,7 @@ public class PublisherTeacher extends AbstractComponent {
         this.MY_PUBLISHER_PLUGIN_URI = this.MY_PUBLISHER_PLUGIN_URI + number_teacher;
         this.MY_MANAGEMENT_PLUGIN_URI = this.MY_MANAGEMENT_PLUGIN_URI + number_teacher;
 
-        // Install the plug-in.
-        this.plugin = new PublisherPublicationPlugin() ;
-        plugin.setPluginURI(MY_PUBLISHER_PLUGIN_URI) ;
-        this.installPlugin(plugin) ;
 
-        // Install the plug-in.
-        this.pluginManagement = new PublisherSubscriberManagementPlugin();
-        pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
-        this.installPlugin(pluginManagement) ;
 
         //this.tracer.setTitle(MY_PUBLISHER_PLUGIN_URI) ;
         this.tracer.setTitle("Teacher " + this.number_teacher) ;
@@ -74,6 +69,15 @@ public class PublisherTeacher extends AbstractComponent {
     @Override
     public void			execute() throws Exception
     {
+        // Install the plug-in.
+        this.plugin = new PublisherPublicationPlugin() ;
+        plugin.setPluginURI(MY_PUBLISHER_PLUGIN_URI) ;
+        this.installPlugin(plugin) ;
+
+        // Install the plug-in.
+        this.pluginManagement = new PublisherSubscriberManagementPlugin();
+        pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
+        this.installPlugin(pluginManagement) ;
 
         switch(this.number_teacher){
             case 1:
@@ -139,6 +143,26 @@ public class PublisherTeacher extends AbstractComponent {
 
         }
 
+    }
+    @Override
+    public void			finalise() throws Exception
+    {
+        this.logMessage("stopping publisher teacher component.") ;
+        super.finalise();
+    }
+
+    @Override
+    public void			shutdown() throws ComponentShutdownException
+    {
+        super.shutdown();
+    }
+    /**
+     * @see fr.sorbonne_u.components.AbstractComponent#shutdownNow()
+     */
+    @Override
+    public void			shutdownNow() throws ComponentShutdownException
+    {
+        super.shutdownNow();
     }
 
     // TOUTES LES METHODES DE PUBLICATIONSCI

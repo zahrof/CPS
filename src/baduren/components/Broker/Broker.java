@@ -384,6 +384,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 					}
 					for (MessageI m : this.messages.get(topic)) {
 						messagesSupprimes++;
+						System.out.println("messages supprimés : "+ messagesSupprimes);
 						this.logMessage("Suppression des messages "+m.toString()+" du topic " + topic);
 					}
 					this.messages.put(topic, new ArrayList<>());
@@ -504,7 +505,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param inboundPortURI the inbound port uri
 	 * @throws Exception the exception
 	 */
-	public synchronized void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
+	public  void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
 
 
 		// Si le subscriber était pas présent encore on le crée et connecte
@@ -537,6 +538,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		//Si le messager avait pas ce topic on l'ajoute
 		if(!subscribers.get(inboundPortURI).topics.containsKey(topic)) {
 			subscribers.get(inboundPortURI).topics.put(topic, filter);
+			// mettre variable pour compter les subscribers
 		}this.hasSubscribers.signal();
 		//System.out.println("subscribe avant de rendre le lock subscribedlock - " + inboundPortURI);
 
