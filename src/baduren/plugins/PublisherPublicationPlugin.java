@@ -27,7 +27,7 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
         // Add interfaces and create ports
         // Plugin du côté client donc on fait appel ) addRequiredInterface
         this.addRequiredInterface(PublicationCI.class);
-        this.publicationOutboundPort = new PublicationOutboundPort(this.owner);
+        this.publicationOutboundPort = new PublicationOutboundPort(this.getPluginURI(), this.owner);
         this.publicationOutboundPort.publishPort();
     }
 

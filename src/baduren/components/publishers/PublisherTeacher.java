@@ -56,7 +56,7 @@ public class PublisherTeacher extends AbstractComponent {
         pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
         this.installPlugin(pluginManagement) ;
 
-        //this.tracer.setTitle(MY_PUBLISHER_PLUGIN_URI) ;
+        // Display to logs in to right position
         this.tracer.setTitle("Teacher " + this.number_teacher) ;
         this.tracer.setRelativePosition(this.number_teacher, 1) ;
     }
@@ -86,6 +86,7 @@ public class PublisherTeacher extends AbstractComponent {
                 dû à que les threads d'envoi des message à envoyer le message avant que le
                 souscripteur 1 ait eu le temps de se souscrire au topic CPS avec filtres */
 
+                Thread.sleep(100);
                 Message m1 = new Message("Bonjour, je vais tester tous les filtres. ");
                 Properties p1 = m1.getProperties();
 
@@ -117,7 +118,7 @@ public class PublisherTeacher extends AbstractComponent {
                   sujet 'topic' au moment "+m.getTimeStamp().getTime() ); pour ces 12 messages.
                   Ces messages vont être effacé dans le Broker au fûr et à mesure. Pour plus de
                   détails voir la classe du Broker. */
-
+                Thread.sleep(100);
                 publish(new Message("La semaine prochaine nous verrons PROMELA"),"PC3R");
                 publish(new Message("Je ferai cours sur TWITCH"), new String[]{"PC3R", "PAF"});
                 publish(new MessageI[]{
@@ -141,12 +142,12 @@ public class PublisherTeacher extends AbstractComponent {
 
     }
 
-    // TOUTES LES METHODES DE PUBLICATIONSCI
+    // ALL THE METHODS OF PUBLICATIONSCI
 
     /**
-     * Publish.
+     * Method to publish 1 message in 1 topic
      *
-     * @param m     the m
+     * @param m     the message
      * @param topic the topic
      * @throws Exception the exception
      */
@@ -158,9 +159,9 @@ public class PublisherTeacher extends AbstractComponent {
 
 
     /**
-     * Publish.
+     * Method to publish 1 message in several topics
      *
-     * @param m      the m
+     * @param m      the message
      * @param topics the topics
      * @throws Exception the exception
      */
@@ -175,16 +176,16 @@ public class PublisherTeacher extends AbstractComponent {
 
 
     /**
-     * Publish.
+     * Method to publish several messages in 1 topic
      *
-     * @param ms     the ms
+     * @param ms     the messages
      * @param topics the topics
      * @throws Exception the exception
      */
     public void publish(MessageI[] ms, String topics) throws Exception {
-        String str= " ";
+        String str= "\n";
         for (MessageI s : ms) {
-            str += s.getURI()+ " ";
+            str += " - " + s.getURI()+ "\n";
         }
         logMessage("Publishing messages " + str+ " to the topic : "+topics);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(ms,topics);
@@ -192,9 +193,9 @@ public class PublisherTeacher extends AbstractComponent {
 
 
     /**
-     * Publish.
+     * Method to publish several messages in several topics
      *
-     * @param ms     the ms
+     * @param ms     the messages
      * @param topics the topics
      * @throws Exception the exception
      */
@@ -215,7 +216,7 @@ public class PublisherTeacher extends AbstractComponent {
 
 
     /**
-     * Subscribe.
+     * Method to subscribe to one topic
      *
      * @param topic          the topic
      * @param inboundPortURI the inbound port uri
@@ -228,7 +229,7 @@ public class PublisherTeacher extends AbstractComponent {
     }
 
     /**
-     * Subscribe.
+     * Method to subscribe to several topics
      *
      * @param topics         the topics
      * @param inboundPortURI the inbound port uri
@@ -240,7 +241,7 @@ public class PublisherTeacher extends AbstractComponent {
     }
 
     /**
-     * Subscribe.
+     * Method to subscribe to one topic with a filter
      *
      * @param topic          the topic
      * @param filter         the filter
@@ -253,7 +254,7 @@ public class PublisherTeacher extends AbstractComponent {
     }
 
     /**
-     * Modify filter.
+     * Method to modify a filter
      *
      * @param topic          the topic
      * @param newFilter      the new filter
@@ -265,7 +266,7 @@ public class PublisherTeacher extends AbstractComponent {
     }
 
     /**
-     * Unsubscribe.
+     * Method to unsubscribe
      *
      * @param topic          the topic
      * @param inboundPortUri the inbound port uri
@@ -276,7 +277,7 @@ public class PublisherTeacher extends AbstractComponent {
     }
 
     /**
-     * Create topic.
+     * Method to create a topic.
      *
      * @param topic the topic
      * @throws Exception the exception
@@ -287,7 +288,7 @@ public class PublisherTeacher extends AbstractComponent {
     }
 
     /**
-     * Create topics.
+     * Method to create several topics.
      *
      * @param topics the topics
      * @throws Exception the exception
@@ -298,7 +299,7 @@ public class PublisherTeacher extends AbstractComponent {
     }
 
     /**
-     * Destroy topic.
+     * Method to destroy a topic.
      *
      * @param topic the topic
      * @throws Exception the exception

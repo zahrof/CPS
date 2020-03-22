@@ -216,7 +216,7 @@ public class CVM  extends AbstractCVM {
 			System.out.println("Messages supprimés : "+Broker.messagesSupprimes);
 			System.out.println("Messages qui ont passé le filtre : "+Broker.messagesFiltres);
 			// Give some time to see the traces (convenience).
-			Thread.sleep(5000L) ;
+			Thread.sleep(50000000L) ;
 			// Simplifies the termination (termination has yet to be treated
 			// properly in BCM).
 			System.exit(0) ;

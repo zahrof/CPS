@@ -414,13 +414,25 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 */
 	public void publish(MessageI m, String topic)throws Exception {
 		//System.out.println("publish avant prends le lock pour messages");
+		//System.out.println("Avant le lock." + this.messagesLock.toString() + " m : " + m.getURI());
 		this.messagesLock.lock();
+		//System.out.println("Après le lock." + this.messagesLock.toString() + " m : " + m.getURI());
 		//System.out.println("publish après prends le lock pour messages");
-		if (!this.messages.containsKey(topic)) if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
+		if (!this.messages.containsKey(topic)) {
+			//System.out.println("a");
+			if(!messages.containsKey(topic)) {
+				//System.out.println("b");
+				messages.put(topic,new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
+				//System.out.println("c");
+			}
+		}
 
 		this.messages.get(topic).add(m); // On ajoute le message
+		//System.out.println("d");
 		this.logMessage("Message " + m.getURI() + " stocked to topic " + topic+ " at the moment "+m.getTimeStamp().getTime() );
+		//System.out.println("e " + this.messagesLock.toString());
 		this.messagesLock.unlock();
+		//System.out.println("f");
 		//System.out.println("publish rend le lock pour messages "+m.toString());
 
 
@@ -430,7 +442,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	/**
 	 * Publish.
 	 *
-	 * @param m      the m
+	 * @param m      the message
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
@@ -444,7 +456,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	/**
 	 * Publish.
 	 *
-	 * @param ms     the ms
+	 * @param ms     the messages
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
@@ -457,7 +469,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	/**
 	 * Publish.
 	 *
-	 * @param ms     the ms
+	 * @param ms     the messages
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
@@ -505,6 +517,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @throws Exception the exception
 	 */
 	public synchronized void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
+		System.out.println("reception d'une demande de " + inboundPortURI + " pour " + topic);
 
 
 		// Si le subscriber était pas présent encore on le crée et connecte
