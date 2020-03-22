@@ -11,10 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import baduren.CVM;
 import baduren.connectors.ReceptionConnector;
-import baduren.interfaces.ManagementCI;
-import baduren.interfaces.MessageFilterI;
-import baduren.interfaces.MessageI;
-import baduren.interfaces.PublicationCI;
+import baduren.interfaces.*;
 import baduren.message.Message;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
@@ -197,6 +194,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
 	protected Broker(int nbThreads, int nbSchedulableThreads) throws Exception {
 		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
+		addRequiredInterface(ReceptionCI.class);
 
 		/** TESTING VARIABLES **/
 		// TODO
@@ -344,7 +342,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 				for (String topic : messages.keySet()) {
 					if(messages.get(topic).size()==0)continue;
 					if(topic.equals("PC3R")) {
-						System.out.println("gola");
 					}
 					//	System.out.println("Avant suite itération subscribers key set ");
 					for (String inboundPortURI : subscribers.keySet()) {
@@ -377,7 +374,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 
 									messagesReady.get(inboundPortURI).add(m);
 									//this.hasMessagesReady.signal();
-									System.out.println("MESSAGE READY AVEC FILTRE" + messagesReady.toString());
 								}
 								//System.out.println("J'en ressors " + messagesReady.toString());
 							}
@@ -598,9 +594,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		if (isTopic(topic)) {
 			this.changementFiltres += " \n		On change le filtre " + subscribers.get(inboundPortURI).topics.get(topic).getName()+
 					" par "+newFilter.getName();
-			System.out.println("je remplace"+ topic+ "par "+ newFilter );
 				subscribers.get(inboundPortURI).topics.replace(topic, newFilter);
-			System.out.println("maintenant "+ subscribers.get(inboundPortURI).topics.get(topic));
 
 
 		}this.subscribersLock.unlock();

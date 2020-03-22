@@ -36,7 +36,7 @@ public class PublisherSubscriberManagementPlugin extends AbstractPlugin implemen
     {
         this.managementOutboundPort.unpublishPort() ;
         this.managementOutboundPort.destroyPort() ;
-        this.removeOfferedInterface(PublicationCI.class) ;
+        this.removeRequiredInterface(ManagementCI.class) ;
     }
 
 

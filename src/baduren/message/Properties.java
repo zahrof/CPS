@@ -146,16 +146,12 @@ public class Properties implements java.io.Serializable{
 		Nous devons le spécifier ainsi car la méthode get dans une map renvoie null ou la valeur associé
 		à la clé name.
 		 */
-		System.out.println("res ");
 		if (this.booleanProperties.containsKey(name)) {
 			boolean res = this.booleanProperties.get(name);
-			System.out.println("res " + res);
 			if ((res == true) || (res == false)) {
-				System.out.println("res " + res);
 				return res;
 			}
 		}
-		System.out.println("res y est pas");
 		return false;
 	}
 

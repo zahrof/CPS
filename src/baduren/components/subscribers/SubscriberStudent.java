@@ -1,9 +1,7 @@
 package baduren.components.subscribers;
 
 import baduren.CVM;
-import baduren.interfaces.MessageFilterI;
-import baduren.interfaces.MessageI;
-import baduren.interfaces.ReceptionCI;
+import baduren.interfaces.*;
 import baduren.ports.inboundPorts.ReceptionInboundPort;
 import baduren.ports.inboundPortsForPlugin.ReceptionInboundPortForPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
@@ -75,8 +73,9 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
         this.number_student = number_student;
         System.out.println("number_student (constructor)" + number_student);
+        //addRequiredInterface(ManagementCI.class);
 
-
+       // addOfferedInterface(ReceptionCI.class);
         this.MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI = MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI + number_student;
         this.MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI = MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI + number_student;
         this.RECEPTION_INBOUND_PORT_URI = RECEPTION_INBOUND_PORT_URI + number_student;
@@ -126,9 +125,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
         @Override
         public boolean filter(MessageI m) throws Exception {
             boolean filtreVerifie=true;
-            System.out.println(" avantr filtre malenfant : "+ filtreVerifie);
             if(!m.getProperties().getStringProp("professeur").equals("Malenfant"))filtreVerifie=false;
-            System.out.println(" filtre malenfant : "+ filtreVerifie);
            return filtreVerifie;
         }
 
@@ -147,24 +144,14 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
         @Override
         public boolean filter(MessageI m) {
             boolean filtreVerifie=true;
-            System.out.println("message : "+m.toString());
-            System.out.println(" avant filtre filtres 1 : "+ filtreVerifie);
             if( m.getProperties().getBooleanProp("UE obligatoire")!=true) filtreVerifie=false;
-            System.out.println(" avant filtre filtres2 : "+ filtreVerifie);
             if(! m.getProperties().getStringProp("Random String").equals("random")) filtreVerifie=false;
-            System.out.println(" avant filtre filtres3 : "+ filtreVerifie);
             if(m.getProperties().getCharProp("Première lettre de l'UE") != 'c') filtreVerifie=false;
-            System.out.println(" avant filtre filtres4 : "+ filtreVerifie);
             if( Double.compare(m.getProperties().getDoubleProp("Random Double"),2.00)!=0) filtreVerifie=false;
-            System.out.println(" avant filtre filtres5 : "+ filtreVerifie);
             if( Float.compare(m.getProperties().getFloatProp("Random Float"),(float) 2.50)!=0) filtreVerifie=false;
-            System.out.println(" avant filtre filtres 6: "+ filtreVerifie);
             if(m.getProperties().getIntProp("Random Integer") != 3) filtreVerifie=false;
-            System.out.println(" avant filtre filtres 7: "+ filtreVerifie);
             if(m.getProperties().getLongProp("Random Long") != (long) 3) filtreVerifie=false;
-            System.out.println(" avant filtre filtres8 : "+ filtreVerifie);
             if(m.getProperties().getShortProp("Random Short") != (short) 3) filtreVerifie=false;
-            System.out.println(" filtre filtres 9: "+ filtreVerifie);
             return filtreVerifie;
         }
 
@@ -192,6 +179,9 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     @Override
     public void			execute() throws Exception
     {
+        super.execute();
+
+
         // Install the plug-in.
         PublisherSubscriberManagementPlugin pluginManagement = new PublisherSubscriberManagementPlugin() ;
         pluginManagement.setPluginURI(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI) ;
@@ -229,14 +219,14 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
 
     }
-
-
-
     @Override
     public void			finalise() throws Exception
     {
+        this.logMessage("stopping subscriberStufend component.") ;
         super.finalise();
     }
+
+
 
     // TOUTES LES METHODES DE MANAGEMENTCI
 

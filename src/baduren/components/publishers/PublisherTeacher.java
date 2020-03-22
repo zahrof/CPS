@@ -1,7 +1,6 @@
 package baduren.components.publishers;
 
-import baduren.interfaces.MessageFilterI;
-import baduren.interfaces.MessageI;
+import baduren.interfaces.*;
 import baduren.message.Message;
 import baduren.message.Properties;
 import fr.sorbonne_u.components.AbstractComponent;
@@ -43,7 +42,8 @@ public class PublisherTeacher extends AbstractComponent {
 
     protected PublisherTeacher(int nbThreads, int nbSchedulableThreads, int number_teacher) throws Exception {
         super(nbThreads, nbSchedulableThreads);
-
+        /*addRequiredInterface(PublicationCI.class);
+        addRequiredInterface(ManagementCI.class);*/
         this.number_teacher = number_teacher;
 
         this.MY_PUBLISHER_PLUGIN_URI = this.MY_PUBLISHER_PLUGIN_URI + number_teacher;

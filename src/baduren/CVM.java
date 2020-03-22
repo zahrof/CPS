@@ -213,13 +213,13 @@ public class CVM  extends AbstractCVM {
 			// Create an instance of the defined component virtual machine.
 			CVM a = new CVM() ;
 			// Execute the application.
-			a.startStandardLifeCycle(2000L) ;
+			a.startStandardLifeCycle(10000L) ;
 			System.out.println("Messages sauvegardés dans broker : "+Broker.messagesSupprimes);
 			System.out.println("Historique des abonnements: "+ Broker.historiqueAbonnements);
 			System.out.println("Historique des changement de filtres  : "+Broker.changementFiltres);
 			System.out.println("Historique des desabonnements: "+ Broker.desabonnements);
 			// Give some time to see the traces (convenience).
-			Thread.sleep(50000000L) ;
+			Thread.sleep(5000L) ;
 			// Simplifies the termination (termination has yet to be treated
 			// properly in BCM).
 			System.exit(0) ;
