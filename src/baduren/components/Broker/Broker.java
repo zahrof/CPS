@@ -20,6 +20,7 @@ import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import baduren.plugins.*;
+import fr.sorbonne_u.components.helpers.Logger;
 
 
 public class Broker extends AbstractComponent implements PublicationCI, ManagementCI {
@@ -101,7 +102,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	/*protected Broker(String managementInboundPortName, String publicationInboundPortName,
 					 String receptionOutboundPortName)
 			throws Exception {
-		*//** INITIALIZE VARIABLES **//*
+		*//*
 		super(CVM.BROKER_COMPONENT_URI, 1, 0) ;
 		this.uri=CVM.BROKER_COMPONENT_URI;
 		this.compteur = 0;
@@ -208,6 +209,12 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		/** SETTING TRACER **/
 		this.tracer.setTitle("broker") ;
 		this.tracer.setRelativePosition(1, 0) ;
+		Logger logger = new Logger("/logs/");
+		logger.toggleLogging();
+		this.setLogger(logger);
+
+
+
 	}
 
 	// -------------------------------------------------------------------------
@@ -263,11 +270,14 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	@Override
 	public void	finalise() throws Exception
 	{
+		System.out.println("Utilisation de la methode finalise");
 
 		for(String subscriber : this.subscribers.keySet()){
 			subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
 		}
 		//this.publicationInboundPort.unpublishPort() ;
+
+		this.printExecutionLogOnFile("logs/brokerlog");
 
 		this.logMessage("stopping broker component.") ;
 		super.finalise();

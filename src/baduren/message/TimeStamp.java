@@ -26,6 +26,17 @@ public class TimeStamp {
 		this.timeStamper = InetAddress.getLocalHost().getHostAddress();
 	}
 
+
+	/**
+	 * Instantiates a new TimeStamp.
+	 *
+	 * @throws Exception the exception
+	 */
+	public TimeStamp(long time, String timeStamper) throws Exception {
+		this.time=time;
+		this.timeStamper = timeStamper;
+	}
+
 	/**
 	 * Is initialised boolean.
 	 *

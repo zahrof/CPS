@@ -6,7 +6,7 @@ import baduren.interfaces.MessageI;
 /**
  * The type Message.
  */
-public class Message implements MessageI {
+public class Message implements MessageI, Serializable {
 
 	/**
 	 * The Uri.
@@ -32,9 +32,23 @@ public class Message implements MessageI {
 	 * @throws Exception the exception
 	 */
 	public Message(String uri) throws Exception {
-		this.uri=uri; 
+		this.uri=uri;
 		this.timeStamp = new TimeStamp();
 		this.properties = new Properties();
+	}
+
+	/**
+	 * Instantiates a new Message with uri, timeStamp and properties
+	 * Used for the unit tests
+	 *
+	 * @param uri the uri
+	 * @throws Exception the exception
+	 */
+	public Message(String uri, TimeStamp timeStamp, Properties properties) throws Exception {
+		this.uri=uri;
+		this.timeStamp = timeStamp;
+		this.properties = properties;
+		this.serializableObject = this;
 	}
 
 	@Override

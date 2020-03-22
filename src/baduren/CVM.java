@@ -231,7 +231,9 @@ public class CVM  extends AbstractCVM {
 			Thread.sleep(5000L) ;
 			// Simplifies the termination (termination has yet to be treated
 			// properly in BCM).
-			System.exit(0) ;
+
+			// Mise en commentaire de cette commande pour pouvoir utiliser la CVM depuis le main de la classe Tests
+			//System.exit(0) ;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

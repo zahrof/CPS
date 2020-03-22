@@ -166,7 +166,9 @@ public class Properties implements java.io.Serializable{
 	 * @return the byte prop
 	 */
 	public byte getByteProp(String name) {
-		return this.byteProperties.get(name);
+		if(this.byteProperties.containsKey(name))
+			return this.byteProperties.get(name);
+		return 0;
 	}
 
 	/**
@@ -177,7 +179,7 @@ public class Properties implements java.io.Serializable{
 	 */
 	public char getCharProp(String name) {
 		if(this.characterProperties.containsKey(name ))
-		return this.characterProperties.get(name);
+			return this.characterProperties.get(name);
 		return ' ';
 	}
 
@@ -189,7 +191,7 @@ public class Properties implements java.io.Serializable{
 	 */
 	public double getDoubleProp(String name) {
 		if(this.doubleProperties.containsKey(name ))
-		return this.doubleProperties.get(name);
+			return this.doubleProperties.get(name);
 		return 0;
 	}
 
@@ -201,7 +203,7 @@ public class Properties implements java.io.Serializable{
 	 */
 	public float getFloatProp(String name) {
 		if(this.floatProperties.containsKey(name ))
-		return this.floatProperties.get(name);
+			return this.floatProperties.get(name);
 		return 0;
 	}
 
@@ -213,7 +215,7 @@ public class Properties implements java.io.Serializable{
 	 */
 	public int getIntProp(String name) {
 		if(this.integerProperties.containsKey(name))
-		return this.integerProperties.get(name);
+			return this.integerProperties.get(name);
 		return 0;
 	}
 
@@ -225,7 +227,7 @@ public class Properties implements java.io.Serializable{
 	 */
 	public long getLongProp(String name) {
 		if(this.longProperties.containsKey(name))
-		return this.longProperties.get(name);
+			return this.longProperties.get(name);
 		return 0;
 	}
 
@@ -237,7 +239,7 @@ public class Properties implements java.io.Serializable{
 	 */
 	public short getShortProp(String name) {
 		if(this.shortProperties.containsKey(name))
-		return this.shortProperties.get(name);
+			return this.shortProperties.get(name);
 		return 0;
 	}
 
@@ -249,7 +251,8 @@ public class Properties implements java.io.Serializable{
 	 */
 	public String getStringProp(String name) {
 		String res = this.stringProperties.get(name);
-		if(res == null) return "";
+		if(res == null)
+			return "";
 		return res;
 	} 
 }
