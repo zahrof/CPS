@@ -136,7 +136,7 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
     @Override
     public boolean isTopic(String topic) throws Exception {
         return this.getOwner().handleRequestSync(
-                new AbstractComponent.AbstractService<Boolean>() {
+                new AbstractComponent.AbstractService<Boolean>(this.pluginURI) {
                     @Override
                     public Boolean call() throws Exception {
                         return( (BrokerManagementPlugin)this.getServiceProviderReference()).isTopic(topic);
