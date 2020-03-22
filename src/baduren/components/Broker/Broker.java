@@ -8,6 +8,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import baduren.CVM;
+import baduren.TestsIntegration;
 import baduren.connectors.ReceptionConnector;
 import baduren.interfaces.*;
 import baduren.message.Message;
@@ -146,7 +147,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		/** SETTING TRACER **/
 		this.tracer.setTitle("broker") ;
 		this.tracer.setRelativePosition(1, 0) ;
-		Logger logger = new Logger("/logs/");
+		Logger logger = new Logger(TestsIntegration.LOG_FOLDER);
 		logger.toggleLogging();
 		this.setLogger(logger);
 	}
@@ -194,13 +195,15 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	@Override
 	public void	finalise() throws Exception
 	{
+		this.logMessage("stopping broker component.") ;
+
 		for(String subscriber : this.subscribers.keySet()){
 			subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
 		}
 
-		this.printExecutionLogOnFile("logs/brokerlog");
+		this.printExecutionLogOnFile(TestsIntegration.LOG_FOLDER + TestsIntegration.BROKER_LOG_FILE);
 
-		this.logMessage("stopping broker component.") ;
+
 		super.finalise();
 	}
 

@@ -1,15 +1,15 @@
 package baduren.components.publishers;
 
+import baduren.TestsIntegration;
 import baduren.interfaces.*;
 import baduren.message.Message;
 import baduren.message.Properties;
 import fr.sorbonne_u.components.AbstractComponent;
 import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
-import fr.sorbonne_u.components.examples.basic_cs.interfaces.URIProviderI;
 import fr.sorbonne_u.components.exceptions.ComponentShutdownException;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
-import fr.sorbonne_u.components.ports.PortI;
+import fr.sorbonne_u.components.helpers.Logger;
 
 public class PublisherTeacher extends AbstractComponent {
 
@@ -57,6 +57,9 @@ public class PublisherTeacher extends AbstractComponent {
         // Display to logs in to right position
         this.tracer.setTitle("Teacher " + this.number_teacher) ;
         this.tracer.setRelativePosition(this.number_teacher, 1) ;
+        Logger logger = new Logger(TestsIntegration.LOG_FOLDER);
+        logger.toggleLogging();
+        this.setLogger(logger);
     }
 
 
@@ -180,6 +183,7 @@ public class PublisherTeacher extends AbstractComponent {
     public void			finalise() throws Exception
     {
         this.logMessage("stopping publisher teacher component.") ;
+        this.printExecutionLogOnFile(TestsIntegration.LOG_FOLDER + TestsIntegration.PUBLISHER_LOG_FILE + this.number_teacher);
         super.finalise();
     }
 

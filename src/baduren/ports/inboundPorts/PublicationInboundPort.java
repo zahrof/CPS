@@ -40,53 +40,21 @@ public class PublicationInboundPort extends	AbstractInboundPort implements Publi
 
 	@Override
 	public void publish(MessageI m, String topic) throws Exception {
-	/*	this.getOwner().handleRequestSync(
-				new AbstractComponent.AbstractService<Void>() {
-					@Override
-					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).publish(m, topic);
-						return null;
-					}
-				}) ;*/
 		((Broker)this.owner).publish(m, topic);
 	}
 
 	@Override
 	public void publish(MessageI m, String[] topics) throws Exception {
-/*		this.getOwner().handleRequestAsync(
-				new AbstractComponent.AbstractService<Void>() {
-					@Override
-					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).destroyTopic(topic);
-						return null;
-					}
-				}) ;*/
 		((Broker)this.owner).publish(m, topics);
 	}
 
 	@Override
 	public void publish(MessageI[] ms, String topics) throws Exception {
-/*		this.getOwner().handleRequestAsync(
-				new AbstractComponent.AbstractService<Void>() {
-					@Override
-					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).destroyTopic(topic);
-						return null;
-					}
-				}) ;*/
 		((Broker)this.owner).publish(ms, topics);
 	}
 
 	@Override
 	public void publish(MessageI[] ms, String[] topics) throws Exception {
-/*		this.getOwner().handleRequestAsync(
-				new AbstractComponent.AbstractService<Void>() {
-					@Override
-					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).destroyTopic(topic);
-						return null;
-					}
-				}) ;*/
 		((Broker)this.owner).publish(ms, topics);
 	}
 }

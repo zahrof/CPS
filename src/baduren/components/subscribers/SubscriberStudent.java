@@ -1,13 +1,13 @@
 package baduren.components.subscribers;
 
 import baduren.CVM;
+import baduren.TestsIntegration;
 import baduren.interfaces.*;
-import baduren.ports.inboundPorts.ReceptionInboundPort;
-import baduren.ports.inboundPortsForPlugin.ReceptionInboundPortForPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
 import baduren.plugins.SubscriberReceptionPlugin;
+import fr.sorbonne_u.components.helpers.Logger;
 
 /**
  * The type Subscriber student.
@@ -93,6 +93,9 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
         // Display to logs in to right position
         this.tracer.setTitle("Student " + this.number_student) ;
         this.tracer.setRelativePosition(this.number_student, 2) ;
+        Logger logger = new Logger(TestsIntegration.LOG_FOLDER);
+        logger.toggleLogging();
+        this.setLogger(logger);
     }
 
 
@@ -229,7 +232,10 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     @Override
     public void			finalise() throws Exception
     {
-        this.logMessage("stopping subscriberStufend component.") ;
+        this.logMessage("stopping subscriberStudend component.") ;
+
+        this.printExecutionLogOnFile(TestsIntegration.LOG_FOLDER + TestsIntegration.SUBSCRIBER_LOG_FILE + this.number_student);
+
         super.finalise();
     }
 
