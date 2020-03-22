@@ -29,6 +29,8 @@ public class PublisherTeacher extends AbstractComponent {
 
     // To differentiate each students created with the empty constructor
     private static int number_of_teachers = 0;
+    public static int publications = 0 ;
+    public static String reponseIsTopic = "";
 
 
     // -------------------------------------------------------------------------
@@ -104,13 +106,27 @@ public class PublisherTeacher extends AbstractComponent {
                 p1.putProp("Random String","random");
 
                 publish(m1,"CPS");
-
+                this.publications ++;
                 Message m2 = new Message("Bonjour, je vais tester le filtre de EnseigneParMalenfant ");
                 Properties p2 = m2.getProperties();
 
                 p2.putProp("professeur", "Malenfant");
 
                 publish(m2,"CPS");
+                this.publications ++;
+
+                createTopic("CA");
+                createTopics(new String[]{"ALASCA", "SRCS"});
+                // Pour que le broker ait le temps de créer le sujet ALASCA avant de le détruire
+                Thread.sleep(1000);
+               // destroyTopic("SRCS");
+                /*
+                if(isTopic("ALASCA")){
+                    this.reponseIsTopic += " ALASCA est bien un topic ";
+                }else{
+                    // ce qui ne devrait jamais arriver
+                    this.reponseIsTopic += " ALASCA est pas un topic ";
+                }*/
 
                 break;
 
@@ -124,25 +140,34 @@ public class PublisherTeacher extends AbstractComponent {
                   détails voir la classe du Broker. */
                 Thread.sleep(100);
                 publish(new Message("La semaine prochaine nous verrons PROMELA"),"PC3R");
+                this.publications ++;
                 publish(new Message("Je ferai cours sur TWITCH"), new String[]{"PC3R", "PAF"});
+                this.publications ++;
+                this.publications ++;
                 publish(new MessageI[]{
                         new Message("Le sujet 0 sera à l'examen"),
                         new Message("Le sujet 1 sera à l'examen"),
                         new Message("Le sujet 2 sera à l'examen")
                 }, "PAF");
+                this.publications ++;
+                this.publications ++;
+                this.publications ++;
                 publish(new MessageI[]{
                         new Message("Je ferai cours sur TWITCH lundi "),
                         new Message("Je ferai cours sur TWITCH jeudi"),
                         new Message("Je ferai cours sur TWITCH vendredi")
                 },  new String[]{"PC3R", "PAF"});
+                this.publications= this.publications+6;
 
                 for(int i=0; i <50; i++){
 
                     publish (new Message("Le Coronavirus est partout "+i), "CPS");
+                    this.publications ++;
                 }Thread.sleep(1000);
                 for(int i=50; i <100; i++){
 
                     publish (new Message("Le Coronavirus est partout "+i), "CPS");
+                    this.publications ++;
                 }
                 break;
 
@@ -334,7 +359,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @throws Exception the exception
      */
     public void destroyTopic(String topic)throws Exception {
-        ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).createTopic(topic);
+        ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).destroyTopic(topic);
 
     }
 

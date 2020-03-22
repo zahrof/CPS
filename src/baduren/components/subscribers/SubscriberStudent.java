@@ -41,6 +41,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
     // To differentiate each students created with the empty constructor
     private static int number_of_students = 0;
+    public static String[] allTopicsAtTheEnd;
 
 
     // -------------------------------------------------------------------------
@@ -210,10 +211,11 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
                  */
                 subscribe("PAF",  pluginReception.receptionInboundPortUri);
-                subscribe("PC3R",  pluginReception.receptionInboundPortUri);
-                subscribe("CPS",  pluginReception.receptionInboundPortUri);
+                subscribe(new String[]{"APS", "PC3R", "CPS"}, pluginReception.receptionInboundPortUri);
                 Thread.sleep(1000);
                 unsubscribe("CPS",  pluginReception.receptionInboundPortUri);
+                Thread.sleep(500);
+                this.allTopicsAtTheEnd = getTopics();
                 break;
         }
 

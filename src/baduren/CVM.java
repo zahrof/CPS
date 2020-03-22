@@ -213,11 +213,20 @@ public class CVM  extends AbstractCVM {
 			// Create an instance of the defined component virtual machine.
 			CVM a = new CVM() ;
 			// Execute the application.
-			a.startStandardLifeCycle(10000L) ;
-			System.out.println("Messages sauvegardés dans broker : "+Broker.messagesSupprimes);
-			System.out.println("Historique des abonnements: "+ Broker.historiqueAbonnements);
-			System.out.println("Historique des changement de filtres  : "+Broker.changementFiltres);
-			System.out.println("Historique des desabonnements: "+ Broker.desabonnements);
+			a.startStandardLifeCycle(1000L) ;
+			System.out.println("Messages publiées à partir de Publisher: "+ PublisherTeacher.publications);
+			System.out.println("Messages sauvegardés dans broker : " + Broker.messagesSupprimes);
+			System.out.println("Historique des abonnements dans broker : "+ Broker.historiqueAbonnements);
+			System.out.println("Historique des changement de filtres  dans broker : "+Broker.changementFiltres);
+			System.out.println("Historique des desabonnements dans broker : "+ Broker.desabonnements);
+			System.out.println("Historique des création de topic dans broker: "+ Broker.historiqueCreationTopics);
+			System.out.println("Historique des destruction de topics dans broker: "+ Broker.suppressionSujets);
+			System.out.println("Réponse de la demande 'isTopic(ALASCA)' dans publisher (doit retourner vrai)" +
+					": "+ PublisherTeacher.reponseIsTopic);
+			System.out.print("Tous les sujets après avoir supprimé les topics : ");
+			for (String s :  SubscriberStudent.allTopicsAtTheEnd)
+				System.out.print(s+"   ");
+			System.out.println("");
 			// Give some time to see the traces (convenience).
 			Thread.sleep(5000L) ;
 			// Simplifies the termination (termination has yet to be treated
