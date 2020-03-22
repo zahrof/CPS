@@ -482,6 +482,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 */
 	public void subscribe(String topic, String inboundPortURIaux) throws Exception{
 		subscribe(topic, (MessageFilterI) null, inboundPortURIaux);
+
 	}
 
 	/**
