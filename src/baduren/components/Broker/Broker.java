@@ -1,9 +1,7 @@
 package baduren.components.Broker;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -50,10 +48,10 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	private int compteur =0; // increments for each new subscriber
 	private HashMap<String, List<MessageI>> messages = new HashMap<>(); // Map between topic and messages (each topic has several messages)
 	private HashMap<String, Subscriber> subscribers = new HashMap<>(); // Map between the receptionInboundport and the subscribe
-	private HashMap<String, List<MessageI>> messagesReady = new HashMap<>(); // Map between inbound port and messages
+	private HashMap<String, List<MessageI>> messagesTriees = new HashMap<>(); // Map between inbound port and messages
 	protected final Lock messagesLock = new ReentrantLock();
 	protected final Lock subscribersLock = new ReentrantLock();
-	protected final Lock messagesReadyLock = new ReentrantLock();
+	protected final Lock messagesTrieesLock = new ReentrantLock();
 	final private Condition hasSubscribers = subscribersLock.newCondition();
 	final private Condition newSubscribers = subscribersLock.newCondition();
 	private BrokerPublicationPlugin pluginPublication;
@@ -131,15 +129,10 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		this.tracer.setRelativePosition(1, 1) ;
 	}
 
-
-
 	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
 	protected Broker(int nbThreads, int nbSchedulableThreads) throws Exception {
 		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
 		addRequiredInterface(ReceptionCI.class);
-
-		/** TESTING VARIABLES **/
-		// TODO
 
 		/** INSTALLING PLUGINS **/
 		BrokerManagementPlugin pluginManagement = new BrokerManagementPlugin();
@@ -156,9 +149,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		Logger logger = new Logger("/logs/");
 		logger.toggleLogging();
 		this.setLogger(logger);
-
-
-
 	}
 
 	// -------------------------------------------------------------------------
@@ -207,7 +197,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		for(String subscriber : this.subscribers.keySet()){
 			subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
 		}
-		//this.publicationInboundPort.unpublishPort() ;
 
 		//this.printExecutionLogOnFile("logs/brokerlog");
 
@@ -234,17 +223,17 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 			}
 			for (String inboundPortI : subscribers.keySet()) {
 
-				for (String inboundPortII : messagesReady.keySet()) {
+				for (String inboundPortII : messagesTriees.keySet()) {
 					if(inboundPortI.equals(inboundPortII)){
-						messagesReadyLock.lock();
-						if(messagesReady.get(inboundPortI).size()==1){
-							this.logMessage("Envoi du message " + messagesReady.get(inboundPortI).get(0).toString() + "au port " + inboundPortI);
-							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(messagesReady.get(inboundPortI).get(0));
+						messagesTrieesLock.lock();
+						if(messagesTriees.get(inboundPortI).size()==1){
+							this.logMessage("Envoi du message " + messagesTriees.get(inboundPortI).get(0).toString() + "au port " + inboundPortI);
+							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(messagesTriees.get(inboundPortI).get(0));
 							messagesAcceptDeBroker++;
 						}
 						else {
 
-							for (MessageI m : messagesReady.get(inboundPortI)) {
+							for (MessageI m : messagesTriees.get(inboundPortI)) {
 								this.logMessage("Envoi du message " + m.toString() + "au port " + inboundPortI);
 								msg[current]=m;
 								current++;
@@ -253,13 +242,13 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessages(msg);
 							current=0;
 							msg= new MessageI[SIZE_MSG_AUX];
-						}messagesReadyLock.unlock();
+						}
+						messagesTrieesLock.unlock();
 					}
-
 				}
-				messagesReadyLock.lock();
-				messagesReady.remove(inboundPortI);
-				messagesReadyLock.unlock();
+				messagesTrieesLock.lock();
+				messagesTriees.remove(inboundPortI);
+				messagesTrieesLock.unlock();
 
 			}
 			this.subscribersLock.unlock();
@@ -272,7 +261,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		while(true) {
 			this.subscribersLock.lock();
 			this.messagesLock.lock();
-			this.messagesReadyLock.lock();
+			this.messagesTrieesLock.lock();
 			if(!messages.isEmpty()) {
 				for (String topic : messages.keySet()) {
 					if(messages.get(topic).size()==0)continue;
@@ -284,16 +273,16 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 						for (MessageI m : this.messages.get(topic)) {
 
 							if (subscriber.topics.get(topic)==null) {
-								if (!this.messagesReady.containsKey(inboundPortURI))
-									messagesReady.put(inboundPortURI, new ArrayList<>());
-								messagesReady.get(inboundPortURI).add(m);
+								if (!this.messagesTriees.containsKey(inboundPortURI))
+									messagesTriees.put(inboundPortURI, new ArrayList<>());
+								messagesTriees.get(inboundPortURI).add(m);
 							}
 							else{
 								if(subscriber.topics.get(topic).filter(m)) {
 									messagesFiltres++;
-									if (!this.messagesReady.containsKey(inboundPortURI))
-										messagesReady.put(inboundPortURI, new ArrayList<>());
-									messagesReady.get(inboundPortURI).add(m);
+									if (!this.messagesTriees.containsKey(inboundPortURI))
+										messagesTriees.put(inboundPortURI, new ArrayList<>());
+									messagesTriees.get(inboundPortURI).add(m);
 								}
 							}
 						}
@@ -306,7 +295,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 					this.messages.put(topic, new ArrayList<>());
 				}
 			}
-			this.messagesReadyLock.unlock();
+			this.messagesTrieesLock.unlock();
 			this.messagesLock.unlock();
 			this.subscribersLock.unlock();
 		}
