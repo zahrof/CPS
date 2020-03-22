@@ -30,11 +30,15 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	private static final String ACCEPT_ACCESS_HANDLER_URI = "aah";
 	private static final String SUBSCRIBE_ACCESS_HANDLER_URI = "sah";
 	private static final String SELECT_MESSAGES_HANDLER_URI = "smh";
-	public static int messagesSupprimes;
-	public static int messagesFiltres;
+	private static final int SIZE_MSG_AUX = 500 ;
+	public static int messagesSupprimes=0;
+	public static int messagesFiltres=0;
 	public static String changementFiltres="";
 	public static String desabonnements="";
-	public static String historiqueAbonnements;
+	public static String historiqueAbonnements="";
+	public static String historiqueCreationTopics="\n";
+	public static String suppressionSujets="\n";
+	public static int messagesAcceptDeBroker;
 
 	/**
 	 * The Broker's uri.
@@ -52,9 +56,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	protected final Lock messagesReadyLock = new ReentrantLock();
 	final private Condition hasSubscribers = subscribersLock.newCondition();
 	final private Condition newSubscribers = subscribersLock.newCondition();
-	final private Condition hasMessagesReady = messagesReadyLock.newCondition();
-	final private Condition hasMessages = messagesLock.newCondition();
-
+	private BrokerPublicationPlugin pluginPublication;
 
 
 	private class Subscriber {
@@ -129,68 +131,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		this.tracer.setRelativePosition(1, 1) ;
 	}
 
-	*//*** BROKER'S CONSTRUCTOR WITH PLUGINS AND WITHOUT CHOOSING THE NUMBER OF THREADS ***//*
-	protected Broker () throws Exception{
-		*//** INITIALIZE VARIABLES **//*
-		super(CVM.BROKER_COMPONENT_URI, 1,0 );
-		this.uri=CVM.BROKER_COMPONENT_URI;
-		this.compteur = 0;
-		this.messages = new HashMap<>();
-		this.subscribers = new HashMap<>();
-		this.messages_ready = new HashMap<>();
-		this.messages_ready_locker = new ReentrantReadWriteLock();
 
-		*//** TESTING VARIABLES **//*
-		// TODO
-		*//** INSTALLING PLUGINS **//*
-		BrokerManagementPlugin pluginManagement = new BrokerManagementPlugin();
-		pluginManagement.setPluginURI("management-broker-plugin-uri");
-		this.installPlugin(pluginManagement);
-
-		BrokerPublicationPlugin pluginPublication = new BrokerPublicationPlugin();
-		pluginPublication.setPluginURI("publication-broker-plugin-uri");
-		this.installPlugin(pluginPublication);
-
-		*//** SETTING TRACER **//*
-		this.tracer.setTitle("BROKER") ;
-		this.tracer.setRelativePosition(1, 1) ;
-	}
-
-	*//*** BROKER'S CONSTRUCTOR WITHOUT PLUGINS AND CHOOSING THE NUMBER OF THREADS ***//*
-	protected Broker(String managementInboundPortName, String publicationInboundPortName,
-					 String receptionOutboundPortName, int nbThreads, int nbSchedulableThreads)
-			throws Exception {
-		*//** INITIALIZE VARIABLES **//*
-		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
-		this.uri=CVM.BROKER_COMPONENT_URI;
-		this.compteur = 0;
-		this.messages = new HashMap<>();
-		this.subscribers = new HashMap<>();
-		this.messages_ready = new HashMap<>();
-		this.messages_ready_locker = new ReentrantReadWriteLock();
-
-		*//** TESTING VARIABLES **//*
-		assert managementInboundPortName != null ||  managementInboundPortName != "":
-				new PreconditionException("managementInboundPortName is wrong");
-		assert publicationInboundPortName != null ||  publicationInboundPortName != "":
-				new PreconditionException("publicationInboundPortName is wrong");
-		assert receptionOutboundPortName != null ||  receptionOutboundPortName != "":
-				new PreconditionException("receptionOutboundPortName is wrong");
-
-		*//** CREATING PORTS **//*
-		PortI managementInboundPort = new ManagementInboundPort(managementInboundPortName, this);
-		PortI publicationInboundPort = new PublicationInboundPort(publicationInboundPortName, this);
-		PortI receptionOutboundPort = new ReceptionOutboundPort(receptionOutboundPortName,this);
-
-		*//** PUBLISHING PORTS **//*
-		receptionOutboundPort.localPublishPort();
-		managementInboundPort.publishPort();
-		publicationInboundPort.publishPort();
-
-		*//** SETTING TRACER **//*
-		this.tracer.setTitle("broker") ;
-		this.tracer.setRelativePosition(1, 1) ;
-	}*/
 
 	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
 	protected Broker(int nbThreads, int nbSchedulableThreads) throws Exception {
@@ -205,7 +146,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		pluginManagement.setPluginURI("management-broker-plugin-uri");
 		this.installPlugin(pluginManagement);
 
-		BrokerPublicationPlugin pluginPublication = new BrokerPublicationPlugin();
+		this.pluginPublication = new BrokerPublicationPlugin();
 		pluginPublication.setPluginURI("publication-broker-plugin-uri");
 		this.installPlugin(pluginPublication);
 
@@ -237,7 +178,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	{
 		super.execute() ;
 		this.createNewExecutorService(SELECT_MESSAGES_HANDLER_URI, 8, false) ;
-		this.createNewExecutorService(ACCEPT_ACCESS_HANDLER_URI, 3, false) ;
+		this.createNewExecutorService(ACCEPT_ACCESS_HANDLER_URI, 8, false) ;
 		// pas besoin de faire plusieurs threads pour le publieur car elle éxécuterai la méthode publish
 		// qui est locké du début à la fin du coup pas trop de parallelisation
 
@@ -263,14 +204,12 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	@Override
 	public void	finalise() throws Exception
 	{
-		System.out.println("Utilisation de la methode finalise");
-
 		for(String subscriber : this.subscribers.keySet()){
 			subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
 		}
 		//this.publicationInboundPort.unpublishPort() ;
 
-		this.printExecutionLogOnFile("logs/brokerlog");
+		//this.printExecutionLogOnFile("logs/brokerlog");
 
 		this.logMessage("stopping broker component.") ;
 		super.finalise();
@@ -285,49 +224,44 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 */
 	public void acceptMessage() throws Exception {
 
-
+		MessageI msg[]= new MessageI[SIZE_MSG_AUX];
+		int current =0;
 		while(true) {
-			//System.out.println("avant lock dans accept message pour subscribers");
 			this.subscribersLock.lock(); //blocks writers only
-			//System.out.println("après lock dans accept message pour subscribers");
 			while(subscribers.isEmpty()) { //check if there's data, don't modify shared variables
 				System.out.println("waiting for messages ready");
 				hasSubscribers.await();
 			}
-			//System.out.println("APRÈS PRENDRE SUBSCRIBERS prendre message Ready dans ACCEPT Message");
-
-			//System.out.println("après prendre message Ready dans ACCEPT Message");
 			for (String inboundPortI : subscribers.keySet()) {
 
 				for (String inboundPortII : messagesReady.keySet()) {
-					//System.out.println("pour tous les subscriber dans messageReady");
 					if(inboundPortI.equals(inboundPortII)){
-						//System.out.println("Equals");
 						messagesReadyLock.lock();
 						if(messagesReady.get(inboundPortI).size()==1){
 							this.logMessage("Envoi du message " + messagesReady.get(inboundPortI).get(0).toString() + "au port " + inboundPortI);
 							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(messagesReady.get(inboundPortI).get(0));
+							messagesAcceptDeBroker++;
 						}
-
 						else {
+
 							for (MessageI m : messagesReady.get(inboundPortI)) {
 								this.logMessage("Envoi du message " + m.toString() + "au port " + inboundPortI);
-								subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(m);
-								//System.out.println("je viens de l'envoyer à accept message le message " + m.toString());
+								msg[current]=m;
+								current++;
+								messagesAcceptDeBroker++;
 							}
+							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessages(msg);
+							current=0;
+							msg= new MessageI[SIZE_MSG_AUX];
 						}messagesReadyLock.unlock();
 					}
 
 				}
 				messagesReadyLock.lock();
-				//System.out.println("je vais supprimer inbound Port ACCEPT");
 				messagesReady.remove(inboundPortI);
 				messagesReadyLock.unlock();
 
 			}
-			//System.out.println("avant rendre message Ready dans ACCEPT Message");
-
-			//System.out.println("avant rendre subscriber Lock dans ACCEPT Message");
 			this.subscribersLock.unlock();
 		}
 	}
@@ -336,78 +270,45 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 
 	private void search_messages_to_send() throws Exception {
 		while(true) {
-			//System.out.println("avant lock dans SELECT message pour subscribers");
 			this.subscribersLock.lock();
-			//System.out.println("avant lock dans SELECT message pour messagelock");
 			this.messagesLock.lock();
-
-			//System.out.println("avant prendre message_ready Lock dans SELECT Message TOPIC ");
-
-
 			this.messagesReadyLock.lock();
-			//System.out.println("après lock dans SELECT message pour messagelock");
-			//System.out.println("messages "+messages.toString());
-		/*	while (messages.isEmpty()) this.hasMessages.await();*/
 			if(!messages.isEmpty()) {
 				for (String topic : messages.keySet()) {
 					if(messages.get(topic).size()==0)continue;
 					if(topic.equals("PC3R")) {
 					}
-					//	System.out.println("Avant suite itération subscribers key set ");
 					for (String inboundPortURI : subscribers.keySet()) {
 						Subscriber subscriber = subscribers.get(inboundPortURI);
 						if(!subscriber.topics.keySet().contains(topic)) continue;
 						for (MessageI m : this.messages.get(topic)) {
 
 							if (subscriber.topics.get(topic)==null) {
-								//System.out.println("MESSAGE tyyt SANS FILTRE ");
-								//System.out.println("il y a des trucs à ajouter pour le topic "+topic);
-								if (!this.messagesReady.containsKey(inboundPortURI)) {
-									//System.out.println("pUTTING SOME CONTENT");
+								if (!this.messagesReady.containsKey(inboundPortURI))
 									messagesReady.put(inboundPortURI, new ArrayList<>());
-
-								}
 								messagesReady.get(inboundPortURI).add(m);
-							//	this.hasMessagesReady.signal();
-								//	System.out.println("MESSAGE READY SANS FILTRE "+ messagesReady.toString());
 							}
 							else{
-								//System.out.println("MESSAGE tyyt AVEC FILTRE ");
 								if(subscriber.topics.get(topic).filter(m)) {
 									messagesFiltres++;
-									//System.out.println("il y a des trucs à ajouter pour le topic " + topic);
-									if (!this.messagesReady.containsKey(inboundPortURI)) {
-										//	System.out.println("pUTTING SOME CONTENT");
+									if (!this.messagesReady.containsKey(inboundPortURI))
 										messagesReady.put(inboundPortURI, new ArrayList<>());
-
-									}
-
 									messagesReady.get(inboundPortURI).add(m);
-									//this.hasMessagesReady.signal();
-									System.out.println("MESSAGE READY AVEC FILTRE" + messagesReady.toString());
 								}
-								//System.out.println("J'en ressors " + messagesReady.toString());
 							}
 						}
 
 					}
 					for (MessageI m : this.messages.get(topic)) {
 						messagesSupprimes++;
-						//System.out.println("messages supprimés : "+ messagesSupprimes);
 						this.logMessage("Suppression des messages "+m.toString()+" du topic " + topic);
 					}
 					this.messages.put(topic, new ArrayList<>());
 				}
-				//Thread.sleep(1000);
 			}
-			//System.out.println("avant rendre message_ready Lock dans SELECT Message TOPIC ");
 			this.messagesReadyLock.unlock();
-			//System.out.println("avant rendre message_lock Lock dans SELECT Message");
 			this.messagesLock.unlock();
-			//System.out.println("avant rendre subscriber Lock dans SELECT Message");
 			this.subscribersLock.unlock();
-			//System.out.println("BYE");
-
 		}
 
 	}
@@ -424,21 +325,13 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @throws Exception the exception
 	 */
 	public void publish(MessageI m, String topic)throws Exception {
-		//System.out.println("publish avant prends le lock pour messages");
 		this.messagesLock.lock();
-		//System.out.println("publish après prends le lock pour messages");
-		if (!this.messages.containsKey(topic)){
+		if (!this.messages.containsKey(topic))
 			if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
-		}
-
 		this.messages.get(topic).add(m); // On ajoute le message
-		//this.hasMessages.signal();
 		this.logMessage("Message " + m.getURI() + " stocked to topic " + topic+ " at the moment "+m.getTimeStamp().getTime() );
 		this.messagesLock.unlock();
-		//System.out.println("publish rend le lock pour messages "+m.toString());
 
-
-		//Thread.sleep(1000);
 	}
 
 	/**
@@ -521,15 +414,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @throws Exception the exception
 	 */
 	public  void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
-
-		//System.out.println("reception d'une demande de " + inboundPortURI + " pour " + topic);
-
-
 		// Si le subscriber était pas présent encore on le crée et connecte
-		//System.out.println("subscribe avant de prendre le lock subscribersLock - " + inboundPortURI);
 		this.subscribersLock.lock();
-		//System.out.println("subscribe après de prendre le lock subscribersLock - " + inboundPortURI);
-
 		if(!subscribers.containsKey(inboundPortURI)) {
 			subscribers.put(inboundPortURI, new Subscriber(this));
 			subscribers.get(inboundPortURI).receptionOutboundPort.publishPort();
@@ -541,36 +427,28 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 			);
 			this.newSubscribers.signal();
 			this.hasSubscribers.signal();
-	//		System.out.println("signal que maintenant il y a des subscribers - " + inboundPortURI);
 		}
-	//	System.out.println("subscribe avant de prendre le lock messagesLock - " + inboundPortURI);
 		this.messagesLock.lock();
-	//	System.out.println("subscribe après de prendre le lock messagesLock - " + inboundPortURI);
 		if(!messages.containsKey(topic)){
 			if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>());
 		}
 		this.messagesLock.unlock();
-		//System.out.println("subscribe après de renre le lock messagesLock - " + inboundPortURI);
-
 		//Si le messager avait pas ce topic on l'ajoute
 		if(!subscribers.get(inboundPortURI).topics.containsKey(topic)) {
 			subscribers.get(inboundPortURI).topics.put(topic, filter);
 			// mettre variable pour compter les subscribers
 		}this.hasSubscribers.signal();
-		//System.out.println("subscribe avant de rendre le lock subscribedlock - " + inboundPortURI);
-
-		//System.out.println("subscribe après de rendre le lock subscribedlock - " + inboundPortURI);
-
 		this.compteur++;
 		if (filter == null) {
 			subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
 					"te souscrire au topic "+topic + " sans filtres "));
+			messagesAcceptDeBroker++;
 		}
-		else subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
-				"te souscrire au topic "+topic+ " avec le filtre "+ filter.getName()));
-
-
-
+		else {
+			subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
+					"te souscrire au topic "+topic+ " avec le filtre "+ filter.getName()));
+			messagesAcceptDeBroker++;
+		}
 		this.subscribersLock.unlock();
 		if (filter == null) {
 			this.logMessage("Subscribed " + inboundPortURI + " to topic " + topic + " with no filter");
@@ -594,14 +472,9 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @throws Exception the exception
 	 */
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
-		//System.out.println("MODIFY FILTER avant prendre subscriber lock - " + inboundPortURI);
 		this.subscribersLock.lock();
-		while(!subscribers.containsKey(inboundPortURI)){
-			//System.out.println("en attente " + inboundPortURI);
+		while(!subscribers.containsKey(inboundPortURI))
 			newSubscribers.await();
-			//System.out.println("en attente 2" + inboundPortURI);
-		}
-		//System.out.println("passé après le wait " + inboundPortURI);
 		if (isTopic(topic)) {
 			this.changementFiltres += " \n		On change le filtre " + subscribers.get(inboundPortURI).topics.get(topic).getName()+
 					" par "+newFilter.getName();
@@ -611,7 +484,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 
 
 		}this.subscribersLock.unlock();
-		//System.out.println("MODIFY FILTER après relacher subscriber lock - " + inboundPortURI);
 
 	}
 
@@ -628,6 +500,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 			this.logMessage("On enlève l'abonnement de " + inboundPortUri + " au topic " + topic);
 			subscribers.get(inboundPortUri).receptionOutboundPort.acceptMessage(new Message("Tu viens de " +
 					"te desabonner au topic " + topic));
+			messagesAcceptDeBroker++;
 			this.desabonnements += "\n		On desabonne " + inboundPortUri + " du topic " + topic ;
 			this.subscribers.get(inboundPortUri).topics.remove(topic);
 		}else{
@@ -646,7 +519,12 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	public void createTopic(String topic){
 		logMessage("Creation of topic " + topic);
 		this.messagesLock.lock();
-		if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>());
+		if(!messages.containsKey(topic)){
+			messages.put(topic,new ArrayList<>());
+			historiqueCreationTopics += "		On vient de créer dans le broker le topic "+topic +"\n";
+		}else {
+			historiqueCreationTopics += "		Le topic "+topic+" était déjà présent. \n";
+		}
 		this.messagesLock.unlock();
 	}
 
@@ -670,7 +548,14 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @throws Exception the exception
 	 */
 	public void destroyTopic(String topic) {
+		logMessage("Destruction of the topic " + topic);
 		this.messagesLock.lock();
+		if(messages.containsKey(topic)){
+			messages.remove(topic);
+			suppressionSujets += "		Broker vient de supprimer le topic "+topic +"\n";
+		}else{
+			suppressionSujets += "		Broker a pas supprimé le topic  "+topic +" car il était pas présent. \n";
+		}
 		this.messages.remove(topic);
 		this.messagesLock.unlock();
 	}
@@ -685,12 +570,9 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 */
 	public boolean isTopic(String topic) {
 		boolean res;
-		//System.out.println("isTopic avant lock messageLock");
 		this.messagesLock.lock();
-		//System.out.println("isTopic après lock messageLock");
 		res=  this.messages.containsKey(topic);
 		this.messagesLock.unlock();
-		//System.out.println("isTopic après rendre lock messageLock");
 		return res;
 	}
 
@@ -709,7 +591,6 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		return res;
 	}
 
-
 	/**
 	 * Gets publication port uri.
 	 *
@@ -717,8 +598,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @throws Exception the exception
 	 */
 	public String getPublicationPortURI() throws Exception {
-		//return this.publicationInboundPort.getPortURI();
-		return "";
+		return this.pluginPublication.getPip().getPortURI();
 	}
+
 
 }

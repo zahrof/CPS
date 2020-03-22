@@ -35,6 +35,8 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      */
     protected String uri;
 
+    public static int messagesAcceptDeSubscriber;
+
 
     // To know what senario each student should follow
     private int number_student;
@@ -42,6 +44,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     // To differentiate each students created with the empty constructor
     private static int number_of_students = 0;
     public static String[] allTopicsAtTheEnd;
+    public static String publicationPortUri;
 
 
     // -------------------------------------------------------------------------
@@ -202,9 +205,11 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
                 /*                          TEST SCENARIO:
 
                  */
+                this.publicationPortUri = getPublicationPortURI();
                 subscribe("CPS", new TestTousLesFiltres(), pluginReception.receptionInboundPortUri);
                 Thread.sleep(200);
                 modifyFilter("CPS", new EnseigneParMalenfant(), pluginReception.receptionInboundPortUri);
+
                 break;
             case 2:
                 /*                          TEST SCENARIO:
@@ -368,6 +373,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     public void acceptMessage(MessageI m) {
         this.logMessage("Receiving/accepting the message "+m.getURI()+ " send by : "+ m.getTimeStamp().getTimeStamper() +
                 " a la date de "+ m.getTimeStamp().getTime());
+        messagesAcceptDeSubscriber++;
     }
     public void acceptMessages(MessageI[] ms) {
         for (MessageI m : ms) {

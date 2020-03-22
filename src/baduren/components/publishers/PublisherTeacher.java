@@ -31,6 +31,7 @@ public class PublisherTeacher extends AbstractComponent {
     private static int number_of_teachers = 0;
     public static int publications = 0 ;
     public static String reponseIsTopic = "";
+    public static String[] allTopicsAtTheEnd;
 
 
     // -------------------------------------------------------------------------
@@ -119,14 +120,14 @@ public class PublisherTeacher extends AbstractComponent {
                 createTopics(new String[]{"ALASCA", "SRCS"});
                 // Pour que le broker ait le temps de créer le sujet ALASCA avant de le détruire
                 Thread.sleep(1000);
-               // destroyTopic("SRCS");
-                /*
+                this.allTopicsAtTheEnd = getTopics();
+                destroyTopic("SRCS");
                 if(isTopic("ALASCA")){
                     this.reponseIsTopic += " ALASCA est bien un topic ";
                 }else{
                     // ce qui ne devrait jamais arriver
                     this.reponseIsTopic += " ALASCA est pas un topic ";
-                }*/
+                }
 
                 break;
 

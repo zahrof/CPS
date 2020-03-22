@@ -51,15 +51,6 @@ public class ReceptionOutboundPort extends AbstractOutboundPort implements Recep
 
 	@Override
 	public void acceptMessages(MessageI[] ms)throws Exception {
-		/*this.owner.handleRequestAsync(
-				new AbstractComponent.AbstractService<Void>() {
-					@Override
-					public Void call() throws Exception {
-						((PingPongPlayer)this.getServiceOwner()).
-								playOnDataReception((Ball) d) ;
-						return null;
-					}
-				}) ;*/
 		((ReceptionCI)this.connector).acceptMessages(ms);
 	}
 

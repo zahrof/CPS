@@ -12,6 +12,11 @@ public class BrokerPublicationPlugin extends AbstractPlugin implements Publicati
     // -------------------------------------------------------------------------
 
     private static final long serialVersionUID = 1L;
+
+    public PublicationInboundPortForPlugin getPip() {
+        return pip;
+    }
+
     /** the inbound port which calls will be on this plug-in.				*/
     protected PublicationInboundPortForPlugin pip ;
 
