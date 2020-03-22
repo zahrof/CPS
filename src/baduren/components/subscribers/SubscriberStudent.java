@@ -224,6 +224,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      */
     public void subscribe(String topic, String inboundPortURI) throws Exception{
         logMessage("Ask a subscription at port: "+inboundPortURI+" to topic " + topic);
+
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic, inboundPortURI);
 
     }
