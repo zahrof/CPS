@@ -175,7 +175,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		handleRequestAsync(SELECT_MESSAGES_HANDLER_URI,new AbstractComponent.AbstractService<Void>() {
 			@Override
 			public Void call() throws Exception {
-				((Broker)this.getServiceOwner()).search_messages_to_send();
+				((Broker)this.getServiceOwner()).searchMessagesToSend();
 				return null;
 			}
 		});
@@ -198,7 +198,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 			subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
 		}
 
-		//this.printExecutionLogOnFile("logs/brokerlog");
+		this.printExecutionLogOnFile("logs/brokerlog");
 
 		this.logMessage("stopping broker component.") ;
 		super.finalise();
@@ -257,7 +257,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 
 
 
-	private void search_messages_to_send() throws Exception {
+	private void searchMessagesToSend() throws Exception {
 		while(true) {
 			this.subscribersLock.lock();
 			this.messagesLock.lock();

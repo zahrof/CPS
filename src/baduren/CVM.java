@@ -238,7 +238,7 @@ public class CVM  extends AbstractCVM {
 			System.out.println("\nPublication Port Uri : "+ SubscriberStudent.publicationPortUri);
 			System.out.println("\n-------------------------------------------------------------------------------------------------------");
 			// Give some time to see the traces (convenience).
-			Thread.sleep(5000L) ;
+			Thread.sleep(1000L) ;
 			// Simplifies the termination (termination has yet to be treated
 			// properly in BCM).
 
