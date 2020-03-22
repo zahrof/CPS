@@ -1,0 +1,202 @@
+1584891901903|starting broker component.
+1584891901946|Subscribed student2 to topic PAF with no filter
+1584891901946|Subscribed student1 to topic CPS with filterbaduren.components.subscribers.SubscriberStudent$TestTousLesFiltres@33858268
+1584891901947|Subscribed student2 to topic APS with no filter
+1584891901948|Subscribed student2 to topic PC3R with no filter
+1584891901948|Subscribed student2 to topic CPS with no filter
+1584891902036|Message La semaine prochaine nous verrons PROMELA stocked to topic PC3R at the moment 1584891902
+1584891902036|Message Bonjour, je vais tester tous les filtres.  stocked to topic CPS at the moment 1584891902
+1584891902037|Suppression des messages Bonjour, je vais tester tous les filtres.  du topic CPS
+1584891902038|Suppression des messages La semaine prochaine nous verrons PROMELA du topic PC3R
+1584891902038|Message Bonjour, je vais tester le filtre de EnseigneParMalenfant  stocked to topic CPS at the moment 1584891902
+1584891902038|Envoi du message Bonjour, je vais tester tous les filtres. au port student2
+1584891902038|Message Je ferai cours sur TWITCH stocked to topic PC3R at the moment 1584891902
+1584891902039|Envoi du message La semaine prochaine nous verrons PROMELAau port student2
+1584891902039|Creation of topic CA
+1584891902039|Message Je ferai cours sur TWITCH stocked to topic PAF at the moment 1584891902
+1584891902039|Creation of topic ALASCA
+1584891902040|Envoi du message Bonjour, je vais tester tous les filtres. au port student1
+1584891902040|Message Le sujet 0 sera à l'examen stocked to topic PAF at the moment 1584891902
+1584891902041|Creation of topic SRCS
+1584891902041|Suppression des messages Je ferai cours sur TWITCH du topic PAF
+1584891902042|Suppression des messages Le sujet 0 sera à l'examen du topic PAF
+1584891902042|Suppression des messages Bonjour, je vais tester le filtre de EnseigneParMalenfant  du topic CPS
+1584891902043|Suppression des messages Je ferai cours sur TWITCH du topic PC3R
+1584891902043|Message Le sujet 1 sera à l'examen stocked to topic PAF at the moment 1584891902
+1584891902043|Message Je ferai cours sur TWITCH lundi  stocked to topic PC3R at the moment 1584891902
+1584891902044|Message Je ferai cours sur TWITCH lundi  stocked to topic PAF at the moment 1584891902
+1584891902050|Message Le Coronavirus est partout 0 stocked to topic CPS at the moment 1584891902
+1584891902051|Suppression des messages Le sujet 1 sera à l'examen du topic PAF
+1584891902051|Suppression des messages Je ferai cours sur TWITCH lundi  du topic PAF
+1584891902052|Suppression des messages Le Coronavirus est partout 0 du topic CPS
+1584891902053|Suppression des messages Je ferai cours sur TWITCH lundi  du topic PC3R
+1584891902053|Message Le sujet 2 sera à l'examen stocked to topic PAF at the moment 1584891902
+1584891902054|Message Je ferai cours sur TWITCH jeudi stocked to topic PC3R at the moment 1584891902
+1584891902054|Message Le Coronavirus est partout 1 stocked to topic CPS at the moment 1584891902
+1584891902054|Suppression des messages Le sujet 2 sera à l'examen du topic PAF
+1584891902055|Suppression des messages Le Coronavirus est partout 1 du topic CPS
+1584891902055|Suppression des messages Je ferai cours sur TWITCH jeudi du topic PC3R
+1584891902055|Message Je ferai cours sur TWITCH jeudi stocked to topic PAF at the moment 1584891902
+1584891902055|Envoi du message Je ferai cours sur TWITCHau port student2
+1584891902056|Message Le Coronavirus est partout 2 stocked to topic CPS at the moment 1584891902
+1584891902056|Envoi du message Le sujet 0 sera à l'examenau port student2
+1584891902056|Message Je ferai cours sur TWITCH vendredi stocked to topic PC3R at the moment 1584891902
+1584891902057|Envoi du message Bonjour, je vais tester le filtre de EnseigneParMalenfant au port student2
+1584891902057|Message Le Coronavirus est partout 3 stocked to topic CPS at the moment 1584891902
+1584891902057|Envoi du message Je ferai cours sur TWITCHau port student2
+1584891902057|Message Je ferai cours sur TWITCH vendredi stocked to topic PAF at the moment 1584891902
+1584891902058|Envoi du message Le sujet 1 sera à l'examenau port student2
+1584891902058|Message Le Coronavirus est partout 4 stocked to topic CPS at the moment 1584891902
+1584891902059|Envoi du message Je ferai cours sur TWITCH lundi au port student2
+1584891902059|Message Le Coronavirus est partout 5 stocked to topic CPS at the moment 1584891902
+1584891902059|Envoi du message Le Coronavirus est partout 0au port student2
+1584891902059|Envoi du message Je ferai cours sur TWITCH lundi au port student2
+1584891902059|Message Le Coronavirus est partout 6 stocked to topic CPS at the moment 1584891902
+1584891902059|Envoi du message Le sujet 2 sera à l'examenau port student2
+1584891902060|Envoi du message Le Coronavirus est partout 1au port student2
+1584891902060|Envoi du message Je ferai cours sur TWITCH jeudiau port student2
+1584891902061|Suppression des messages Je ferai cours sur TWITCH jeudi du topic PAF
+1584891902061|Suppression des messages Je ferai cours sur TWITCH vendredi du topic PAF
+1584891902062|Suppression des messages Le Coronavirus est partout 2 du topic CPS
+1584891902062|Suppression des messages Le Coronavirus est partout 3 du topic CPS
+1584891902062|Suppression des messages Le Coronavirus est partout 4 du topic CPS
+1584891902062|Suppression des messages Le Coronavirus est partout 5 du topic CPS
+1584891902063|Suppression des messages Le Coronavirus est partout 6 du topic CPS
+1584891902063|Suppression des messages Je ferai cours sur TWITCH vendredi du topic PC3R
+1584891902063|Message Le Coronavirus est partout 7 stocked to topic CPS at the moment 1584891902
+1584891902064|Suppression des messages Le Coronavirus est partout 7 du topic CPS
+1584891902064|Message Le Coronavirus est partout 8 stocked to topic CPS at the moment 1584891902
+1584891902065|Suppression des messages Le Coronavirus est partout 8 du topic CPS
+1584891902065|Message Le Coronavirus est partout 9 stocked to topic CPS at the moment 1584891902
+1584891902065|Suppression des messages Le Coronavirus est partout 9 du topic CPS
+1584891902066|Message Le Coronavirus est partout 10 stocked to topic CPS at the moment 1584891902
+1584891902066|Suppression des messages Le Coronavirus est partout 10 du topic CPS
+1584891902066|Message Le Coronavirus est partout 11 stocked to topic CPS at the moment 1584891902
+1584891902067|Envoi du message Je ferai cours sur TWITCH jeudiau port student2
+1584891902067|Message Le Coronavirus est partout 12 stocked to topic CPS at the moment 1584891902
+1584891902067|Envoi du message Je ferai cours sur TWITCH vendrediau port student2
+1584891902067|Envoi du message Le Coronavirus est partout 2au port student2
+1584891902067|Message Le Coronavirus est partout 13 stocked to topic CPS at the moment 1584891902
+1584891902068|Envoi du message Le Coronavirus est partout 3au port student2
+1584891902068|Envoi du message Le Coronavirus est partout 4au port student2
+1584891902068|Message Le Coronavirus est partout 14 stocked to topic CPS at the moment 1584891902
+1584891902068|Envoi du message Le Coronavirus est partout 5au port student2
+1584891902069|Message Le Coronavirus est partout 15 stocked to topic CPS at the moment 1584891902
+1584891902069|Envoi du message Le Coronavirus est partout 6au port student2
+1584891902069|Envoi du message Je ferai cours sur TWITCH vendrediau port student2
+1584891902069|Envoi du message Le Coronavirus est partout 7au port student2
+1584891902070|Envoi du message Le Coronavirus est partout 8au port student2
+1584891902070|Envoi du message Le Coronavirus est partout 9au port student2
+1584891902070|Envoi du message Le Coronavirus est partout 10au port student2
+1584891902072|Message Le Coronavirus est partout 16 stocked to topic CPS at the moment 1584891902
+1584891902072|Message Le Coronavirus est partout 17 stocked to topic CPS at the moment 1584891902
+1584891902074|Suppression des messages Le Coronavirus est partout 11 du topic CPS
+1584891902074|Suppression des messages Le Coronavirus est partout 12 du topic CPS
+1584891902082|Suppression des messages Le Coronavirus est partout 13 du topic CPS
+1584891902082|Suppression des messages Le Coronavirus est partout 14 du topic CPS
+1584891902083|Suppression des messages Le Coronavirus est partout 15 du topic CPS
+1584891902083|Suppression des messages Le Coronavirus est partout 16 du topic CPS
+1584891902083|Suppression des messages Le Coronavirus est partout 17 du topic CPS
+1584891902083|Message Le Coronavirus est partout 18 stocked to topic CPS at the moment 1584891902
+1584891902084|Suppression des messages Le Coronavirus est partout 18 du topic CPS
+1584891902084|Message Le Coronavirus est partout 19 stocked to topic CPS at the moment 1584891902
+1584891902084|Envoi du message Le Coronavirus est partout 11au port student2
+1584891902085|Envoi du message Le Coronavirus est partout 12au port student2
+1584891902085|Envoi du message Le Coronavirus est partout 13au port student2
+1584891902085|Envoi du message Le Coronavirus est partout 14au port student2
+1584891902085|Envoi du message Le Coronavirus est partout 15au port student2
+1584891902085|Message Le Coronavirus est partout 20 stocked to topic CPS at the moment 1584891902
+1584891902085|Envoi du message Le Coronavirus est partout 16au port student2
+1584891902086|Message Le Coronavirus est partout 21 stocked to topic CPS at the moment 1584891902
+1584891902086|Envoi du message Le Coronavirus est partout 17au port student2
+1584891902088|Message Le Coronavirus est partout 22 stocked to topic CPS at the moment 1584891902
+1584891902088|Envoi du message Le Coronavirus est partout 18au port student2
+1584891902089|Message Le Coronavirus est partout 23 stocked to topic CPS at the moment 1584891902
+1584891902092|Suppression des messages Le Coronavirus est partout 19 du topic CPS
+1584891902092|Suppression des messages Le Coronavirus est partout 20 du topic CPS
+1584891902093|Suppression des messages Le Coronavirus est partout 21 du topic CPS
+1584891902093|Suppression des messages Le Coronavirus est partout 22 du topic CPS
+1584891902093|Suppression des messages Le Coronavirus est partout 23 du topic CPS
+1584891902093|Message Le Coronavirus est partout 24 stocked to topic CPS at the moment 1584891902
+1584891902094|Suppression des messages Le Coronavirus est partout 24 du topic CPS
+1584891902094|Message Le Coronavirus est partout 25 stocked to topic CPS at the moment 1584891902
+1584891902094|Suppression des messages Le Coronavirus est partout 25 du topic CPS
+1584891902095|Message Le Coronavirus est partout 26 stocked to topic CPS at the moment 1584891902
+1584891902095|Suppression des messages Le Coronavirus est partout 26 du topic CPS
+1584891902095|Message Le Coronavirus est partout 27 stocked to topic CPS at the moment 1584891902
+1584891902096|Suppression des messages Le Coronavirus est partout 27 du topic CPS
+1584891902098|Message Le Coronavirus est partout 28 stocked to topic CPS at the moment 1584891902
+1584891902099|Suppression des messages Le Coronavirus est partout 28 du topic CPS
+1584891902099|Message Le Coronavirus est partout 29 stocked to topic CPS at the moment 1584891902
+1584891902100|Suppression des messages Le Coronavirus est partout 29 du topic CPS
+1584891902100|Message Le Coronavirus est partout 30 stocked to topic CPS at the moment 1584891902
+1584891902100|Suppression des messages Le Coronavirus est partout 30 du topic CPS
+1584891902102|Message Le Coronavirus est partout 31 stocked to topic CPS at the moment 1584891902
+1584891902102|Suppression des messages Le Coronavirus est partout 31 du topic CPS
+1584891902102|Envoi du message Le Coronavirus est partout 19au port student2
+1584891902102|Envoi du message Le Coronavirus est partout 20au port student2
+1584891902102|Message Le Coronavirus est partout 32 stocked to topic CPS at the moment 1584891902
+1584891902103|Envoi du message Le Coronavirus est partout 21au port student2
+1584891902103|Envoi du message Le Coronavirus est partout 22au port student2
+1584891902103|Message Le Coronavirus est partout 33 stocked to topic CPS at the moment 1584891902
+1584891902103|Envoi du message Le Coronavirus est partout 23au port student2
+1584891902104|Message Le Coronavirus est partout 34 stocked to topic CPS at the moment 1584891902
+1584891902105|Envoi du message Le Coronavirus est partout 24au port student2
+1584891902105|Message Le Coronavirus est partout 35 stocked to topic CPS at the moment 1584891902
+1584891902106|Envoi du message Le Coronavirus est partout 25au port student2
+1584891902106|Message Le Coronavirus est partout 36 stocked to topic CPS at the moment 1584891902
+1584891902107|Message Le Coronavirus est partout 37 stocked to topic CPS at the moment 1584891902
+1584891902108|Message Le Coronavirus est partout 38 stocked to topic CPS at the moment 1584891902
+1584891902109|Message Le Coronavirus est partout 39 stocked to topic CPS at the moment 1584891902
+1584891902109|Envoi du message Le Coronavirus est partout 26au port student2
+1584891902110|Message Le Coronavirus est partout 40 stocked to topic CPS at the moment 1584891902
+1584891902111|Envoi du message Le Coronavirus est partout 27au port student2
+1584891902111|Message Le Coronavirus est partout 41 stocked to topic CPS at the moment 1584891902
+1584891902112|Message Le Coronavirus est partout 42 stocked to topic CPS at the moment 1584891902
+1584891902113|Message Le Coronavirus est partout 43 stocked to topic CPS at the moment 1584891902
+1584891902114|Envoi du message Le Coronavirus est partout 28au port student2
+1584891902115|Message Le Coronavirus est partout 44 stocked to topic CPS at the moment 1584891902
+1584891902116|Message Le Coronavirus est partout 45 stocked to topic CPS at the moment 1584891902
+1584891902116|Message Le Coronavirus est partout 46 stocked to topic CPS at the moment 1584891902
+1584891902117|Message Le Coronavirus est partout 47 stocked to topic CPS at the moment 1584891902
+1584891902117|Message Le Coronavirus est partout 48 stocked to topic CPS at the moment 1584891902
+1584891902118|Message Le Coronavirus est partout 49 stocked to topic CPS at the moment 1584891902
+1584891902119|Envoi du message Le Coronavirus est partout 29au port student2
+1584891902120|Envoi du message Le Coronavirus est partout 30au port student2
+1584891902120|Envoi du message Le Coronavirus est partout 31au port student2
+1584891902127|Suppression des messages Le Coronavirus est partout 32 du topic CPS
+1584891902128|Suppression des messages Le Coronavirus est partout 33 du topic CPS
+1584891902128|Suppression des messages Le Coronavirus est partout 34 du topic CPS
+1584891902128|Suppression des messages Le Coronavirus est partout 35 du topic CPS
+1584891902128|Suppression des messages Le Coronavirus est partout 36 du topic CPS
+1584891902128|Suppression des messages Le Coronavirus est partout 37 du topic CPS
+1584891902128|Suppression des messages Le Coronavirus est partout 38 du topic CPS
+1584891902128|Suppression des messages Le Coronavirus est partout 39 du topic CPS
+1584891902128|Suppression des messages Le Coronavirus est partout 40 du topic CPS
+1584891902129|Suppression des messages Le Coronavirus est partout 41 du topic CPS
+1584891902129|Suppression des messages Le Coronavirus est partout 42 du topic CPS
+1584891902129|Suppression des messages Le Coronavirus est partout 43 du topic CPS
+1584891902129|Suppression des messages Le Coronavirus est partout 44 du topic CPS
+1584891902129|Suppression des messages Le Coronavirus est partout 45 du topic CPS
+1584891902129|Suppression des messages Le Coronavirus est partout 46 du topic CPS
+1584891902129|Suppression des messages Le Coronavirus est partout 47 du topic CPS
+1584891902130|Suppression des messages Le Coronavirus est partout 48 du topic CPS
+1584891902130|Suppression des messages Le Coronavirus est partout 49 du topic CPS
+1584891902132|Envoi du message Le Coronavirus est partout 32au port student2
+1584891902133|Envoi du message Le Coronavirus est partout 33au port student2
+1584891902133|Envoi du message Le Coronavirus est partout 34au port student2
+1584891902133|Envoi du message Le Coronavirus est partout 35au port student2
+1584891902133|Envoi du message Le Coronavirus est partout 36au port student2
+1584891902134|Envoi du message Le Coronavirus est partout 37au port student2
+1584891902134|Envoi du message Le Coronavirus est partout 38au port student2
+1584891902134|Envoi du message Le Coronavirus est partout 39au port student2
+1584891902135|Envoi du message Le Coronavirus est partout 40au port student2
+1584891902136|Envoi du message Le Coronavirus est partout 41au port student2
+1584891902136|Envoi du message Le Coronavirus est partout 42au port student2
+1584891902136|Envoi du message Le Coronavirus est partout 43au port student2
+1584891902136|Envoi du message Le Coronavirus est partout 44au port student2
+1584891902137|Envoi du message Le Coronavirus est partout 45au port student2
+1584891902139|Envoi du message Le Coronavirus est partout 46au port student2
+1584891902139|Envoi du message Le Coronavirus est partout 47au port student2
+1584891902139|Envoi du message Le Coronavirus est partout 48au port student2
+1584891902139|Envoi du message Le Coronavirus est partout 49au port student2
