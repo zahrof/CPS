@@ -146,7 +146,17 @@ public class Properties implements java.io.Serializable{
 		Nous devons le spécifier ainsi car la méthode get dans une map renvoie null ou la valeur associé
 		à la clé name.
 		 */
-		return this.booleanProperties.get(name);
+		System.out.println("res ");
+		if (this.booleanProperties.containsKey(name)) {
+			boolean res = this.booleanProperties.get(name);
+			System.out.println("res " + res);
+			if ((res == true) || (res == false)) {
+				System.out.println("res " + res);
+				return res;
+			}
+		}
+		System.out.println("res y est pas");
+		return false;
 	}
 
 	/**
@@ -156,7 +166,7 @@ public class Properties implements java.io.Serializable{
 	 * @return the byte prop
 	 */
 	public byte getByteProp(String name) {
-		return this.byteProperties.get(name); 
+		return this.byteProperties.get(name);
 	}
 
 	/**
@@ -166,7 +176,9 @@ public class Properties implements java.io.Serializable{
 	 * @return the char prop
 	 */
 	public char getCharProp(String name) {
+		if(this.characterProperties.containsKey(name ))
 		return this.characterProperties.get(name);
+		return ' ';
 	}
 
 	/**
@@ -176,7 +188,9 @@ public class Properties implements java.io.Serializable{
 	 * @return the double prop
 	 */
 	public double getDoubleProp(String name) {
+		if(this.doubleProperties.containsKey(name ))
 		return this.doubleProperties.get(name);
+		return 0;
 	}
 
 	/**
@@ -186,7 +200,9 @@ public class Properties implements java.io.Serializable{
 	 * @return the float prop
 	 */
 	public float getFloatProp(String name) {
+		if(this.floatProperties.containsKey(name ))
 		return this.floatProperties.get(name);
+		return 0;
 	}
 
 	/**
@@ -196,7 +212,9 @@ public class Properties implements java.io.Serializable{
 	 * @return the int prop
 	 */
 	public int getIntProp(String name) {
+		if(this.integerProperties.containsKey(name))
 		return this.integerProperties.get(name);
+		return 0;
 	}
 
 	/**
@@ -206,7 +224,9 @@ public class Properties implements java.io.Serializable{
 	 * @return the long prop
 	 */
 	public long getLongProp(String name) {
+		if(this.longProperties.containsKey(name))
 		return this.longProperties.get(name);
+		return 0;
 	}
 
 	/**
@@ -216,7 +236,9 @@ public class Properties implements java.io.Serializable{
 	 * @return the short prop
 	 */
 	public short getShortProp(String name) {
+		if(this.shortProperties.containsKey(name))
 		return this.shortProperties.get(name);
+		return 0;
 	}
 
 	/**

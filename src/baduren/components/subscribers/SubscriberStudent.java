@@ -38,9 +38,6 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     protected String uri;
 
 
-    /**	the outbound port used to call the service.							*/
-    protected ReceptionInboundPortForPlugin receptionInboundPort;
-
     // To know what senario each student should follow
     private int number_student;
 
@@ -125,7 +122,9 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
         @Override
         public boolean filter(MessageI m) throws Exception {
             boolean filtreVerifie=true;
+            System.out.println(" avantr filtre malenfant : "+ filtreVerifie);
             if(!m.getProperties().getStringProp("professeur").equals("Malenfant"))filtreVerifie=false;
+            System.out.println(" filtre malenfant : "+ filtreVerifie);
            return filtreVerifie;
         }
 
@@ -137,16 +136,26 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
     public class TestTousLesFiltres implements MessageFilterI {
 
         @Override
-        public boolean filter(MessageI m) throws Exception {
+        public boolean filter(MessageI m) {
             boolean filtreVerifie=true;
+            System.out.println("message : "+m.toString());
+            System.out.println(" avant filtre filtres 1 : "+ filtreVerifie);
             if( m.getProperties().getBooleanProp("UE obligatoire")!=true) filtreVerifie=false;
+            System.out.println(" avant filtre filtres2 : "+ filtreVerifie);
             if(! m.getProperties().getStringProp("Random String").equals("random")) filtreVerifie=false;
+            System.out.println(" avant filtre filtres3 : "+ filtreVerifie);
             if(m.getProperties().getCharProp("Première lettre de l'UE") != 'c') filtreVerifie=false;
+            System.out.println(" avant filtre filtres4 : "+ filtreVerifie);
             if( Double.compare(m.getProperties().getDoubleProp("Random Double"),2.00)!=0) filtreVerifie=false;
+            System.out.println(" avant filtre filtres5 : "+ filtreVerifie);
             if( Float.compare(m.getProperties().getFloatProp("Random Float"),(float) 2.50)!=0) filtreVerifie=false;
+            System.out.println(" avant filtre filtres 6: "+ filtreVerifie);
             if(m.getProperties().getIntProp("Random Integer") != 3) filtreVerifie=false;
+            System.out.println(" avant filtre filtres 7: "+ filtreVerifie);
             if(m.getProperties().getLongProp("Random Long") != (long) 3) filtreVerifie=false;
+            System.out.println(" avant filtre filtres8 : "+ filtreVerifie);
             if(m.getProperties().getShortProp("Random Short") != (short) 3) filtreVerifie=false;
+            System.out.println(" filtre filtres 9: "+ filtreVerifie);
             return filtreVerifie;
         }
 
@@ -189,6 +198,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
 
                  */
                 subscribe("CPS", new TestTousLesFiltres(), pluginReception.receptionInboundPortUri);
+                Thread.sleep(200);
                 modifyFilter("CPS", new EnseigneParMalenfant(), pluginReception.receptionInboundPortUri);
                 break;
             case 2:

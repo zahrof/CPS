@@ -52,6 +52,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	final private Condition hasSubscribers = subscribersLock.newCondition();
 	final private Condition newSubscribers = subscribersLock.newCondition();
 	final private Condition hasMessagesReady = messagesReadyLock.newCondition();
+	final private Condition hasMessages = messagesLock.newCondition();
 
 	private class Subscriber {
 		/**
@@ -273,23 +274,22 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 
 
 		while(true) {
-			//System.out.println("avant lock dans accept message pour subscribers");
+			System.out.println("avant lock dans accept message pour subscribers");
 			this.subscribersLock.lock(); //blocks writers only
 			//System.out.println("après lock dans accept message pour subscribers");
 			while(subscribers.isEmpty()) { //check if there's data, don't modify shared variables
-				//System.out.println("waiting for messages ready");
+				System.out.println("waiting for messages ready");
 				hasSubscribers.await();
 			}
-		//	System.out.println("APRÈS PRENDRE SUBSCRIBERS prendre message Ready dans ACCEPT Message");
+			System.out.println("APRÈS PRENDRE SUBSCRIBERS prendre message Ready dans ACCEPT Message");
 
-			//System.out.println("après prendre message Ready dans ACCEPT Message");
+			System.out.println("après prendre message Ready dans ACCEPT Message");
 			for (String inboundPortI : subscribers.keySet()) {
 
-				//if(messagesReady.isEmpty()) hasMessagesReady.await();
 				for (String inboundPortII : messagesReady.keySet()) {
-					//System.out.println("pour tous les subscriber dans messageReady");
+					System.out.println("pour tous les subscriber dans messageReady");
 					if(inboundPortI.equals(inboundPortII)){
-						//System.out.println("Equals");
+						System.out.println("Equals");
 						messagesReadyLock.lock();
 						if(messagesReady.get(inboundPortI).size()==1){
 							this.logMessage("Envoi du message " + messagesReady.get(inboundPortI).get(0).toString() + "au port " + inboundPortI);
@@ -300,21 +300,21 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 							for (MessageI m : messagesReady.get(inboundPortI)) {
 								this.logMessage("Envoi du message " + m.toString() + "au port " + inboundPortI);
 								subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(m);
-								//System.out.println("je viens de l'envoyer à accept message le message " + m.toString());
+								System.out.println("je viens de l'envoyer à accept message le message " + m.toString());
 							}
 						}messagesReadyLock.unlock();
 					}
 
 				}
 				messagesReadyLock.lock();
-				//System.out.println("je vais supprimer inbound Port ACCEPT");
+				System.out.println("je vais supprimer inbound Port ACCEPT");
 				messagesReady.remove(inboundPortI);
 				messagesReadyLock.unlock();
 
 			}
 			//System.out.println("avant rendre message Ready dans ACCEPT Message");
 
-			//System.out.println("avant rendre subscriber Lock dans ACCEPT Message");
+			System.out.println("avant rendre subscriber Lock dans ACCEPT Message");
 			this.subscribersLock.unlock();
 		}
 	}
@@ -322,63 +322,56 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 
 
 	private void search_messages_to_send() throws Exception {
-
-		HashSet<MessageI> sent_messages;
 		while(true) {
-		//	Thread.sleep(5000);
-			/*
-			Thread.sleep(5000);
-			for (String topic : messages.keySet()) {
-				for (MessageI m : this.messages.get(topic)) {
-					System.out.println("topic : " + topic + "    message : " + m + "");
-				}
-			}
-			Thread.sleep(5000);
-			*/
-
-			//System.out.println("avant lock dans SELECT message pour subscribers");
+			System.out.println("avant lock dans SELECT message pour subscribers");
 			this.subscribersLock.lock();
-			//System.out.println("avant lock dans SELECT message pour messagelock");
+			System.out.println("avant lock dans SELECT message pour messagelock");
 			this.messagesLock.lock();
+
+			System.out.println("avant prendre message_ready Lock dans SELECT Message TOPIC ");
+
+
 			this.messagesReadyLock.lock();
-		//	System.out.println("après lock dans SELECT message pour messagelock");
-			//System.out.println("messages "+messages.toString());
+			System.out.println("après lock dans SELECT message pour messagelock");
+			System.out.println("messages "+messages.toString());
+		/*	while (messages.isEmpty()) this.hasMessages.await();*/
 			if(!messages.isEmpty()) {
 				for (String topic : messages.keySet()) {
+					System.out.println("Avant suite itération subscribers key set ");
 					for (String inboundPortURI : subscribers.keySet()) {
 						Subscriber subscriber = subscribers.get(inboundPortURI);
-						if(!subscriber.topics.keySet().contains(topic)) continue;
+						//if(!subscriber.topics.keySet().contains(topic)) continue;
 						for (MessageI m : this.messages.get(topic)) {
 
-							//System.out.println("avant prendre message_ready Lock dans SELECT Message TOPIC "+topic);
-
-							//System.out.println("j'ai pris message_ready Lock dans SELECT Message TOPIC "+topic);
 							if (subscriber.topics.get(topic)==null) {
+								System.out.println("MESSAGE tyyt SANS FILTRE ");
 								//System.out.println("il y a des trucs à ajouter pour le topic "+topic);
 								if (!this.messagesReady.containsKey(inboundPortURI)) {
 									//System.out.println("pUTTING SOME CONTENT");
 									messagesReady.put(inboundPortURI, new ArrayList<>());
+
 								}
 								messagesReady.get(inboundPortURI).add(m);
-								//System.out.println("MESSAGE READY"+ messagesReady.toString());
+							//	this.hasMessagesReady.signal();
+								System.out.println("MESSAGE READY SANS FILTRE "+ messagesReady.toString());
 							}
 							else{
+								System.out.println("MESSAGE tyyt AVEC FILTRE ");
 								if(subscriber.topics.get(topic).filter(m)) {
 									messagesFiltres++;
-									//System.out.println("il y a des trucs à ajouter pour le topic " + topic);
+									System.out.println("il y a des trucs à ajouter pour le topic " + topic);
 									if (!this.messagesReady.containsKey(inboundPortURI)) {
-										//System.out.println("pUTTING SOME CONTENT");
+										System.out.println("pUTTING SOME CONTENT");
 										messagesReady.put(inboundPortURI, new ArrayList<>());
+
 									}
 
 									messagesReady.get(inboundPortURI).add(m);
-									//System.out.println("MESSAGE READY" + messagesReady.toString());
+									//this.hasMessagesReady.signal();
+									System.out.println("MESSAGE READY AVEC FILTRE" + messagesReady.toString());
 								}
+								System.out.println("J'en ressors " + messagesReady.toString());
 							}
-
-							//System.out.println("avant rendre message_ready Lock dans SELECT Message TOPIC "+topic);
-
-
 						}
 
 					}
@@ -391,12 +384,13 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 				}
 				//Thread.sleep(1000);
 			}
+			System.out.println("avant rendre message_ready Lock dans SELECT Message TOPIC ");
 			this.messagesReadyLock.unlock();
-		//	System.out.println("avant rendre message_lock Lock dans SELECT Message");
+			System.out.println("avant rendre message_lock Lock dans SELECT Message");
 			this.messagesLock.unlock();
-		//	System.out.println("avant rendre subscriber Lock dans SELECT Message");
+			System.out.println("avant rendre subscriber Lock dans SELECT Message");
 			this.subscribersLock.unlock();
-			//System.out.println("BYE");
+			System.out.println("BYE");
 
 		}
 
@@ -414,15 +408,18 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @throws Exception the exception
 	 */
 	public void publish(MessageI m, String topic)throws Exception {
-		//System.out.println("publish avant prends le lock pour messages");
+		System.out.println("publish avant prends le lock pour messages");
 		this.messagesLock.lock();
-		//System.out.println("publish après prends le lock pour messages");
-		if (!this.messages.containsKey(topic)) if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
+		System.out.println("publish après prends le lock pour messages");
+		if (!this.messages.containsKey(topic)){
+			if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
+		}
 
 		this.messages.get(topic).add(m); // On ajoute le message
+		//this.hasMessages.signal();
 		this.logMessage("Message " + m.getURI() + " stocked to topic " + topic+ " at the moment "+m.getTimeStamp().getTime() );
 		this.messagesLock.unlock();
-		//System.out.println("publish rend le lock pour messages "+m.toString());
+		System.out.println("publish rend le lock pour messages "+m.toString());
 
 
 		//Thread.sleep(1000);
