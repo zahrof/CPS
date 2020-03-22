@@ -148,6 +148,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		/** SETTING TRACER **/
 		this.tracer.setTitle("broker") ;
 		this.tracer.setRelativePosition(1, 0) ;
+		if(! new File(TestsIntegration.LOG_FOLDER).exists()) new File(TestsIntegration.LOG_FOLDER).mkdir();
 		Logger logger = new Logger(TestsIntegration.LOG_FOLDER);
 		logger.toggleLogging();
 		this.setLogger(logger);
