@@ -11,5 +11,6 @@ public interface MessageFilterI {
 	 * @return the boolean
 	 * @throws Exception the exception
 	 */
-	boolean filter(MessageI m)throws Exception;;
+	boolean filter(MessageI m)throws Exception;
+	String getName();
 }

@@ -111,6 +111,10 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
             if(m.getProperties().getBooleanProp("Sera évaluée à l'examen réparti 1 ")) return  true;
             else return false;
         }
+        @Override
+        public String getName() {
+            return "SeraEvalueeAER1";
+        }
 
     }
 
@@ -126,6 +130,11 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
             if(!m.getProperties().getStringProp("professeur").equals("Malenfant"))filtreVerifie=false;
             System.out.println(" filtre malenfant : "+ filtreVerifie);
            return filtreVerifie;
+        }
+
+        @Override
+        public String getName() {
+            return "EnseigneParMalenfant";
         }
 
     }
@@ -157,6 +166,11 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
             if(m.getProperties().getShortProp("Random Short") != (short) 3) filtreVerifie=false;
             System.out.println(" filtre filtres 9: "+ filtreVerifie);
             return filtreVerifie;
+        }
+
+        @Override
+        public String getName() {
+            return "TestTousLesFiltres";
         }
 
     }
