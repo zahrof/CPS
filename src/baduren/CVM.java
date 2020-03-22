@@ -214,9 +214,10 @@ public class CVM  extends AbstractCVM {
 			CVM a = new CVM() ;
 			// Execute the application.
 			a.startStandardLifeCycle(2000L) ;
-			System.out.println("Messages supprimés : "+Broker.messagesSupprimes);
-			System.out.println("Messages qui ont passé le filtre : "+Broker.messagesFiltres);
+			System.out.println("Messages sauvegardés dans broker : "+Broker.messagesSupprimes);
+			System.out.println("Historique des abonnements: "+ Broker.historiqueAbonnements);
 			System.out.println("Historique des changement de filtres  : "+Broker.changementFiltres);
+			System.out.println("Historique des desabonnements: "+ Broker.desabonnements);
 			// Give some time to see the traces (convenience).
 			Thread.sleep(50000000L) ;
 			// Simplifies the termination (termination has yet to be treated

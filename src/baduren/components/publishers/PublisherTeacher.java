@@ -136,7 +136,12 @@ public class PublisherTeacher extends AbstractComponent {
                         new Message("Je ferai cours sur TWITCH vendredi")
                 },  new String[]{"PC3R", "PAF"});
 
-                for(int i=0; i <100; i++){
+                for(int i=0; i <50; i++){
+
+                    publish (new Message("Le Coronavirus est partout "+i), "CPS");
+                }Thread.sleep(1000);
+                for(int i=50; i <100; i++){
+
                     publish (new Message("Le Coronavirus est partout "+i), "CPS");
                 }
                 break;

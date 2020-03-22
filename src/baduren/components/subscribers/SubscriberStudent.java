@@ -222,6 +222,8 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
                 subscribe("PAF",  pluginReception.receptionInboundPortUri);
                 subscribe("PC3R",  pluginReception.receptionInboundPortUri);
                 subscribe("CPS",  pluginReception.receptionInboundPortUri);
+                Thread.sleep(1000);
+                unsubscribe("CPS",  pluginReception.receptionInboundPortUri);
                 break;
         }
 

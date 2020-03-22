@@ -35,6 +35,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	public static int messagesSupprimes;
 	public static int messagesFiltres;
 	public static String changementFiltres="";
+	public static String desabonnements="";
+	public static String historiqueAbonnements;
 
 	/**
 	 * The Broker's uri.
@@ -54,6 +56,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	final private Condition newSubscribers = subscribersLock.newCondition();
 	final private Condition hasMessagesReady = messagesReadyLock.newCondition();
 	final private Condition hasMessages = messagesLock.newCondition();
+
+
 
 	private class Subscriber {
 		/**
@@ -551,13 +555,25 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		//System.out.println("subscribe après de rendre le lock subscribedlock - " + inboundPortURI);
 
 		this.compteur++;
-		subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
-				"te souscrire au topic "+topic));
+		if (filter == null) {
+			subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
+					"te souscrire au topic "+topic + " sans filtres "));
+		}
+		else subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
+				"te souscrire au topic "+topic+ " avec le filtre "+ filter.getName()));
+
+
+
 		this.subscribersLock.unlock();
 		if (filter == null) {
 			this.logMessage("Subscribed " + inboundPortURI + " to topic " + topic + " with no filter");
+			this.historiqueAbonnements += "\n		On abonne " + inboundPortURI + " au sujet " + topic + " sans filtres";
 		}
-		else this.logMessage("Subscribed " + inboundPortURI + " to topic " + topic + " with filter"+filter);
+		else {
+			this.logMessage("Subscribed " + inboundPortURI + " to topic " + topic + " with filter"+filter);
+			this.historiqueAbonnements += "\n		On abonne " + inboundPortURI + " au sujet " + topic + " avec le " +
+					"filtre : "+ filter.getName();
+		}
 
 
 	}
@@ -580,8 +596,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		}
 		//System.out.println("passé après le wait " + inboundPortURI);
 		if (isTopic(topic)) {
-			this.changementFiltres += " On change le filtre " + subscribers.get(inboundPortURI).topics.get(topic).getName()+
-					" par "+newFilter.getName() + "\n";
+			this.changementFiltres += " \n		On change le filtre " + subscribers.get(inboundPortURI).topics.get(topic).getName()+
+					" par "+newFilter.getName();
 			System.out.println("je remplace"+ topic+ "par "+ newFilter );
 				subscribers.get(inboundPortURI).topics.replace(topic, newFilter);
 			System.out.println("maintenant "+ subscribers.get(inboundPortURI).topics.get(topic));
@@ -599,9 +615,18 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param inboundPortUri the inbound port uri
 	 * @throws Exception the exception
 	 */
-	public void unsubscribe(String topic, String inboundPortUri){
+	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
 		this.subscribersLock.lock();
-		this.subscribers.get(inboundPortUri).topics.remove(topic);
+		if(this.subscribers.get(inboundPortUri).topics.containsKey(topic)) {
+			this.logMessage("On enlève l'abonnement de " + inboundPortUri + " au topic " + topic);
+			subscribers.get(inboundPortUri).receptionOutboundPort.acceptMessage(new Message("Tu viens de " +
+					"te desabonner au topic " + topic));
+			this.desabonnements += "\n		On desabonne " + inboundPortUri + " du topic " + topic ;
+			this.subscribers.get(inboundPortUri).topics.remove(topic);
+		}else{
+			this.desabonnements += "\n		On a pas pu desabonner " + inboundPortUri + " du topic " + topic + " car " +
+					" il était pas abonné\n";
+		}
 		this.subscribersLock.unlock();
 	}
 
