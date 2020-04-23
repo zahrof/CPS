@@ -1,13 +1,11 @@
 package baduren.plugins;
 
-import baduren.interfaces.ManagementCI;
-import baduren.interfaces.MessageFilterI;
-import baduren.interfaces.PublicationCI;
+import baduren.interfaces.*;
 import baduren.ports.inboundPortsForPlugin.ManagementInboundPortForPlugin;
 import fr.sorbonne_u.components.AbstractPlugin;
 import fr.sorbonne_u.components.ComponentI;
 
-public class BrokerManagementPlugin extends AbstractPlugin implements ManagementCI {
+public class BrokerManagementPlugin extends AbstractPlugin implements SubscriptionImplementationI,ManagementImplementationI {
 
     // -------------------------------------------------------------------------
     // Plug-in variables and constants
@@ -32,7 +30,9 @@ public class BrokerManagementPlugin extends AbstractPlugin implements Management
         //  assert	owner instanceof PublicationCI ;
 
         // Add interfaces and create ports
-        this.addOfferedInterface(ManagementCI.class) ;
+
+        this.addOfferedInterface(SubscriptionImplementationI.class) ;
+        this.addOfferedInterface(ManagementImplementationI.class) ;
         this.mip = new ManagementInboundPortForPlugin(
                 this.getPluginURI(), this.owner) ;
         this.mip.publishPort() ;
@@ -53,63 +53,68 @@ public class BrokerManagementPlugin extends AbstractPlugin implements Management
     // -------------------------------------------------------------------------
     // Plug-in services implementation
     // -------------------------------------------------------------------------
-    private ManagementCI	getOwner()
+    private ManagementImplementationI	getOwnerManagement()
     {
-        return ((ManagementCI)this.owner) ;
+        return ((ManagementImplementationI)this.owner) ;
+    }
+
+    private SubscriptionImplementationI	getOwnerSubscription()
+    {
+        return ((SubscriptionImplementationI)this.owner) ;
     }
 
     @Override
     public void createTopic(String topic) throws Exception {
-        this.getOwner().createTopic(topic);
+        this.getOwnerManagement().createTopic(topic);
     }
 
     @Override
     public void createTopics(String[] topics) throws Exception {
-        this.getOwner().createTopics(topics);
+        this.getOwnerManagement().createTopics(topics);
     }
 
     @Override
     public void destroyTopic(String topic) throws Exception {
-        this.getOwner().destroyTopic(topic);
+        this.getOwnerManagement().destroyTopic(topic);
     }
 
     @Override
     public boolean isTopic(String topic) throws Exception {
-        return   this.getOwner().isTopic(topic);
+        return   this.getOwnerManagement().isTopic(topic);
     }
 
     @Override
     public String[] getTopics() throws Exception {
-        return   this.getOwner().getTopics();
+        return   this.getOwnerManagement().getTopics();
     }
 
     @Override
     public String getPublicationPortURI() throws Exception {
-        return   this.getOwner().getPublicationPortURI();
+        return   this.getOwnerManagement().getPublicationPortURI();
     }
 
     @Override
     public void subscribe(String topic, String inboundPortURI) throws Exception {
-        this.getOwner().subscribe(topic, inboundPortURI);
+        this.getOwnerSubscription().subscribe(topic, inboundPortURI);
     }
 
     @Override
     public void subscribe(String[] topics, String inboundPortURI) throws Exception {
-        this.getOwner().subscribe(topics, inboundPortURI);
+        this.getOwnerSubscription().subscribe(topics, inboundPortURI);
     }
 
     @Override
     public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
-        this.getOwner().subscribe(topic, filter, inboundPortURI);
+        this.getOwnerSubscription().subscribe(topic, filter, inboundPortURI);
     }
 
     @Override
     public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception {
-        this.getOwner().modifyFilter(topic, newFilter, inboundPortURI);
+        this.getOwnerSubscription().modifyFilter(topic, newFilter, inboundPortURI);
     }
 
     @Override
     public void unsubscribe(String topic, String inboundPortUri) throws Exception {
-        this.getOwner().unsubscribe(topic ,inboundPortUri);
+        this.getOwnerSubscription().unsubscribe(topic ,inboundPortUri);
     }
 }

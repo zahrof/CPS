@@ -3,6 +3,7 @@ package baduren.ports.inboundPorts;
 import baduren.components.Broker.Broker;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
+import baduren.interfaces.PublicationImplementationI;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
@@ -41,11 +42,11 @@ public class PublicationInboundPort extends	AbstractInboundPort implements Publi
 
 	@Override
 	public void publish(MessageI m, String topic) throws Exception {
-		this.getOwner().handleRequestSync(
+		this.getOwner().handleRequestAsync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).publish(m, topic);
+						((PublicationImplementationI)this.getServiceOwner()).publish(m, topic);
 						return null;
 					}
 				}) ;
@@ -57,7 +58,7 @@ public class PublicationInboundPort extends	AbstractInboundPort implements Publi
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).publish(m, topics);
+						((PublicationImplementationI)this.getServiceOwner()).publish(m, topics);
 						return null;
 					}
 				}) ;
@@ -69,7 +70,7 @@ public class PublicationInboundPort extends	AbstractInboundPort implements Publi
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).publish(ms, topics);
+						((PublicationImplementationI)this.getServiceOwner()).publish(ms, topics);
 						return null;
 					}
 				}) ;
@@ -81,7 +82,7 @@ public class PublicationInboundPort extends	AbstractInboundPort implements Publi
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).publish(ms, topics);
+						((PublicationImplementationI)this.getServiceOwner()).publish(ms, topics);
 						return null;
 					}
 				}) ;

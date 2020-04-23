@@ -4,6 +4,7 @@ import baduren.TestsIntegration;
 import baduren.interfaces.*;
 import baduren.message.Message;
 import baduren.message.Properties;
+import baduren.message.TimeStamp;
 import fr.sorbonne_u.components.AbstractComponent;
 import baduren.plugins.PublisherPublicationPlugin;
 import baduren.plugins.PublisherSubscriberManagementPlugin;
@@ -13,7 +14,8 @@ import fr.sorbonne_u.components.helpers.Logger;
 
 import java.io.File;
 
-public class PublisherTeacher extends AbstractComponent {
+public class PublisherTeacher extends AbstractComponent implements ManagementImplementationI,
+        SubscriptionImplementationI, PublicationImplementationI{
 
 
     // -------------------------------------------------------------------------
@@ -100,7 +102,8 @@ public class PublisherTeacher extends AbstractComponent {
                 souscripteur 1 ait eu le temps de se souscrire au topic CPS avec filtres */
 
                 Thread.sleep(100);
-                Message m1 = new Message("Bonjour, je vais tester tous les filtres. ");
+                TimeStamp ts = new TimeStamp(System.currentTimeMillis(), "TimeStamper");
+                Message m1 = new Message(""+ts.getTimeStamper()+ ts.hashCode(),ts, new Properties(),"Bonjour, je vais tester tous les filtres. ");
                 Properties p1 = m1.getProperties();
 
                 p1.putProp("UE obligatoire", true);
@@ -213,6 +216,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param topic the topic
      * @throws Exception the exception
      */
+    @Override
     public void publish(MessageI m, String topic) throws Exception {
         logMessage("Publishing message " + m.getURI()+ " to the topic : "+ topic );
         //this.plugin.publish(m,topic);
@@ -227,6 +231,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param topics the topics
      * @throws Exception the exception
      */
+    @Override
     public void publish(MessageI m, String[] topics) throws Exception {
         String str= " ";
         for (String s : topics) {
@@ -244,6 +249,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param topics the topics
      * @throws Exception the exception
      */
+    @Override
     public void publish(MessageI[] ms, String topics) throws Exception {
         String str= "\n";
         for (MessageI s : ms) {
@@ -261,6 +267,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param topics the topics
      * @throws Exception the exception
      */
+    @Override
     public void publish(MessageI[] ms, String[] topics) throws Exception {
         String str= " ";
         for (MessageI s : ms) {
@@ -284,6 +291,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param inboundPortURI the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void subscribe(String topic, String inboundPortURI)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).subscribe(topic, inboundPortURI);
 
@@ -297,6 +305,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param inboundPortURI the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void subscribe(String[] topics, String inboundPortURI)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).subscribe(topics, inboundPortURI);
 
@@ -310,6 +319,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param inboundPortURI the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).subscribe(topic,filter, inboundPortURI);
 
@@ -323,6 +333,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param inboundPortURI the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception{
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).subscribe(topic, newFilter, inboundPortURI);
     }
@@ -334,6 +345,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param inboundPortUri the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void unsubscribe(String topic, String inboundPortUri) throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).unsubscribe(topic, inboundPortUri);
     }
@@ -344,6 +356,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param topic the topic
      * @throws Exception the exception
      */
+    @Override
     public void createTopic(String topic)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).createTopic(topic);
 
@@ -355,6 +368,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param topics the topics
      * @throws Exception the exception
      */
+    @Override
     public void createTopics(String[] topics) throws Exception{
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).createTopics(topics);
 
@@ -366,6 +380,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @param topic the topic
      * @throws Exception the exception
      */
+    @Override
     public void destroyTopic(String topic)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).destroyTopic(topic);
 
@@ -378,6 +393,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @return the boolean
      * @throws Exception the exception
      */
+    @Override
     public boolean isTopic(String topic) throws Exception{
         return  ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).isTopic(topic);
 
@@ -389,6 +405,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @return the string [ ]
      * @throws Exception the exception
      */
+    @Override
     public String[] getTopics() throws Exception{
         return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).getTopics();
 
@@ -400,6 +417,7 @@ public class PublisherTeacher extends AbstractComponent {
      * @return the publication port uri
      * @throws Exception the exception
      */
+    @Override
     public String getPublicationPortURI() throws Exception{
         return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_PLUGIN_URI)).getPublicationPortURI();
 

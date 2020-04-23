@@ -10,11 +10,14 @@ import baduren.plugins.SubscriberReceptionPlugin;
 import fr.sorbonne_u.components.helpers.Logger;
 
 import java.io.File;
+import java.lang.annotation.Annotation;
+import java.util.InvalidPropertiesFormatException;
 
 /**
  * The type Subscriber student.
  */
-public class SubscriberStudent extends	AbstractComponent implements ReceptionCI {
+public class SubscriberStudent extends	AbstractComponent implements ManagementImplementationI,
+        SubscriptionImplementationI, ReceptionImplementationI {
 
     // -------------------------------------------------------------------------
     // Component variables and constants
@@ -120,7 +123,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
             if(m.getProperties().getBooleanProp("Sera évaluée à l'examen réparti 1 ")) return  true;
             else return false;
         }
-        @Override
+
         public String getName() {
             return "SeraEvalueeAER1";
         }
@@ -139,7 +142,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
            return filtreVerifie;
         }
 
-        @Override
+
         public String getName() {
             return "EnseigneParMalenfant";
         }
@@ -154,18 +157,22 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
         @Override
         public boolean filter(MessageI m) {
             boolean filtreVerifie=true;
-            if( m.getProperties().getBooleanProp("UE obligatoire")!=true) filtreVerifie=false;
-            if(! m.getProperties().getStringProp("Random String").equals("random")) filtreVerifie=false;
-            if(m.getProperties().getCharProp("Première lettre de l'UE") != 'c') filtreVerifie=false;
-            if( Double.compare(m.getProperties().getDoubleProp("Random Double"),2.00)!=0) filtreVerifie=false;
-            if( Float.compare(m.getProperties().getFloatProp("Random Float"),(float) 2.50)!=0) filtreVerifie=false;
-            if(m.getProperties().getIntProp("Random Integer") != 3) filtreVerifie=false;
-            if(m.getProperties().getLongProp("Random Long") != (long) 3) filtreVerifie=false;
-            if(m.getProperties().getShortProp("Random Short") != (short) 3) filtreVerifie=false;
+            try {
+                filtreVerifie = m.getProperties().getBooleanProp("UE obligatoire");
+                filtreVerifie = m.getProperties().getStringProp("Random String").equals("random");
+                filtreVerifie=m.getProperties().getCharProp("Première lettre de l'UE") == 'c';
+                filtreVerifie = Double.compare(m.getProperties().getDoubleProp("Random Double"),2.00)==0;
+                filtreVerifie = Float.compare(m.getProperties().getFloatProp("Random Float"),(float) 2.50)==0;
+                filtreVerifie =m.getProperties().getIntProp("Random Integer") == 3;
+                filtreVerifie = m.getProperties().getLongProp("Random Long") == (long) 3;
+                filtreVerifie = m.getProperties().getShortProp("Random Short") == (short) 3;
+            } catch (InvalidPropertiesFormatException e) {
+                e.printStackTrace();
+            }
             return filtreVerifie;
         }
 
-        @Override
+
         public String getName() {
             return "TestTousLesFiltres";
         }
@@ -254,6 +261,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @param inboundPortURI the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void subscribe(String topic, String inboundPortURI) throws Exception{
         logMessage("Ask a subscription at port: "+inboundPortURI+" to topic " + topic);
 
@@ -268,6 +276,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @param inboundPortURI the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void subscribe(String[] topics, String inboundPortURI)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topics, inboundPortURI);
     }
@@ -280,6 +289,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @param inboundPortURI the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void subscribe(String topic, MessageFilterI filter, String inboundPortURI)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic,filter,inboundPortURI);
     }
@@ -292,6 +302,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @param inboundPortURI the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).modifyFilter(topic,newFilter,inboundPortURI);
 
@@ -305,6 +316,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @param inboundPortUri the inbound port uri
      * @throws Exception the exception
      */
+    @Override
     public void unsubscribe(String topic, String inboundPortUri)throws Exception {
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).unsubscribe(topic,inboundPortUri);
 
@@ -317,6 +329,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @param topic the topic
      * @throws Exception the exception
      */
+    @Override
     public void createTopic(String topic) throws Exception{
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopic(topic);
 
@@ -329,6 +342,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @param topics the topics
      * @throws Exception the exception
      */
+    @Override
     public void createTopics(String[] topics) throws Exception{
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).createTopics(topics);
     }
@@ -339,6 +353,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @param topic the topic
      * @throws Exception the exception
      */
+    @Override
     public void destroyTopic(String topic) throws Exception{
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).destroyTopic(topic);
 
@@ -352,6 +367,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @return the boolean
      * @throws Exception the exception
      */
+    @Override
     public boolean isTopic(String topic) throws Exception {
         return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).isTopic(topic);
 
@@ -363,6 +379,7 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @return the string [ ]
      * @throws Exception the exception
      */
+    @Override
     public String[] getTopics() throws Exception{
         return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).getTopics();
     }
@@ -373,17 +390,19 @@ public class SubscriberStudent extends	AbstractComponent implements ReceptionCI 
      * @return the publication port uri
      * @throws Exception the exception
      */
+    @Override
     public String getPublicationPortURI() throws Exception {
         return ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).getPublicationPortURI();
     }
 
     // TOUTES LES METHODES DE RECEPTIONCI
-
+    @Override
     public void acceptMessage(MessageI m) {
         this.logMessage("Receiving/accepting the message "+m.getURI()+ " send by : "+ m.getTimeStamp().getTimeStamper() +
                 " a la date de "+ m.getTimeStamp().getTime());
         messagesAcceptDeSubscriber++;
     }
+    @Override
     public void acceptMessages(MessageI[] ms) {
         for (MessageI m : ms) {
             acceptMessage(m);

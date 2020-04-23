@@ -43,7 +43,7 @@ public class TimeStamp {
 	 * @return the boolean
 	 */
 	boolean isInitialised() {
-		return (this.time==0)&& (this.timeStamper==null);  
+		return (this.time!=0) && (this.timeStamper!=null);
 	}
 
 	/**

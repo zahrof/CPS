@@ -1,6 +1,7 @@
 package baduren.message;
 
 import java.util.HashMap;
+import java.util.InvalidPropertiesFormatException;
 
 /**
  * The type Properties.
@@ -141,18 +142,12 @@ public class Properties implements java.io.Serializable{
 	 * @param name the name
 	 * @return the boolean prop
 	 */
-	public boolean getBooleanProp(String name) {
-		/*
-		Nous devons le spécifier ainsi car la méthode get dans une map renvoie null ou la valeur associé
-		à la clé name.
-		 */
-		if (this.booleanProperties.containsKey(name)) {
-			boolean res = this.booleanProperties.get(name);
-			if ((res == true) || (res == false)) {
-				return res;
-			}
-		}
-		return false;
+	public boolean getBooleanProp(String name) throws InvalidPropertiesFormatException {
+
+		if (this.booleanProperties.containsKey(name))  return  this.booleanProperties.get(name);
+
+		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
+
 	}
 
 	/**
@@ -161,10 +156,9 @@ public class Properties implements java.io.Serializable{
 	 * @param name the name
 	 * @return the byte prop
 	 */
-	public byte getByteProp(String name) {
-		if(this.byteProperties.containsKey(name))
-			return this.byteProperties.get(name);
-		return 0;
+	public byte getByteProp(String name) throws InvalidPropertiesFormatException {
+		if(this.byteProperties.containsKey(name)) return this.byteProperties.get(name);
+		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
 	/**
@@ -173,10 +167,9 @@ public class Properties implements java.io.Serializable{
 	 * @param name the name
 	 * @return the char prop
 	 */
-	public char getCharProp(String name) {
-		if(this.characterProperties.containsKey(name ))
-			return this.characterProperties.get(name);
-		return ' ';
+	public char getCharProp(String name) throws InvalidPropertiesFormatException {
+		if(this.characterProperties.containsKey(name )) return this.characterProperties.get(name);
+		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
 	/**
@@ -185,10 +178,9 @@ public class Properties implements java.io.Serializable{
 	 * @param name the name
 	 * @return the double prop
 	 */
-	public double getDoubleProp(String name) {
-		if(this.doubleProperties.containsKey(name ))
-			return this.doubleProperties.get(name);
-		return 0;
+	public double getDoubleProp(String name) throws InvalidPropertiesFormatException {
+		if(this.doubleProperties.containsKey(name )) return this.doubleProperties.get(name);
+		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
 	/**
@@ -197,10 +189,10 @@ public class Properties implements java.io.Serializable{
 	 * @param name the name
 	 * @return the float prop
 	 */
-	public float getFloatProp(String name) {
+	public float getFloatProp(String name) throws InvalidPropertiesFormatException {
 		if(this.floatProperties.containsKey(name ))
 			return this.floatProperties.get(name);
-		return 0;
+		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
 	/**
@@ -209,10 +201,10 @@ public class Properties implements java.io.Serializable{
 	 * @param name the name
 	 * @return the int prop
 	 */
-	public int getIntProp(String name) {
+	public int getIntProp(String name) throws InvalidPropertiesFormatException {
 		if(this.integerProperties.containsKey(name))
 			return this.integerProperties.get(name);
-		return 0;
+		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
 	/**
@@ -221,10 +213,10 @@ public class Properties implements java.io.Serializable{
 	 * @param name the name
 	 * @return the long prop
 	 */
-	public long getLongProp(String name) {
+	public long getLongProp(String name) throws InvalidPropertiesFormatException {
 		if(this.longProperties.containsKey(name))
 			return this.longProperties.get(name);
-		return 0;
+		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
 	/**
@@ -233,10 +225,10 @@ public class Properties implements java.io.Serializable{
 	 * @param name the name
 	 * @return the short prop
 	 */
-	public short getShortProp(String name) {
+	public short getShortProp(String name) throws InvalidPropertiesFormatException {
 		if(this.shortProperties.containsKey(name))
 			return this.shortProperties.get(name);
-		return 0;
+		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
 	/**
@@ -245,10 +237,8 @@ public class Properties implements java.io.Serializable{
 	 * @param name the name
 	 * @return the string prop
 	 */
-	public String getStringProp(String name) {
-		String res = this.stringProperties.get(name);
-		if(res == null)
-			return "";
-		return res;
+	public String getStringProp(String name) throws InvalidPropertiesFormatException {
+		if (this.getStringProp(name).contains(name)) return  this.stringProperties.get(name);
+		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	} 
 }

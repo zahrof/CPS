@@ -2,7 +2,9 @@ package baduren.ports.inboundPorts;
 
 import baduren.components.Broker.Broker;
 import baduren.interfaces.ManagementCI;
+import baduren.interfaces.ManagementImplementationI;
 import baduren.interfaces.MessageFilterI;
+import baduren.interfaces.SubscriptionImplementationI;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractInboundPort;
@@ -31,7 +33,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).subscribe(topic,inboundPortURI);
+						((SubscriptionImplementationI)this.getServiceOwner()).subscribe(topic,inboundPortURI);
 						return null;
 					}
 				}) ;
@@ -43,7 +45,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).subscribe(topics, inboundPortURI);
+						((SubscriptionImplementationI)this.getServiceOwner()).subscribe(topics, inboundPortURI);
 						return null;
 					}
 				}) ;
@@ -55,7 +57,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).subscribe(topic, filter, inboundPortURI);
+						((SubscriptionImplementationI)this.getServiceOwner()).subscribe(topic, filter, inboundPortURI);
 						return null;
 					}
 				});
@@ -67,7 +69,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).subscribe(topic,newFilter, inboundPortURI);
+						((SubscriptionImplementationI)this.getServiceOwner()).subscribe(topic,newFilter, inboundPortURI);
 						return null;
 					}
 				}) ;
@@ -79,7 +81,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).unsubscribe(topic, inboundPortUri);
+						((SubscriptionImplementationI)this.getServiceOwner()).unsubscribe(topic, inboundPortUri);
 						return null;
 					}
 				}) ;
@@ -88,11 +90,11 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 
 	@Override
 	public void createTopic(String topic) throws Exception {
-		this.getOwner().handleRequestAsync(
+		this.getOwner().handleRequestSync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).createTopic(topic);
+						((ManagementImplementationI)this.getServiceOwner()).createTopic(topic);
 						return null;
 					}
 				}) ;
@@ -100,11 +102,11 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 
 	@Override
 	public void createTopics(String[] topics) throws Exception {
-		this.getOwner().handleRequestAsync(
+		this.getOwner().handleRequestSync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).createTopics(topics);
+						((ManagementImplementationI)this.getServiceOwner()).createTopics(topics);
 						return null;
 					}
 				}) ;
@@ -116,7 +118,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((Broker)this.getServiceOwner()).destroyTopic(topic);
+						((ManagementImplementationI)this.getServiceOwner()).destroyTopic(topic);
 						return null;
 					}
 				}) ;
@@ -128,7 +130,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 				new AbstractComponent.AbstractService<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
-						return((Broker)this.getServiceOwner()).isTopic(topic);
+						return((ManagementImplementationI)this.getServiceOwner()).isTopic(topic);
 					}
 				}) ;
 	}
@@ -139,7 +141,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 				new AbstractComponent.AbstractService<String[]>() {
 					@Override
 					public String[] call() throws Exception {
-						return ((Broker)this.getServiceOwner()).getTopics();
+						return ((ManagementImplementationI)this.getServiceOwner()).getTopics();
 					}
 				}) ;
 	}
@@ -150,7 +152,7 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 				new AbstractComponent.AbstractService<String>() {
 					@Override
 					public String call() throws Exception {
-						return ((Broker)this.getServiceOwner()).getPublicationPortURI();
+						return ((ManagementImplementationI)this.getServiceOwner()).getPublicationPortURI();
 					}
 				}) ;
 

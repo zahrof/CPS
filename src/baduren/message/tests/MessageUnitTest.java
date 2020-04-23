@@ -12,6 +12,8 @@ import baduren.message.TimeStamp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.InvalidPropertiesFormatException;
+
 /**
  * The class to make unit tests for the messages
  */
@@ -29,13 +31,13 @@ class MessageUnitTest {
     @BeforeEach
     public void init() throws InterruptedException {
         try {
+            TimeStamp ts = new TimeStamp(System.currentTimeMillis(), "TimeStamper");
 
-
-            this.message1 = new Message("Le tout premier message", new TimeStamp(System.currentTimeMillis(), "aaa"), new Properties());
+            this.message1 = new Message(""+ts.getTimeStamper()+ ts.hashCode(), new TimeStamp(System.currentTimeMillis(), "aaa"), new Properties(),"Le tout premier message");
             Thread.sleep(1);
-            this.message2 = new Message("Ceci est le deuxième message", new TimeStamp(System.currentTimeMillis(), "bbb"), new Properties());
+            this.message2 = new Message(""+ts.getTimeStamper()+ ts.hashCode(), new TimeStamp(System.currentTimeMillis(), "bbb"), new Properties(),"Ceci est le deuxième message");
             Thread.sleep(1);
-            this.message3 = new Message("L'année est terminée, tout le monde a son master", new TimeStamp(System.currentTimeMillis(), "ccc"), new Properties());
+            this.message3 = new Message(""+ts.getTimeStamper()+ ts.hashCode(), new TimeStamp(System.currentTimeMillis(), "ccc"), new Properties(),"L'année est terminée, tout le monde a son master");
 
 
         } catch (Exception e) {
@@ -74,7 +76,7 @@ class MessageUnitTest {
                         c == 'a' && i < 15 && s.equals("important");
             }
 
-            @Override
+
             public String getName() {
                 return "messagefilter1";
             }
@@ -87,7 +89,6 @@ class MessageUnitTest {
                 return l != null && l > 400L;
             }
 
-            @Override
             public String getName() {
                 return "messagefilter2";
             }
@@ -103,12 +104,6 @@ class MessageUnitTest {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
 
 
     /**
@@ -150,8 +145,12 @@ class MessageUnitTest {
     @Test
     void firstTestProperties() {
         message1.getProperties().putProp("ouiiii", (double) 2.332); //double
+        try{
         assertEquals(0, message1.getProperties().getIntProp("ouiiii"));
         assertEquals(2.332, message1.getProperties().getDoubleProp("ouiiii"));
+    } catch (InvalidPropertiesFormatException e) {
+        e.printStackTrace();
+    }
     }
 
     /**
@@ -163,12 +162,16 @@ class MessageUnitTest {
         message1.getProperties().putProp("likeTwitter", 736);
         message1.getProperties().putProp("likeYouTube", 8277362);
 
-        assertNotEquals(message1.getProperties().getIntProp("likeFB"),
-                message1.getProperties().getIntProp("likeTwitter"));
-        assertNotEquals(message1.getProperties().getIntProp("likeTwitter"),
-                message1.getProperties().getIntProp("likeYouTube"));
-        assertEquals(message1.getProperties().getIntProp("likeTwitter"),
-                736);
+        try {
+            assertNotEquals(message1.getProperties().getIntProp("likeFB"),
+                    message1.getProperties().getIntProp("likeTwitter"));
+            assertNotEquals(message1.getProperties().getIntProp("likeTwitter"),
+                    message1.getProperties().getIntProp("likeYouTube"));
+            assertEquals(message1.getProperties().getIntProp("likeTwitter"),
+                    736);
+        } catch (InvalidPropertiesFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -187,6 +190,7 @@ class MessageUnitTest {
         message1.getProperties().putProp("_", (short) 1); //short
         message1.getProperties().putProp("_", "1"); //String
 
+        try{
         assertNotEquals(false, message1.getProperties().getBooleanProp("_"));
         assertNotEquals(0, message1.getProperties().getByteProp("_"));
         assertNotEquals(' ', message1.getProperties().getCharProp("_"));
@@ -196,6 +200,9 @@ class MessageUnitTest {
         assertNotEquals(0, message1.getProperties().getLongProp("_"));
         assertNotEquals(0, message1.getProperties().getShortProp("_"));
         assertNotEquals("", message1.getProperties().getStringProp("_"));
+        } catch (InvalidPropertiesFormatException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -99,7 +99,7 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
 
     @Override
     public void createTopic(String topic) throws Exception {
-        this.getOwner().handleRequestAsync(
+        this.getOwner().handleRequestSync(
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {
@@ -111,7 +111,7 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
 
     @Override
     public void createTopics(String[] topics) throws Exception {
-        this.getOwner().handleRequestAsync(
+        this.getOwner().handleRequestSync(
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {

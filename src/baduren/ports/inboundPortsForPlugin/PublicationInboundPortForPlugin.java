@@ -3,13 +3,14 @@ package baduren.ports.inboundPortsForPlugin;
 import baduren.components.Broker.Broker;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
+import baduren.interfaces.PublicationImplementationI;
 import baduren.plugins.BrokerManagementPlugin;
 import baduren.plugins.BrokerPublicationPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.forplugins.AbstractInboundPortForPlugin;
 
-public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugin implements PublicationCI{
+public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugin implements PublicationImplementationI {
 
         private static final long serialVersionUID = 1L;
 
@@ -23,7 +24,7 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
         public	PublicationInboundPortForPlugin(String pluginUri, ComponentI owner)
                 throws Exception
         {
-            super(PublicationCI.class, pluginUri, owner) ;
+            super(PublicationImplementationI.class, pluginUri, owner) ;
         }
 
         public	PublicationInboundPortForPlugin(
@@ -32,21 +33,21 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
             ComponentI owner
     ) throws Exception
     {
-        super(uri, PublicationCI.class, pluginURI, owner);
+        super(uri, PublicationImplementationI.class, pluginURI, owner);
 
         assert	owner instanceof PublicationCI ;
     }
 
         @Override
         public void publish(MessageI m, String topic) throws Exception {
-		this.getOwner().handleRequestSync(
+		this.getOwner().handleRequestAsync(
 				new AbstractComponent.AbstractService<Void>(this.pluginURI) {
 					@Override
 					public Void call() throws Exception {
 						((BrokerPublicationPlugin)this.getServiceProviderReference()).publish(m, topic);
 						return null;
 					}
-				}) ;
+				}); ;
            // ((Broker)this.owner).publish(m, topic);
 			//((BrokerPublicationPlugin)this.getSer).publish(m, topic);
         }

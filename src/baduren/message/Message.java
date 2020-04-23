@@ -6,7 +6,7 @@ import baduren.interfaces.MessageI;
 /**
  * The type Message.
  */
-public class Message implements MessageI, Serializable {
+public class Message implements MessageI {
 
 	/**
 	 * The Uri.
@@ -25,17 +25,14 @@ public class Message implements MessageI, Serializable {
 	 */
 	protected Serializable serializableObject;
 
-	/**
-	 * Instantiates a new Message.
-	 *
-	 * @param uri the uri
-	 * @throws Exception the exception
-	 */
-	public Message(String uri) throws Exception {
-		this.uri=uri;
+	public Message(String serializableObject) throws Exception {
+		TimeStamp ts = new TimeStamp(System.currentTimeMillis(), "TimeStamper");
+		this.serializableObject=serializableObject;
+		this.uri=""+ts.getTimeStamper()+ ts.hashCode();
 		this.timeStamp = new TimeStamp();
 		this.properties = new Properties();
-	}
+		}
+
 
 	/**
 	 * Instantiates a new Message with uri, timeStamp and properties
@@ -44,7 +41,8 @@ public class Message implements MessageI, Serializable {
 	 * @param uri the uri
 	 * @throws Exception the exception
 	 */
-	public Message(String uri, TimeStamp timeStamp, Properties properties) throws Exception {
+	public Message(String uri, TimeStamp timeStamp, Properties properties, Serializable content){
+		this.serializableObject=content;
 		this.uri=uri;
 		this.timeStamp = timeStamp;
 		this.properties = properties;

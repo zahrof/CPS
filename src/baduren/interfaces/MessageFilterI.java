@@ -3,6 +3,7 @@ package baduren.interfaces;
 /**
  * The interface MessagefilterI.
  */
+@FunctionalInterface
 public interface MessageFilterI {
 	/**
 	 * Filter boolean.
@@ -12,5 +13,4 @@ public interface MessageFilterI {
 	 * @throws Exception the exception
 	 */
 	boolean filter(MessageI m)throws Exception;
-	String getName();
 }

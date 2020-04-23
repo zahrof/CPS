@@ -20,7 +20,8 @@ import baduren.plugins.*;
 import fr.sorbonne_u.components.helpers.Logger;
 
 
-public class Broker extends AbstractComponent implements PublicationCI, ManagementCI {
+public class Broker extends AbstractComponent implements ManagementImplementationI,
+		SubscriptionImplementationI, PublicationImplementationI{
 
 	// -------------------------------------------------------------------------
 	// Broker variables and constants
@@ -57,6 +58,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	final private Condition hasSubscribers = subscribersLock.newCondition();
 	final private Condition newSubscribers = subscribersLock.newCondition();
 	private BrokerPublicationPlugin pluginPublication;
+
 
 
 	private class Subscriber {
@@ -216,6 +218,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	/*
 		RECEPTION METHODS
 	 */
+
 	public void acceptMessage() throws Exception {
 
 		MessageI msg[]= new MessageI[SIZE_MSG_AUX];
@@ -318,10 +321,10 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param topic It's the topic where we want to publish the message m
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void publish(MessageI m, String topic)throws Exception {
 		this.messagesLock.lock();
-		if (!this.messages.containsKey(topic))
-			if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
+		if (!this.messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
 		this.messages.get(topic).add(m); // On ajoute le message
 		this.logMessage("Message " + m.getURI() + " stocked to topic " + topic+ " at the moment "+m.getTimeStamp().getTime() );
 		this.messagesLock.unlock();
@@ -335,6 +338,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void publish(MessageI m, String[] topics) throws Exception{
 		for(String topic : topics)
 			publish(m,topic);
@@ -349,6 +353,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void publish(MessageI[] ms, String topics) throws Exception{
 		for(MessageI msg : ms)
 			publish(msg, topics);
@@ -362,6 +367,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void publish(MessageI[] ms, String[] topics) throws Exception{
 		for(MessageI msg : ms) {
 			for(String topic: topics) {
@@ -380,6 +386,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param topic          the topic
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void subscribe(String topic, String inboundPortURIaux) throws Exception{
 		subscribe(topic, (MessageFilterI) null, inboundPortURIaux);
 
@@ -393,6 +400,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param inboundPortURI the inbound port uri
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void subscribe(String[] topics, String inboundPortURI) throws Exception{
 		for(String s: topics)
 			subscribe(s, inboundPortURI);
@@ -407,6 +415,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param inboundPortURI the inbound port uri
 	 * @throws Exception the exception
 	 */
+	@Override
 	public  void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
 		// Si le subscriber était pas présent encore on le crée et connecte
 		this.subscribersLock.lock();
@@ -440,7 +449,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		}
 		else {
 			subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
-					"te souscrire au topic "+topic+ " avec le filtre "+ filter.getName()));
+					"te souscrire au topic "+topic+ "avec un filtre "));
 			messagesAcceptDeBroker++;
 		}
 		this.subscribersLock.unlock();
@@ -450,8 +459,8 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 		}
 		else {
 			this.logMessage("Subscribed " + inboundPortURI + " to topic " + topic + " with filter"+filter);
-			this.historiqueAbonnements += "\n		On abonne " + inboundPortURI + " au sujet " + topic + " avec le " +
-					"filtre : "+ filter.getName();
+			this.historiqueAbonnements += "\n		On abonne " + inboundPortURI + " au sujet " + topic + " avec" +
+					" un filtre";
 		}
 
 
@@ -465,13 +474,13 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param inboundPortURI the inbound port uri
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
 		this.subscribersLock.lock();
 		while(!subscribers.containsKey(inboundPortURI))
 			newSubscribers.await();
 		if (isTopic(topic)) {
-			this.changementFiltres += " \n		On change le filtre " + subscribers.get(inboundPortURI).topics.get(topic).getName()+
-					" par "+newFilter.getName();
+			this.changementFiltres += " \n		On change un filtre par un autre filtre ";
 			System.out.println("je remplace"+ topic+ "par "+ newFilter );
 				subscribers.get(inboundPortURI).topics.replace(topic, newFilter);
 			System.out.println("maintenant "+ subscribers.get(inboundPortURI).topics.get(topic));
@@ -488,6 +497,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param inboundPortUri the inbound port uri
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
 		this.subscribersLock.lock();
 		if(this.subscribers.get(inboundPortUri).topics.containsKey(topic)) {
@@ -510,6 +520,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param topic the topic
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void createTopic(String topic){
 		logMessage("Creation of topic " + topic);
 		this.messagesLock.lock();
@@ -529,6 +540,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param topics the topics
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void createTopics(String[] topics){
 		for (int i=0; i< topics.length; i++)
 			createTopic(topics[i]);
@@ -541,6 +553,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @param topic the topic
 	 * @throws Exception the exception
 	 */
+	@Override
 	public void destroyTopic(String topic) {
 		logMessage("Destruction of the topic " + topic);
 		this.messagesLock.lock();
@@ -562,6 +575,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @return the boolean
 	 * @throws Exception the exception
 	 */
+	@Override
 	public boolean isTopic(String topic) {
 		boolean res;
 		this.messagesLock.lock();
@@ -577,6 +591,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @return the string [ ]
 	 * @throws Exception the exception
 	 */
+	@Override
 	public String[] getTopics()  {
 		String[]res;
 		this.messagesLock.lock();
@@ -591,6 +606,7 @@ public class Broker extends AbstractComponent implements PublicationCI, Manageme
 	 * @return the publication port uri
 	 * @throws Exception the exception
 	 */
+	@Override
 	public String getPublicationPortURI() throws Exception {
 		return this.pluginPublication.getPip().getPortURI();
 	}

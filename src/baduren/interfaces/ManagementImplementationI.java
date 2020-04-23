@@ -3,7 +3,7 @@ package baduren.interfaces;
 /**
  * The interface ManagementImplementationI.
  */
-public interface ManagementImplementationI{
+public interface ManagementImplementationI {
 	/**
 	 * Create topic.
 	 *

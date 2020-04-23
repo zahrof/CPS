@@ -53,7 +53,7 @@ public class SubscriberWithoutPlugin extends	AbstractComponent{
 			return m.getProperties().getBooleanProp("can_fly"); 
 		}
 
-		@Override
+
 		public String getName() {
 			return "VehiculeAerien";
 		}

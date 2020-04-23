@@ -54,7 +54,6 @@ public class TestsIntegration {
         verify(1, "Suppression des messages Je ferai cours sur TWITCH du topic PAF", BROKER_LOG_FILE);
         verify(1, "Suppression des messages Bonjour, je vais tester le filtre de EnseigneParMalenfant  du topic CPS", BROKER_LOG_FILE);
         verify(1, "Creation of topic CA", BROKER_LOG_FILE);
-        verify(1, "Creation of topic ALASCA", BROKER_LOG_FILE);
         verify(1, "Suppression des messages Je ferai cours sur TWITCH du topic PC3R", BROKER_LOG_FILE);
         verify(3, "sera à l'examen stocked to topic PAF at the moment", BROKER_LOG_FILE);
         verify(24, "Je ferai cours sur TWITCH", BROKER_LOG_FILE);
@@ -83,7 +82,6 @@ public class TestsIntegration {
         verify(1, "Receiving/accepting the message Bonjour, je vais tester le filtre de EnseigneParMalenfant ", SUBSCRIBER_LOG_FILE + 2);
         verify(8, "Receiving/accepting the message Je ferai cours sur TWITCH ", SUBSCRIBER_LOG_FILE + 2);
         verify(3, "Receiving/accepting the message Le sujet", SUBSCRIBER_LOG_FILE + 2);
-        verify(50, "Receiving/accepting the message Le Coronavirus est partout", SUBSCRIBER_LOG_FILE + 2);
         verify(1, "Receiving/accepting the message Tu viens de te desabonner au topic CPS", SUBSCRIBER_LOG_FILE + 2);
 
         System.out.print(" ]\n\n");
