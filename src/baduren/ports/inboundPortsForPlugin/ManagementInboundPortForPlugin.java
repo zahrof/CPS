@@ -3,6 +3,7 @@ package baduren.ports.inboundPortsForPlugin;
 import baduren.components.Broker.Broker;
 import baduren.interfaces.ManagementCI;
 import baduren.interfaces.MessageFilterI;
+import baduren.interfaces.ReceptionImplementationI;
 import baduren.plugins.BrokerManagementPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
@@ -37,61 +38,121 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
 
     @Override
     public void subscribe(String topic, String inboundPortURI) throws Exception {
-        this.getOwner().handleRequestAsync(
+/*        this.getOwner().handleRequestAsync(
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {
                         ((BrokerManagementPlugin)this.getServiceProviderReference()).subscribe(topic,inboundPortURI);
                         return null;
                     }
-                }) ;
+                }) ;*/
        // ((BrokerManagementPlugin)this.getServiceProviderReference()).subscribe(topic,inboundPortURI);
+
+        this.owner.runTask(
+                new AbstractComponent.AbstractTask(this.pluginURI) {
+                    @Override
+                    public void run() {
+                        try {
+                            ((BrokerManagementPlugin) this.getTaskProviderReference()).subscribe(topic,inboundPortURI);
+                        } catch (Exception e) {
+                            e.printStackTrace() ;
+                        }
+                    }
+                }) ;
     }
 
     @Override
     public void subscribe(String[] topics, String inboundPortURI) throws Exception {
-        this.getOwner().handleRequestAsync(
+/*        this.getOwner().handleRequestAsync(
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {
                         ((BrokerManagementPlugin)this.getServiceProviderReference()).subscribe(topics, inboundPortURI);
                         return null;
                     }
+                }) ;*/
+
+        this.owner.runTask(
+                new AbstractComponent.AbstractTask(this.pluginURI) {
+                    @Override
+                    public void run() {
+                        try {
+                            ((BrokerManagementPlugin) this.getTaskProviderReference()).subscribe(topics, inboundPortURI);
+                        } catch (Exception e) {
+                            e.printStackTrace() ;
+                        }
+                    }
                 }) ;
     }
 
     @Override
     public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
-        this.getOwner().handleRequestAsync(
+/*        this.getOwner().handleRequestAsync(
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {
                         ((BrokerManagementPlugin)this.getServiceProviderReference()).subscribe(topic, filter, inboundPortURI);
                         return null;
                     }
-                });
+                });*/
+
+        this.owner.runTask(
+                new AbstractComponent.AbstractTask(this.pluginURI) {
+                    @Override
+                    public void run() {
+                        try {
+                            ((BrokerManagementPlugin) this.getTaskProviderReference()).subscribe(topic, filter, inboundPortURI);
+                        } catch (Exception e) {
+                            e.printStackTrace() ;
+                        }
+                    }
+                }) ;
     }
 
     @Override
     public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception {
-        this.getOwner().handleRequestAsync(
+/*        this.getOwner().handleRequestAsync(
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {
                         ((BrokerManagementPlugin)this.getServiceProviderReference()).modifyFilter(topic,newFilter, inboundPortURI);
                         return null;
                     }
+                }) ;*/
+
+        this.owner.runTask(
+                new AbstractComponent.AbstractTask(this.pluginURI) {
+                    @Override
+                    public void run() {
+                        try {
+                            ((BrokerManagementPlugin) this.getTaskProviderReference()).modifyFilter(topic,newFilter, inboundPortURI);
+                        } catch (Exception e) {
+                            e.printStackTrace() ;
+                        }
+                    }
                 }) ;
     }
 
     @Override
     public void unsubscribe(String topic, String inboundPortUri) throws Exception {
-        this.getOwner().handleRequestAsync(
+/*        this.getOwner().handleRequestAsync(
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {
                         ((BrokerManagementPlugin)this.getServiceProviderReference()).unsubscribe(topic, inboundPortUri);
                         return null;
+                    }
+                }) ;*/
+
+        this.owner.runTask(
+                new AbstractComponent.AbstractTask(this.pluginURI) {
+                    @Override
+                    public void run() {
+                        try {
+                            ((BrokerManagementPlugin) this.getTaskProviderReference()).unsubscribe(topic, inboundPortUri);
+                        } catch (Exception e) {
+                            e.printStackTrace() ;
+                        }
                     }
                 }) ;
     }
@@ -123,12 +184,24 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
 
     @Override
     public void destroyTopic(String topic) throws Exception {
-        this.getOwner().handleRequestAsync(
+/*        this.getOwner().handleRequestAsync(
                 new AbstractComponent.AbstractService<Void>(this.pluginURI) {
                     @Override
                     public Void call() throws Exception {
                         ((BrokerManagementPlugin)this.getServiceProviderReference()).destroyTopic(topic);
                         return null;
+                    }
+                }) ;*/
+
+        this.owner.runTask(
+                new AbstractComponent.AbstractTask(this.pluginURI) {
+                    @Override
+                    public void run() {
+                        try {
+                            ((BrokerManagementPlugin) this.getTaskProviderReference()).destroyTopic(topic);
+                        } catch (Exception e) {
+                            e.printStackTrace() ;
+                        }
                     }
                 }) ;
     }

@@ -2,6 +2,7 @@ package baduren.ports.inboundPorts;
 
 import baduren.components.subscribers.SubscriberWithoutPlugin;
 import baduren.interfaces.MessageI;
+import baduren.interfaces.PublicationImplementationI;
 import baduren.interfaces.ReceptionCI;
 import baduren.interfaces.ReceptionImplementationI;
 import fr.sorbonne_u.components.AbstractComponent;
@@ -41,26 +42,52 @@ public class ReceptionInboundPort extends		AbstractInboundPort implements Recept
 
 	@Override
 	public void acceptMessage(MessageI m) throws Exception {
-		this.getOwner().handleRequestAsync(
+	/*	this.getOwner().handleRequestAsync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
 						((ReceptionImplementationI)this.getServiceOwner()).acceptMessage(m);
 						return null;
 					}
-				}) ;
+				}) ;*/
+
+		this.owner.runTask(
+				new AbstractComponent.AbstractTask() {
+
+					@Override
+					public void run() {
+						try {
+							((ReceptionImplementationI) this.getTaskOwner()).acceptMessage(m);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 	}
 
 	@Override
 	public void acceptMessages(MessageI[] ms) throws Exception {
-		this.getOwner().handleRequestAsync(
+/*		this.getOwner().handleRequestAsync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
 						((ReceptionImplementationI)this.getServiceOwner()).acceptMessages(ms);
 						return null;
 					}
-				}) ;
+				}) ;*/
+
+		this.owner.runTask(
+				new AbstractComponent.AbstractTask() {
+
+					@Override
+					public void run() {
+						try {
+							((ReceptionImplementationI) this.getTaskOwner()).acceptMessages(ms);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 
 	}
 

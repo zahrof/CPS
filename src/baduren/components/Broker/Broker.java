@@ -177,21 +177,48 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		// pas besoin de faire plusieurs threads pour le publieur car elle éxécuterai la méthode publish
 		// qui est locké du début à la fin du coup pas trop de parallelisation
 
-		handleRequestAsync(SELECT_MESSAGES_HANDLER_URI,new AbstractComponent.AbstractService<Void>() {
+	/*	handleRequestAsync(SELECT_MESSAGES_HANDLER_URI,new AbstractComponent.AbstractService<Void>() {
 			@Override
 			public Void call() throws Exception {
 				((Broker)this.getServiceOwner()).searchMessagesToSend();
 				return null;
 			}
-		});
+		});*/
 
-		handleRequestAsync(ACCEPT_ACCESS_HANDLER_URI,new AbstractComponent.AbstractService<Void>() {
+		runTask(
+				new AbstractComponent.AbstractTask() {
+
+					@Override
+					public void run() {
+						try {
+							((Broker) this.getTaskOwner()).searchMessagesToSend();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+/*		handleRequestAsync(ACCEPT_ACCESS_HANDLER_URI,new AbstractComponent.AbstractService<Void>() {
 			@Override
 			public Void call() throws Exception {
 				((Broker)this.getServiceOwner()).acceptMessage();
 				return null;
 			}
-		});
+		});*/
+
+		this.runTask(
+				new AbstractComponent.AbstractTask() {
+
+					@Override
+					public void run() {
+						try {
+							((Broker) this.getTaskOwner()).acceptMessage();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
 
 
 	}

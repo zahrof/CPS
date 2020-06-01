@@ -2,11 +2,12 @@ package baduren.plugins;
 
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
+import baduren.interfaces.PublicationImplementationI;
 import baduren.ports.inboundPortsForPlugin.PublicationInboundPortForPlugin;
 import fr.sorbonne_u.components.AbstractPlugin;
 import fr.sorbonne_u.components.ComponentI;
 
-public class BrokerPublicationPlugin extends AbstractPlugin implements PublicationCI {
+public class BrokerPublicationPlugin extends AbstractPlugin implements PublicationImplementationI {
     // -------------------------------------------------------------------------
     // Plug-in variables and constants
     // -------------------------------------------------------------------------

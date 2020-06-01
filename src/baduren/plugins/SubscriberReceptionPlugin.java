@@ -1,12 +1,12 @@
 package baduren.plugins;
 
 import baduren.interfaces.MessageI;
-import baduren.interfaces.ReceptionCI;
+import baduren.interfaces.ReceptionImplementationI;
 import baduren.ports.inboundPortsForPlugin.ReceptionInboundPortForPlugin;
 import fr.sorbonne_u.components.AbstractPlugin;
 import fr.sorbonne_u.components.ComponentI;
 
-public class SubscriberReceptionPlugin extends AbstractPlugin implements ReceptionCI {
+public class SubscriberReceptionPlugin extends AbstractPlugin implements ReceptionImplementationI {
     // -------------------------------------------------------------------------
     // Plug-in variables and constants
     // -------------------------------------------------------------------------
@@ -40,10 +40,10 @@ public class SubscriberReceptionPlugin extends AbstractPlugin implements Recepti
     {
         super.installOn(owner) ;
 
-        assert	owner instanceof ReceptionCI ;
+        assert	owner instanceof ReceptionImplementationI ;
 
         // Add interfaces and create ports
-        this.addOfferedInterface(ReceptionCI.class) ;
+        this.addOfferedInterface(ReceptionImplementationI.class) ;
 
     }
 
@@ -55,14 +55,14 @@ public class SubscriberReceptionPlugin extends AbstractPlugin implements Recepti
     {
         this.rip.unpublishPort();
         this.rip.destroyPort() ;
-        this.removeOfferedInterface(ReceptionCI.class) ;
+        this.removeOfferedInterface(ReceptionImplementationI.class) ;
     }
     // -------------------------------------------------------------------------
     // Plug-in services implementation
     // -------------------------------------------------------------------------
-    private ReceptionCI	getOwner()
+    private ReceptionImplementationI	getOwner()
     {
-        return ((ReceptionCI)this.owner) ;
+        return ((ReceptionImplementationI)this.owner) ;
     }
     @Override
     public void acceptMessage(MessageI m) throws Exception {
