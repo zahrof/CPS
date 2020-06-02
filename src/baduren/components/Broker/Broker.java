@@ -251,45 +251,62 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		MessageI msg[]= new MessageI[SIZE_MSG_AUX];
 		int current =0;
 		while(true) {
-			this.subscribersLock.lock(); //blocks writers only
-			while(subscribers.isEmpty()) { //check if there's data, don't modify shared variables
-				System.out.println("waiting for messages ready");
-				hasSubscribers.await();
-			}
-			for (String inboundPortI : subscribers.keySet()) {
-				if(messagesTriees.size()!= 0) System.out.println("enfiiiiiiiiin");
-				for (String inboundPortII : messagesTriees.keySet()) {
-					if(inboundPortI.equals(inboundPortII)){
-						messagesTrieesLock.lock();
-						System.out.println(" patateeee");
-						if(messagesTriees.get(inboundPortI).size()==1){
-							System.out.println(" eenvoi message "+ messagesTriees.get(inboundPortI).get(0).getMessage());
-							this.logMessage("Envoi du message " + messagesTriees.get(inboundPortI).get(0).toString() + "au port " + inboundPortI);
-							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(messagesTriees.get(inboundPortI).get(0));
-							messagesAcceptDeBroker++;
-						}
-						else {
 
-							for (MessageI m : messagesTriees.get(inboundPortI)) {
-								System.out.println(" envoi message "+ m.getMessage() );
-								this.logMessage("Envoi du message " + m.toString() + "au port " + inboundPortI);
-								msg[current]=m;
-								current++;
-								messagesAcceptDeBroker++;
+			this.subscribersLock.lock(); //blocks writers only
+			try {
+				System.out.println("jai le lock de subscriber");
+				while (subscribers.isEmpty()) { //check if there's data, don't modify shared variables
+					System.out.println("waiting for messages ready");
+					hasSubscribers.await();
+				}
+				System.out.println("accept apres while");
+				for (String inboundPortI : subscribers.keySet()) {
+
+					if (messagesTriees.size() != 0) System.out.println("messages triees " + messagesTriees);
+					else System.out.println("accept pas de mesasges");
+					for (String inboundPortII : messagesTriees.keySet()) {
+						System.out.println(" tester tous les inbound port message Tries");
+						if (inboundPortI.equals(inboundPortII)) {
+							messagesTrieesLock.lock();
+							try {
+								System.out.println(" on va envoyer");
+								if (messagesTriees.get(inboundPortI).size() == 1) {
+									System.out.println(" eenvoi message ooo" + messagesTriees.get(inboundPortI).get(0).getMessage());
+									this.logMessage("Envoi du message " + messagesTriees.get(inboundPortI).get(0).toString() + "au port " + inboundPortI);
+									subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(messagesTriees.get(inboundPortI).get(0));
+									messagesAcceptDeBroker++;
+								} else {
+
+									for (MessageI m : messagesTriees.get(inboundPortI)) {
+										System.out.println(" envoi message " + m.getMessage());
+										this.logMessage("Envoi du message " + m.toString() + "au port " + inboundPortI);
+										msg[current] = m;
+										current++;
+										messagesAcceptDeBroker++;
+									}
+									subscribers.get(inboundPortI).receptionOutboundPort.acceptMessages(msg);
+									current = 0;
+									msg = new MessageI[SIZE_MSG_AUX];
+								}
+							} finally {
+								messagesTrieesLock.unlock();
 							}
-							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessages(msg);
-							current=0;
-							msg= new MessageI[SIZE_MSG_AUX];
 						}
+					}
+					messagesTrieesLock.lock();
+					try {
+						messagesTriees.remove(inboundPortI);
+					}finally {
 						messagesTrieesLock.unlock();
 					}
-				}
-				messagesTrieesLock.lock();
-				messagesTriees.remove(inboundPortI);
-				messagesTrieesLock.unlock();
 
+
+				}
+			}finally {
+				this.subscribersLock.unlock();
 			}
-			this.subscribersLock.unlock();
+
+			System.out.println("je relache le lock de subsriber");
 		}
 	}
 
@@ -299,34 +316,45 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		while(true) {
 
 			this.subscribersLock.lock();
+			try{
 			this.messagesLock.lock();
+			try{
 			this.messagesTrieesLock.lock();
+			try{
 			if(!messages.isEmpty()) {
 				for (String topic : messages.keySet()) {
+
+					if(messagesTriees.size()!=0)System.out.println("messages triees LOLO "+ messagesTriees);
 					if(messages.get(topic).size()==0)continue;
 					for (String inboundPortURI : subscribers.keySet()) {
+						try{
 						Subscriber subscriber = subscribers.get(inboundPortURI);
-						if(!subscriber.topics.keySet().contains(topic)) continue;
+						if (!subscriber.topics.keySet().contains(topic)) continue;
 						for (MessageI m : this.messages.get(topic)) {
 
-							if (subscriber.topics.get(topic)==null) {
+							if (subscriber.topics.get(topic) == null) {
 								if (!this.messagesTriees.containsKey(inboundPortURI))
 									messagesTriees.put(inboundPortURI, new ArrayList<>());
 								messagesTriees.get(inboundPortURI).add(m);
-								System.out.println("je viens d'ajouter dans MessagesTriees");
-							}
-							else{
-								if(subscriber.topics.get(topic).filter(m)) {
+								//System.out.println("je viens d'ajouter dans MessagesTriees");
+								//System.out.println("messages triees "+ messagesTriees);
+							} else {
+								if (subscriber.topics.get(topic).filter(m)) {
 									messagesFiltres++;
 									if (!this.messagesTriees.containsKey(inboundPortURI))
 										messagesTriees.put(inboundPortURI, new ArrayList<>());
 									messagesTriees.get(inboundPortURI).add(m);
-									System.out.println(" je viens d'ajouter dans MessagesTriees");
+									//System.out.println(" je viens d'ajouter dans MessagesTriees");
+									//System.out.println("messages triees "+ messagesTriees);
 								}
 							}
 						}
+					}  catch (Exception e ){
+						System.out.println("test");
+					}
 
 					}
+					System.out.println("je suis lAAAAAAAAAAA");
 					for (MessageI m : this.messages.get(topic)) {
 						messagesSupprimes++;
 						this.logMessage("Suppression des messages "+m.getMessage()+" du topic " + topic);
@@ -334,9 +362,15 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 					this.messages.put(topic, new ArrayList<>());
 				}
 			}
-			this.messagesTrieesLock.unlock();
-			this.messagesLock.unlock();
-			this.subscribersLock.unlock();
+			}finally {
+				this.messagesTrieesLock.unlock();
+			}
+			}finally {
+				this.messagesLock.unlock();
+			}
+			}finally {
+				this.subscribersLock.unlock();
+			}
 		}
 
 	}
@@ -354,11 +388,19 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	 */
 	@Override
 	public void publish(MessageI m, String topic)throws Exception {
+	//	System.out.println(" avant prendre lock message "+m.getMessage());
 		this.messagesLock.lock();
-		if (!this.messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
-		this.messages.get(topic).add(m); // On ajoute le message
-		this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic+ " at the moment "+m.getTimeStamp().getTime() );
-		this.messagesLock.unlock();
+		try {
+			//	System.out.println(" apres prendre lock message "+ m.getMessage());
+			if (!this.messages.containsKey(topic))
+				messages.put(topic, new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
+			this.messages.get(topic).add(m); // On ajoute le message
+			//System.out.println(" messages : "+ this.messages);
+			this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment " + m.getTimeStamp().getTime());
+		}finally {
+			this.messagesLock.unlock();
+		}
+
 
 	}
 
@@ -450,40 +492,48 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public  void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
 		// Si le subscriber était pas présent encore on le crée et connecte
 		this.subscribersLock.lock();
-		if(!subscribers.containsKey(inboundPortURI)) {
-			subscribers.put(inboundPortURI, new Subscriber(this));
-			subscribers.get(inboundPortURI).receptionOutboundPort.publishPort();
+		try {
+			if (!subscribers.containsKey(inboundPortURI)) {
+				subscribers.put(inboundPortURI, new Subscriber(this));
+				subscribers.get(inboundPortURI).receptionOutboundPort.publishPort();
 
-			this.doPortConnection(
-					subscribers.get(inboundPortURI).uri,
-					inboundPortURI,
-					ReceptionConnector.class.getCanonicalName()
-			);
-			this.newSubscribers.signal();
+				this.doPortConnection(
+						subscribers.get(inboundPortURI).uri,
+						inboundPortURI,
+						ReceptionConnector.class.getCanonicalName()
+				);
+				this.newSubscribers.signal();
+				this.hasSubscribers.signal();
+			}
+			this.messagesLock.lock();
+			try {
+				if (!messages.containsKey(topic)) {
+					if (!messages.containsKey(topic)) messages.put(topic, new ArrayList<>());
+				}
+			}finally {
+				this.messagesLock.unlock();
+			}
+
+			//Si le messager avait pas ce topic on l'ajoute
+			if (!subscribers.get(inboundPortURI).topics.containsKey(topic)) {
+				subscribers.get(inboundPortURI).topics.put(topic, filter);
+				// mettre variable pour compter les subscribers
+			}
 			this.hasSubscribers.signal();
+			this.compteur++;
+			if (filter == null) {
+				subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
+						"te souscrire au topic " + topic + " sans filtres "));
+				messagesAcceptDeBroker++;
+			} else {
+				subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
+						"te souscrire au topic " + topic + "avec un filtre "));
+				messagesAcceptDeBroker++;
+			}
+		}finally {
+			this.subscribersLock.unlock();
 		}
-		this.messagesLock.lock();
-		if(!messages.containsKey(topic)){
-			if(!messages.containsKey(topic)) messages.put(topic,new ArrayList<>());
-		}
-		this.messagesLock.unlock();
-		//Si le messager avait pas ce topic on l'ajoute
-		if(!subscribers.get(inboundPortURI).topics.containsKey(topic)) {
-			subscribers.get(inboundPortURI).topics.put(topic, filter);
-			// mettre variable pour compter les subscribers
-		}this.hasSubscribers.signal();
-		this.compteur++;
-		if (filter == null) {
-			subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
-					"te souscrire au topic "+topic + " sans filtres "));
-			messagesAcceptDeBroker++;
-		}
-		else {
-			subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
-					"te souscrire au topic "+topic+ "avec un filtre "));
-			messagesAcceptDeBroker++;
-		}
-		this.subscribersLock.unlock();
+
 		if (filter == null) {
 			this.logMessage("Subscribed " + inboundPortURI + " to topic " + topic + " with no filter");
 			this.historiqueAbonnements += "\n		On abonne " + inboundPortURI + " au sujet " + topic + " sans filtres";
@@ -508,16 +558,20 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	@Override
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
 		this.subscribersLock.lock();
-		while(!subscribers.containsKey(inboundPortURI))
-			newSubscribers.await();
-		if (isTopic(topic)) {
-			this.changementFiltres += " \n		On change un filtre par un autre filtre ";
-			System.out.println("je remplace"+ topic+ "par "+ newFilter );
+		try {
+			while (!subscribers.containsKey(inboundPortURI))
+				newSubscribers.await();
+			if (isTopic(topic)) {
+				this.changementFiltres += " \n		On change un filtre par un autre filtre ";
+				System.out.println("je remplace" + topic + "par " + newFilter);
 				subscribers.get(inboundPortURI).topics.replace(topic, newFilter);
-			System.out.println("maintenant "+ subscribers.get(inboundPortURI).topics.get(topic));
+				System.out.println("maintenant " + subscribers.get(inboundPortURI).topics.get(topic));
 
 
-		}this.subscribersLock.unlock();
+			}
+		}finally {
+			this.subscribersLock.unlock();
+		}
 
 	}
 
@@ -531,18 +585,21 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	@Override
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
 		this.subscribersLock.lock();
-		if(this.subscribers.get(inboundPortUri).topics.containsKey(topic)) {
-			this.logMessage("On enlève l'abonnement de " + inboundPortUri + " au topic " + topic);
-			subscribers.get(inboundPortUri).receptionOutboundPort.acceptMessage(new Message("Tu viens de " +
-					"te desabonner au topic " + topic));
-			messagesAcceptDeBroker++;
-			this.desabonnements += "\n		On desabonne " + inboundPortUri + " du topic " + topic ;
-			this.subscribers.get(inboundPortUri).topics.remove(topic);
-		}else{
-			this.desabonnements += "\n		On a pas pu desabonner " + inboundPortUri + " du topic " + topic + " car " +
-					" il était pas abonné\n";
+		try {
+			if (this.subscribers.get(inboundPortUri).topics.containsKey(topic)) {
+				this.logMessage("On enlève l'abonnement de " + inboundPortUri + " au topic " + topic);
+				subscribers.get(inboundPortUri).receptionOutboundPort.acceptMessage(new Message("Tu viens de " +
+						"te desabonner au topic " + topic));
+				messagesAcceptDeBroker++;
+				this.desabonnements += "\n		On desabonne " + inboundPortUri + " du topic " + topic;
+				this.subscribers.get(inboundPortUri).topics.remove(topic);
+			} else {
+				this.desabonnements += "\n		On a pas pu desabonner " + inboundPortUri + " du topic " + topic + " car " +
+						" il était pas abonné\n";
+			}
+		}finally {
+			this.subscribersLock.unlock();
 		}
-		this.subscribersLock.unlock();
 	}
 
 	/**
@@ -555,13 +612,18 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public void createTopic(String topic){
 		logMessage("Creation of topic " + topic);
 		this.messagesLock.lock();
-		if(!messages.containsKey(topic)){
-			messages.put(topic,new ArrayList<>());
-			historiqueCreationTopics += "		On vient de créer dans le broker le topic "+topic +"\n";
-		}else {
-			historiqueCreationTopics += "		Le topic "+topic+" était déjà présent. \n";
+		try{
+			if(!messages.containsKey(topic)){
+				messages.put(topic,new ArrayList<>());
+				historiqueCreationTopics += "		On vient de créer dans le broker le topic "+topic +"\n";
+			}else {
+				historiqueCreationTopics += "		Le topic "+topic+" était déjà présent. \n";
+			}
+		}finally {
+			this.messagesLock.unlock();
 		}
-		this.messagesLock.unlock();
+
+
 	}
 
 
@@ -588,14 +650,17 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public void destroyTopic(String topic) {
 		logMessage("Destruction of the topic " + topic);
 		this.messagesLock.lock();
-		if(messages.containsKey(topic)){
-			messages.remove(topic);
-			suppressionSujets += "		Broker vient de supprimer le topic "+topic +"\n";
-		}else{
-			suppressionSujets += "		Broker a pas supprimé le topic  "+topic +" car il était pas présent. \n";
+		try {
+			if (messages.containsKey(topic)) {
+				messages.remove(topic);
+				suppressionSujets += "		Broker vient de supprimer le topic " + topic + "\n";
+			} else {
+				suppressionSujets += "		Broker a pas supprimé le topic  " + topic + " car il était pas présent. \n";
+			}
+			this.messages.remove(topic);
+		}finally {
+			this.messagesLock.unlock();
 		}
-		this.messages.remove(topic);
-		this.messagesLock.unlock();
 	}
 
 
@@ -610,8 +675,13 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public boolean isTopic(String topic) {
 		boolean res;
 		this.messagesLock.lock();
-		res=  this.messages.containsKey(topic);
-		this.messagesLock.unlock();
+		try{
+			res=  this.messages.containsKey(topic);
+		}
+
+		finally {
+			this.messagesLock.unlock();
+		}
 		return res;
 	}
 
@@ -626,8 +696,11 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public String[] getTopics()  {
 		String[]res;
 		this.messagesLock.lock();
-		res= messages.keySet().toArray(new String[messages.keySet().size()]);
-		this.messagesLock.unlock();
+		try {
+			res = messages.keySet().toArray(new String[messages.keySet().size()]);
+		}finally {
+			this.messagesLock.unlock();
+		}
 		return res;
 	}
 

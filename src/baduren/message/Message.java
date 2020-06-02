@@ -59,7 +59,7 @@ public class Message implements MessageI {
 
 	@Override
 	public String toString() {
-		return uri;
+		return message;
 	}
 
 	@Override

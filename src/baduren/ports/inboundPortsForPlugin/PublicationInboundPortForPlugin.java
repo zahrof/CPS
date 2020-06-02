@@ -52,7 +52,9 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
            // ((Broker)this.owner).publish(m, topic);
 			//((BrokerPublicationPlugin)this.getSer).publish(m, topic);
 
-			///???????
+
+
+	/*		///???????
 			this.owner.runTask(
 					new AbstractComponent.AbstractTask() {
 
@@ -64,7 +66,19 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 								e.printStackTrace();
 							}
 						}
-					});
+					});*/
+
+			this.owner.runTask(
+					new AbstractComponent.AbstractTask(this.pluginURI) {
+						@Override
+						public void run() {
+							try {
+								((BrokerPublicationPlugin) this.getTaskProviderReference()).publish(m, topic);
+							} catch (Exception e) {
+								e.printStackTrace() ;
+							}
+						}
+					}) ;
         }
 
 
@@ -79,7 +93,7 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 						return null;
 					}
 				}) ;*/
-
+/*
 			this.owner.runTask(
 					new AbstractComponent.AbstractTask() {
 
@@ -91,7 +105,19 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 								e.printStackTrace();
 							}
 						}
-					});
+					});*/
+
+			this.owner.runTask(
+					new AbstractComponent.AbstractTask(this.pluginURI) {
+						@Override
+						public void run() {
+							try {
+								((BrokerPublicationPlugin) this.getTaskProviderReference()).publish(m, topics);
+							} catch (Exception e) {
+								e.printStackTrace() ;
+							}
+						}
+					}) ;
         }
 
         @Override
@@ -105,7 +131,7 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 					}
 				}) ;*/
 
-			this.owner.runTask(
+	/*		this.owner.runTask(
 					new AbstractComponent.AbstractTask() {
 
 						@Override
@@ -116,7 +142,19 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 								e.printStackTrace();
 							}
 						}
-					});
+					});*/
+
+			this.owner.runTask(
+					new AbstractComponent.AbstractTask(this.pluginURI) {
+						@Override
+						public void run() {
+							try {
+								((BrokerPublicationPlugin) this.getTaskProviderReference()).publish(ms, topics);
+							} catch (Exception e) {
+								e.printStackTrace() ;
+							}
+						}
+					}) ;
         }
 
         @Override
@@ -130,7 +168,7 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 					}
 				}) ;*/
 
-			this.owner.runTask(
+	/*		this.owner.runTask(
 					new AbstractComponent.AbstractTask() {
 
 						@Override
@@ -141,7 +179,19 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 								e.printStackTrace();
 							}
 						}
-					});
+					});*/
+
+			this.owner.runTask(
+					new AbstractComponent.AbstractTask(this.pluginURI) {
+						@Override
+						public void run() {
+							try {
+								((BrokerPublicationPlugin) this.getTaskProviderReference()).publish(ms, topics);
+							} catch (Exception e) {
+								e.printStackTrace() ;
+							}
+						}
+					}) ;
         }
     }
 

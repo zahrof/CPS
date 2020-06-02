@@ -80,15 +80,19 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
     @Override
     public void			execute() throws Exception
     {
+        try
+        {
+
+
         // Install the plug-in.
         this.plugin = new PublisherPublicationPlugin() ;
         plugin.setPluginURI(MY_PUBLISHER_PLUGIN_URI) ;
         this.installPlugin(plugin) ;
 
         // Install the plug-in.
-     /*   this.pluginManagement = new PublisherSubscriberManagementPlugin();
+        this.pluginManagement = new PublisherSubscriberManagementPlugin();
         pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
-        this.installPlugin(pluginManagement) ;*/
+        this.installPlugin(pluginManagement) ;
 
         switch(this.number_teacher){
             case 1:
@@ -101,7 +105,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                 dû à que les threads d'envoi des message à envoyer le message avant que le
                 souscripteur 1 ait eu le temps de se souscrire au topic CPS avec filtres */
 
-                Thread.sleep(100);
+                Thread.sleep(300);
                 TimeStamp ts = new TimeStamp(System.currentTimeMillis(), "TimeStamper");
                 Message m1 = new Message(""+ts.getTimeStamper()+ ts.hashCode(),ts, new Properties(),"Bonjour, je vais tester tous les filtres. ");
                 Properties p1 = m1.getProperties();
@@ -115,7 +119,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                 p1.putProp("Random Short",(short) 3);
                 p1.putProp("Random String","random");
 
-                publish(m1,"CPS");
+                for(int i =0; i < 70; i++) publish(m1,"CPS");
                 this.publications ++;
                 Message m2 = new Message("Bonjour, je vais tester le filtre de EnseigneParMalenfant ");
                 Properties p2 = m2.getProperties();
@@ -148,7 +152,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                   sujet 'topic' au moment "+m.getTimeStamp().getTime() ); pour ces 12 messages.
                   Ces messages vont être effacé dans le Broker au fûr et à mesure. Pour plus de
                   détails voir la classe du Broker. */
-                Thread.sleep(100);
+                Thread.sleep(300);
                 publish(new Message("La semaine prochaine nous verrons PROMELA"),"PC3R");
                 this.publications ++;
                 publish(new Message("Je ferai cours sur TWITCH"), new String[]{"PC3R", "PAF"});
@@ -182,6 +186,9 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                 break;
 
 
+        }
+        }catch (Exception e ){
+            System.out.println("test");
         }
 
     }
