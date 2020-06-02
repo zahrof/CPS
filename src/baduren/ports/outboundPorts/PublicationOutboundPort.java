@@ -2,13 +2,14 @@ package baduren.ports.outboundPorts;
 
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
+import baduren.interfaces.PublicationImplementationI;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.AbstractOutboundPort;
 
 /**
  * The type PublicationOutboundPort.
  */
-public class PublicationOutboundPort extends	AbstractOutboundPort implements PublicationCI {
+public class PublicationOutboundPort extends	AbstractOutboundPort implements PublicationImplementationI {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,7 +23,7 @@ public class PublicationOutboundPort extends	AbstractOutboundPort implements Pub
 	 * @throws Exception the exception
 	 */
 	public PublicationOutboundPort(String uri, ComponentI owner) throws Exception{
-		super(uri, PublicationCI.class, owner) ;
+		super(uri, PublicationImplementationI.class, owner) ;
 	}
 
 	/**
@@ -32,7 +33,7 @@ public class PublicationOutboundPort extends	AbstractOutboundPort implements Pub
 	 * @throws Exception the exception
 	 */
 	public PublicationOutboundPort(ComponentI owner) throws Exception{
-		super(PublicationCI.class, owner) ;
+		super(PublicationImplementationI.class, owner) ;
 	}
 	
 	// Methodes
@@ -40,24 +41,24 @@ public class PublicationOutboundPort extends	AbstractOutboundPort implements Pub
 	
 	@Override
 	public void publish(MessageI m, String topic) throws Exception{
-		((PublicationCI)this.connector).publish(m, topic);
+		((PublicationImplementationI)this.connector).publish(m, topic);
 	}
 
 	@Override
 	public void publish(MessageI m, String[] topics)throws Exception {
-		((PublicationCI)this.connector).publish(m, topics);
+		((PublicationImplementationI)this.connector).publish(m, topics);
 		
 	}
 
 	@Override
 	public void publish(MessageI[] ms, String topics) throws Exception{
-		((PublicationCI)this.connector).publish(ms, topics);
+		((PublicationImplementationI)this.connector).publish(ms, topics);
 		
 	}
 
 	@Override
 	public void publish(MessageI[] ms, String[] topics) throws Exception{
-		((PublicationCI)this.connector).publish(ms, topics);
+		((PublicationImplementationI)this.connector).publish(ms, topics);
 		
 	}
 	

@@ -232,12 +232,16 @@ public class CVM  extends AbstractCVM {
 				System.out.print(s+"   ");
 			System.out.println("");
 			System.out.println("Tous les sujets après avoir supprimé le topic SRCS : ");
-			System.out.print("		   ");
-			for (String s :  SubscriberStudent.allTopicsAtTheEnd)
-				System.out.print(s+"   ");
-			System.out.println("\nPublication Port Uri : "+ SubscriberStudent.publicationPortUri);
-			System.out.println("\n-------------------------------------------------------------------------------------------------------");
-			// Give some time to see the traces (convenience).
+			if(SubscriberStudent.allTopicsAtTheEnd!=null) {
+				System.out.print("		   ");
+				for (String s : SubscriberStudent.allTopicsAtTheEnd)
+					System.out.print(s + "   ");
+				System.out.println("\nPublication Port Uri : " + SubscriberStudent.publicationPortUri);
+				System.out.println("\n-------------------------------------------------------------------------------------------------------");
+
+			}else {
+				System.out.println("ALL topics at the end is null! " );// Give some time to see the traces (convenience).
+			}
 			Thread.sleep(1000L) ;
 			// Simplifies the termination (termination has yet to be treated
 			// properly in BCM).

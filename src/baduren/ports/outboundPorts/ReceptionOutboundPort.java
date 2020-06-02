@@ -2,6 +2,7 @@ package baduren.ports.outboundPorts;
 
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
+import baduren.interfaces.ReceptionImplementationI;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.examples.pingpong.components.Ball;
@@ -11,7 +12,7 @@ import fr.sorbonne_u.components.ports.AbstractOutboundPort;
 /**
  * The type ReceptionOutboundPort.
  */
-public class ReceptionOutboundPort extends AbstractOutboundPort implements ReceptionCI {
+public class ReceptionOutboundPort extends AbstractOutboundPort implements ReceptionImplementationI {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -25,7 +26,7 @@ public class ReceptionOutboundPort extends AbstractOutboundPort implements Recep
 	 * @throws Exception the exception
 	 */
 	public ReceptionOutboundPort(String uri, ComponentI owner) throws Exception{
-		super(uri, ReceptionCI.class, owner) ;
+		super(uri, ReceptionImplementationI.class, owner) ;
 
 		assert	uri != null && owner != null ;
 	}
@@ -37,7 +38,7 @@ public class ReceptionOutboundPort extends AbstractOutboundPort implements Recep
 	 * @throws Exception the exception
 	 */
 	public ReceptionOutboundPort(ComponentI owner) throws Exception{
-		super(ReceptionCI.class, owner) ;
+		super(ReceptionImplementationI.class, owner) ;
 		assert	uri != null && owner != null ;
 	}
 	
@@ -45,13 +46,13 @@ public class ReceptionOutboundPort extends AbstractOutboundPort implements Recep
 
 	@Override
 	public void acceptMessage(MessageI m)throws Exception {
-		((ReceptionCI)this.connector).acceptMessage(m);
+		((ReceptionImplementationI)this.connector).acceptMessage(m);
 		
 	}
 
 	@Override
 	public void acceptMessages(MessageI[] ms)throws Exception {
-		((ReceptionCI)this.connector).acceptMessages(ms);
+		((ReceptionImplementationI)this.connector).acceptMessages(ms);
 	}
 
 

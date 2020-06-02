@@ -167,7 +167,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
                 filtreVerifie = m.getProperties().getLongProp("Random Long") == (long) 3;
                 filtreVerifie = m.getProperties().getShortProp("Random Short") == (short) 3;
             } catch (InvalidPropertiesFormatException e) {
-                e.printStackTrace();
+
             }
             return filtreVerifie;
         }
@@ -398,7 +398,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     // TOUTES LES METHODES DE RECEPTIONCI
     @Override
     public void acceptMessage(MessageI m) {
-        this.logMessage("Receiving/accepting the message "+m.getURI()+ " send by : "+ m.getTimeStamp().getTimeStamper() +
+        this.logMessage("Receiving/accepting the message "+m.getMessage()+ " send by : "+ m.getTimeStamp().getTimeStamper() +
                 " a la date de "+ m.getTimeStamp().getTime());
         messagesAcceptDeSubscriber++;
     }

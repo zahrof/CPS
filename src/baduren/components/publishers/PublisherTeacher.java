@@ -86,9 +86,9 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         this.installPlugin(plugin) ;
 
         // Install the plug-in.
-        this.pluginManagement = new PublisherSubscriberManagementPlugin();
+     /*   this.pluginManagement = new PublisherSubscriberManagementPlugin();
         pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
-        this.installPlugin(pluginManagement) ;
+        this.installPlugin(pluginManagement) ;*/
 
         switch(this.number_teacher){
             case 1:
@@ -218,7 +218,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
      */
     @Override
     public void publish(MessageI m, String topic) throws Exception {
-        logMessage("Publishing message " + m.getURI()+ " to the topic : "+ topic );
+        logMessage("Publishing message " + m.getMessage()+ " to the topic : "+ topic );
         //this.plugin.publish(m,topic);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m,topic);
     }

@@ -1,9 +1,12 @@
 package baduren.interfaces;
 
+import fr.sorbonne_u.components.interfaces.OfferedI;
+import fr.sorbonne_u.components.interfaces.RequiredI;
+
 /**
  * The interface ManagementImplementationI.
  */
-public interface ManagementImplementationI {
+public interface ManagementImplementationI extends OfferedI, RequiredI {
 	/**
 	 * Create topic.
 	 *

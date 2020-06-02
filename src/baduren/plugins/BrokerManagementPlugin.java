@@ -33,6 +33,7 @@ public class BrokerManagementPlugin extends AbstractPlugin implements Subscripti
 
         this.addOfferedInterface(SubscriptionImplementationI.class) ;
         this.addOfferedInterface(ManagementImplementationI.class) ;
+        this.addOfferedInterface(ManagementCI.class) ;
         this.mip = new ManagementInboundPortForPlugin(
                 this.getPluginURI(), this.owner) ;
         this.mip.publishPort() ;

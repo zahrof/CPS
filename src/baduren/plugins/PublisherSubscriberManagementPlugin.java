@@ -2,9 +2,7 @@ package baduren.plugins;
 
 import baduren.CVM;
 import baduren.connectors.ManagementConnector;
-import baduren.interfaces.ManagementCI;
-import baduren.interfaces.MessageFilterI;
-import baduren.interfaces.PublicationCI;
+import baduren.interfaces.*;
 import baduren.ports.outboundPorts.ManagementOutboundPort;
 import fr.sorbonne_u.components.AbstractPlugin;
 import fr.sorbonne_u.components.ComponentI;
@@ -26,7 +24,9 @@ public class PublisherSubscriberManagementPlugin extends AbstractPlugin implemen
         super.installOn(owner);
        // assert	owner instanceof MapImplementationI ;
         // Plugin du côté client donc on fait appel ) addRequiredInterface
-        this.addRequiredInterface(ManagementCI.class);
+    /*    this.addRequiredInterface(SubscriptionImplementationI.class);
+        this.addRequiredInterface(ManagementImplementationI.class) ;*/
+        this.addRequiredInterface(ManagementCI.class) ;
         this.managementOutboundPort = new ManagementOutboundPort(this.owner);
         this.managementOutboundPort.publishPort();
     }

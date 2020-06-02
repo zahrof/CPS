@@ -1,7 +1,9 @@
 package baduren.ports.outboundPorts;
 
 import baduren.interfaces.ManagementCI;
+import baduren.interfaces.ManagementImplementationI;
 import baduren.interfaces.MessageFilterI;
+import baduren.interfaces.SubscriptionImplementationI;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.examples.basic_cs.interfaces.URIConsumerI;
 import fr.sorbonne_u.components.ports.AbstractOutboundPort;

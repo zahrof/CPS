@@ -36,7 +36,7 @@ public class BrokerPublicationPlugin extends AbstractPlugin implements Publicati
       //  assert	owner instanceof PublicationCI ;
 
         // Add interfaces and create ports
-        this.addOfferedInterface(PublicationCI.class) ;
+        this.addOfferedInterface(PublicationImplementationI.class) ;
         this.pip = new PublicationInboundPortForPlugin(this.getPluginURI(), this.owner) ;
         this.pip.publishPort() ;
     }
@@ -49,14 +49,14 @@ public class BrokerPublicationPlugin extends AbstractPlugin implements Publicati
     {
         this.pip.unpublishPort();
         this.pip.destroyPort() ;
-        this.removeOfferedInterface(PublicationCI.class) ;
+        this.removeOfferedInterface(PublicationImplementationI.class) ;
     }
     // -------------------------------------------------------------------------
     // Plug-in services implementation
     // -------------------------------------------------------------------------
-    private PublicationCI	getOwner()
+    private PublicationImplementationI	getOwner()
     {
-        return ((PublicationCI)this.owner) ;
+        return ((PublicationImplementationI)this.owner) ;
     }
 
     @Override

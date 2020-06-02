@@ -257,11 +257,13 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 				hasSubscribers.await();
 			}
 			for (String inboundPortI : subscribers.keySet()) {
-
+				if(messagesTriees.size()!= 0) System.out.println("enfiiiiiiiiin");
 				for (String inboundPortII : messagesTriees.keySet()) {
 					if(inboundPortI.equals(inboundPortII)){
 						messagesTrieesLock.lock();
+						System.out.println(" patateeee");
 						if(messagesTriees.get(inboundPortI).size()==1){
+							System.out.println(" eenvoi message "+ messagesTriees.get(inboundPortI).get(0).getMessage());
 							this.logMessage("Envoi du message " + messagesTriees.get(inboundPortI).get(0).toString() + "au port " + inboundPortI);
 							subscribers.get(inboundPortI).receptionOutboundPort.acceptMessage(messagesTriees.get(inboundPortI).get(0));
 							messagesAcceptDeBroker++;
@@ -269,6 +271,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 						else {
 
 							for (MessageI m : messagesTriees.get(inboundPortI)) {
+								System.out.println(" envoi message "+ m.getMessage() );
 								this.logMessage("Envoi du message " + m.toString() + "au port " + inboundPortI);
 								msg[current]=m;
 								current++;
@@ -294,14 +297,13 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 	private void searchMessagesToSend() throws Exception {
 		while(true) {
+
 			this.subscribersLock.lock();
 			this.messagesLock.lock();
 			this.messagesTrieesLock.lock();
 			if(!messages.isEmpty()) {
 				for (String topic : messages.keySet()) {
 					if(messages.get(topic).size()==0)continue;
-					if(topic.equals("PC3R")) {
-					}
 					for (String inboundPortURI : subscribers.keySet()) {
 						Subscriber subscriber = subscribers.get(inboundPortURI);
 						if(!subscriber.topics.keySet().contains(topic)) continue;
@@ -311,6 +313,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 								if (!this.messagesTriees.containsKey(inboundPortURI))
 									messagesTriees.put(inboundPortURI, new ArrayList<>());
 								messagesTriees.get(inboundPortURI).add(m);
+								System.out.println("je viens d'ajouter dans MessagesTriees");
 							}
 							else{
 								if(subscriber.topics.get(topic).filter(m)) {
@@ -318,6 +321,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 									if (!this.messagesTriees.containsKey(inboundPortURI))
 										messagesTriees.put(inboundPortURI, new ArrayList<>());
 									messagesTriees.get(inboundPortURI).add(m);
+									System.out.println(" je viens d'ajouter dans MessagesTriees");
 								}
 							}
 						}
@@ -325,7 +329,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 					}
 					for (MessageI m : this.messages.get(topic)) {
 						messagesSupprimes++;
-						this.logMessage("Suppression des messages "+m.toString()+" du topic " + topic);
+						this.logMessage("Suppression des messages "+m.getMessage()+" du topic " + topic);
 					}
 					this.messages.put(topic, new ArrayList<>());
 				}
@@ -353,7 +357,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		this.messagesLock.lock();
 		if (!this.messages.containsKey(topic)) messages.put(topic,new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
 		this.messages.get(topic).add(m); // On ajoute le message
-		this.logMessage("Message " + m.getURI() + " stocked to topic " + topic+ " at the moment "+m.getTimeStamp().getTime() );
+		this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic+ " at the moment "+m.getTimeStamp().getTime() );
 		this.messagesLock.unlock();
 
 	}

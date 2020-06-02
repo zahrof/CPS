@@ -3,29 +3,30 @@ package baduren.ports.inboundPortsForPlugin;
 import baduren.components.subscribers.SubscriberStudent;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.ReceptionCI;
+import baduren.interfaces.ReceptionImplementationI;
 import baduren.plugins.BrokerManagementPlugin;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.ComponentI;
 import fr.sorbonne_u.components.ports.forplugins.AbstractInboundPortForPlugin;
 import baduren.plugins.SubscriberReceptionPlugin;
 
-public class ReceptionInboundPortForPlugin extends AbstractInboundPortForPlugin implements ReceptionCI {
+public class ReceptionInboundPortForPlugin extends AbstractInboundPortForPlugin implements ReceptionImplementationI {
 
     private static final long serialVersionUID = 1L;
 
     public ReceptionInboundPortForPlugin(String pluginUri, ComponentI owner)
             throws Exception {
-        super(ReceptionCI.class, pluginUri, owner);
+        super(ReceptionImplementationI.class, pluginUri, owner);
     }
 
     public ReceptionInboundPortForPlugin(String uri, String pluginURI, ComponentI owner) throws Exception {
-        super(uri, ReceptionCI.class, pluginURI, owner);
+        super(uri, ReceptionImplementationI.class, pluginURI, owner);
 
-        assert owner instanceof ReceptionCI;
+        assert owner instanceof ReceptionImplementationI;
     }
 
     public ReceptionInboundPortForPlugin(String pluginURI, ComponentI owner, String uri) throws Exception {
-        super(uri, ReceptionCI.class,pluginURI,owner );
+        super(uri, ReceptionImplementationI.class,pluginURI,owner );
     }
 
     @Override

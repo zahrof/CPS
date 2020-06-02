@@ -5,6 +5,7 @@ import baduren.components.Broker.Broker;
 import baduren.connectors.PublicationConnector;
 import baduren.interfaces.MessageI;
 import baduren.interfaces.PublicationCI;
+import baduren.interfaces.PublicationImplementationI;
 import baduren.ports.outboundPorts.PublicationOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.AbstractPlugin;
@@ -26,7 +27,7 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
         super.installOn(owner);
         // Add interfaces and create ports
         // Plugin du côté client donc on fait appel ) addRequiredInterface
-        this.addRequiredInterface(PublicationCI.class);
+        this.addRequiredInterface(PublicationImplementationI.class);
         this.publicationOutboundPort = new PublicationOutboundPort(this.getPluginURI(), this.owner);
         this.publicationOutboundPort.publishPort();
     }
@@ -43,7 +44,7 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
                 CVM.BROKER_COMPONENT_URI,
                 ReflectionConnector.class.getCanonicalName()) ;
 
-        String[] urisPublisher = ropPublisher.findPortURIsFromInterface(PublicationCI.class) ;
+        String[] urisPublisher = ropPublisher.findPortURIsFromInterface(PublicationImplementationI.class) ;
         System.out.println("uriPublisher "+urisPublisher.toString());
         assert	urisPublisher != null && urisPublisher.length == 1 ;
 
@@ -68,7 +69,7 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
     {
         this.publicationOutboundPort.unpublishPort() ;
         this.publicationOutboundPort.destroyPort() ;
-        this.removeRequiredInterface(PublicationCI.class) ;
+        this.removeRequiredInterface(PublicationImplementationI.class) ;
     }
 
     /**
