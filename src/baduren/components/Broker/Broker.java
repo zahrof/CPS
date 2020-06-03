@@ -26,10 +26,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	// -------------------------------------------------------------------------
 	// Broker variables and constants
 	// -------------------------------------------------------------------------
-	protected final static String MY_RECEPTION_BROKER_PLUGIN_URI = "reception-broker-client-plugin-uri" ;
-	private static final String PUBLICATION_ACCESS_HANDLER_URI = "pah";
 	private static final String ACCEPT_ACCESS_HANDLER_URI = "aah";
-	private static final String SUBSCRIBE_ACCESS_HANDLER_URI = "sah";
 	private static final String SELECT_MESSAGES_HANDLER_URI = "smh";
 	private static final int SIZE_MSG_AUX = 500 ;
 	public static int messagesSupprimes=0;
@@ -45,7 +42,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	 * The Broker's uri.
 	 */
 
-	protected String uri= CVM.BROKER_COMPONENT_URI;
+	protected String uri;
 
 
 	private int compteur =0; // increments for each new subscriber
@@ -134,21 +131,26 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	}
 
 	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
-	protected Broker(int nbThreads, int nbSchedulableThreads) throws Exception {
-		super(CVM.BROKER_COMPONENT_URI, nbThreads, nbSchedulableThreads) ;
+	protected Broker(int nbThreads, int nbSchedulableThreads,String nbBroker) throws Exception {
+
+		super(nbBroker, nbThreads, nbSchedulableThreads) ;
 		addRequiredInterface(ReceptionCI.class);
+
+		uri=nbBroker;
 
 		/** INSTALLING PLUGINS **/
 		BrokerManagementPlugin pluginManagement = new BrokerManagementPlugin();
-		pluginManagement.setPluginURI("management-broker-plugin-uri");
+		pluginManagement.setPluginURI("management-broker-plugin-"+uri);
 		this.installPlugin(pluginManagement);
 
 		this.pluginPublication = new BrokerPublicationPlugin();
-		pluginPublication.setPluginURI("publication-broker-plugin-uri");
+		pluginPublication.setPluginURI("publication-broker-plugin-"+uri);
 		this.installPlugin(pluginPublication);
 
+
+
 		/** SETTING TRACER **/
-		this.tracer.setTitle("broker") ;
+		this.tracer.setTitle(nbBroker) ;
 		this.tracer.setRelativePosition(1, 0) ;
 		if(! new File(TestsIntegration.LOG_FOLDER).exists()) new File(TestsIntegration.LOG_FOLDER).mkdir();
 		Logger logger = new Logger(TestsIntegration.LOG_FOLDER);

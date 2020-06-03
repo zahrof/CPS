@@ -221,7 +221,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
                 this.publicationPortUri = getPublicationPortURI();
                 subscribe("CPS", new TestTousLesFiltres(), pluginReception.receptionInboundPortUri);
                 Thread.sleep(200);
-              //  modifyFilter("CPS", new EnseigneParMalenfant(), pluginReception.receptionInboundPortUri);
+               // modifyFilter("CPS", new EnseigneParMalenfant(), pluginReception.receptionInboundPortUri);
 
                 break;
             case 2:
@@ -231,7 +231,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
                 subscribe("PAF",  pluginReception.receptionInboundPortUri);
                 subscribe(new String[]{"APS", "PC3R", "CPS"}, pluginReception.receptionInboundPortUri);
                 Thread.sleep(1000);
-              //  unsubscribe("CPS",  pluginReception.receptionInboundPortUri);
+                unsubscribe("CPS",  pluginReception.receptionInboundPortUri);
                 Thread.sleep(500);
                 this.allTopicsAtTheEnd = getTopics();
                 break;

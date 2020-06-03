@@ -21,6 +21,7 @@ public class CVM  extends AbstractCVM {
 
 	/** BROKER URI**/
 	public static final String BROKER_COMPONENT_URI = "my-URI-broker";
+	public static final String BROKER_COMPONENT_URI2 = "my-URI-broker2";
 
 	/** SUBSCRIBER URI**/
 	public static final String SUBSCRIBER_COMPONENT_URI = "my-URI-subscriber";
@@ -53,6 +54,7 @@ public class CVM  extends AbstractCVM {
 	/** SUBSCRIBER URI**/
 	protected String uri_Subscriber_Student1;
 	protected String uri_Subscriber_Student2;
+	private String uriBrokerURI2;
 
 
 	/*********************   CONSTRUCTOR   **********************/
@@ -78,10 +80,20 @@ public class CVM  extends AbstractCVM {
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
 						new Object[]{
-								10,0}) ;
+								10,0,CVM.BROKER_COMPONENT_URI}) ;
 		assert	this.isDeployedComponent(this.uriBrokerURI) ;
 
 		this.toggleTracing(this.uriBrokerURI) ;
+
+
+		this.uriBrokerURI2 =
+				AbstractComponent.createComponent(
+						Broker.class.getCanonicalName(),
+						new Object[]{
+								10,0,CVM.BROKER_COMPONENT_URI2}) ;
+		assert	this.isDeployedComponent(this.uriBrokerURI2) ;
+
+		this.toggleTracing(this.uriBrokerURI2) ;
 
 		/******* create the publishers components ********/
 
