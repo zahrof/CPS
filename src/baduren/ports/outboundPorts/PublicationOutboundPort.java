@@ -41,7 +41,11 @@ public class PublicationOutboundPort extends	AbstractOutboundPort implements Pub
 	
 	@Override
 	public void publish(MessageI m, String topic) throws Exception{
-		((PublicationImplementationI)this.connector).publish(m, topic);
+		try {
+			((PublicationImplementationI) this.connector).publish(m, topic);
+		}catch (Exception e){
+			System.out.println("test");
+		}
 	}
 
 	@Override

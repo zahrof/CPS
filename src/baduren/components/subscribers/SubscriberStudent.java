@@ -167,7 +167,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
                 filtreVerifie = m.getProperties().getLongProp("Random Long") == (long) 3;
                 filtreVerifie = m.getProperties().getShortProp("Random Short") == (short) 3;
             } catch (InvalidPropertiesFormatException e) {
-
+                return false;
             }
             return filtreVerifie;
         }
@@ -221,7 +221,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
                 this.publicationPortUri = getPublicationPortURI();
                 subscribe("CPS", new TestTousLesFiltres(), pluginReception.receptionInboundPortUri);
                 Thread.sleep(200);
-                modifyFilter("CPS", new EnseigneParMalenfant(), pluginReception.receptionInboundPortUri);
+              //  modifyFilter("CPS", new EnseigneParMalenfant(), pluginReception.receptionInboundPortUri);
 
                 break;
             case 2:
@@ -231,7 +231,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
                 subscribe("PAF",  pluginReception.receptionInboundPortUri);
                 subscribe(new String[]{"APS", "PC3R", "CPS"}, pluginReception.receptionInboundPortUri);
                 Thread.sleep(1000);
-                unsubscribe("CPS",  pluginReception.receptionInboundPortUri);
+              //  unsubscribe("CPS",  pluginReception.receptionInboundPortUri);
                 Thread.sleep(500);
                 this.allTopicsAtTheEnd = getTopics();
                 break;
@@ -398,15 +398,21 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     // TOUTES LES METHODES DE RECEPTIONCI
     @Override
     public void acceptMessage(MessageI m) {
-        this.logMessage("Receiving/accepting the message "+m.getMessage()+ " send by : "+ m.getTimeStamp().getTimeStamper() +
-                " a la date de "+ m.getTimeStamp().getTime());
-        messagesAcceptDeSubscriber++;
+            this.logMessage("Receiving/accepting the message " + m.getMessage() + " send by : " + m.getTimeStamp().getTimeStamper() +
+                    " a la date de " + m.getTimeStamp().getTime());
+            messagesAcceptDeSubscriber++;
     }
     @Override
     public void acceptMessages(MessageI[] ms) {
-        for (MessageI m : ms) {
-            acceptMessage(m);
+        int i =0;
+        while(ms[i]!=null){
+            acceptMessage(ms[i]);
+            i++;
         }
+
+     /*   for (MessageI m : ms) {
+            acceptMessage(m);
+        }*/
     }
 }
 

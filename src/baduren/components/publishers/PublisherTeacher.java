@@ -77,9 +77,19 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         super.start() ;
         this.logMessage("starting teacher 2 component.") ;
     }
+    static int i = 0 ;
     @Override
     public void			execute() throws Exception
     {
+        if(i==0){
+            //tout ce qu'il fesait
+            //...
+            i++;
+        }else{
+            if(i ==1){
+                //un autre comportement.
+            }
+        }
         try
         {
 
@@ -119,7 +129,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                 p1.putProp("Random Short",(short) 3);
                 p1.putProp("Random String","random");
 
-                for(int i =0; i < 70; i++) publish(m1,"CPS");
+                    publish(m1,"CPS");
                 this.publications ++;
                 Message m2 = new Message("Bonjour, je vais tester le filtre de EnseigneParMalenfant ");
                 Properties p2 = m2.getProperties();
@@ -227,7 +237,11 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
     public void publish(MessageI m, String topic) throws Exception {
         logMessage("Publishing message " + m.getMessage()+ " to the topic : "+ topic );
         //this.plugin.publish(m,topic);
-        ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m,topic);
+        try {
+            ((PublisherPublicationPlugin) this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m, topic);
+        }catch (Exception e){
+            System.out.println("tata");
+        }
     }
 
 

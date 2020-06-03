@@ -238,7 +238,9 @@ public class Properties implements java.io.Serializable{
 	 * @return the string prop
 	 */
 	public String getStringProp(String name) throws InvalidPropertiesFormatException {
-		if (this.getStringProp(name).contains(name)) return  this.stringProperties.get(name);
-		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
+		if (this.stringProperties.containsKey(name)){
+			return  this.stringProperties.get(name);
+		}
+		else throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	} 
 }

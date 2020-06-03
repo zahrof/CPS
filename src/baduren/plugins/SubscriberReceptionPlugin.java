@@ -71,6 +71,10 @@ public class SubscriberReceptionPlugin extends AbstractPlugin implements Recepti
 
     @Override
     public void acceptMessages(MessageI[] ms) throws Exception {
-        this.getOwner().acceptMessages(ms);
+        try {
+            this.getOwner().acceptMessages(ms);
+        }catch (Exception e ){
+            System.out.println("toto");
+        }
     }
 }

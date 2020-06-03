@@ -80,7 +80,11 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
      * @throws Exception the exception
      */
     public void publish(MessageI m, String topic) throws Exception {
+        try{
         this.publicationOutboundPort.publish(m, topic);
+        }catch (Exception e){
+            System.out.println("test");
+        }
     }
 
 
