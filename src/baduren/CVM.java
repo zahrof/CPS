@@ -47,6 +47,7 @@ public class CVM  extends AbstractCVM {
 	//protected String uriPublisherURI;
 	protected String uri_Publisher_Teacher1;
 	protected String uri_Publisher_Teacher2;
+	private String uri_Publisher_Teacher3;
 
 	/** BROKER URI**/
 	protected String uriBrokerURI;
@@ -55,6 +56,9 @@ public class CVM  extends AbstractCVM {
 	protected String uri_Subscriber_Student1;
 	protected String uri_Subscriber_Student2;
 	private String uriBrokerURI2;
+	private String uri_Publisher_Teacher4;
+	private String uri_Subscriber_Student3;
+	private String uri_Subscriber_Student4;
 
 
 	/*********************   CONSTRUCTOR   **********************/
@@ -123,6 +127,23 @@ public class CVM  extends AbstractCVM {
 		assert	this.isDeployedComponent(uri_Publisher_Teacher2) ;
 		this.toggleTracing(this.uri_Publisher_Teacher2) ;
 
+		try {
+			this.uri_Publisher_Teacher3 =
+					AbstractComponent.createComponent(
+							PublisherTeacher.class.getCanonicalName(),
+							new Object[]{1, 0, 3});
+			assert this.isDeployedComponent(uri_Publisher_Teacher3);
+			this.toggleTracing(this.uri_Publisher_Teacher3);
+		}catch (Exception e){
+			System.out.println(" test");
+		}
+		this.uri_Publisher_Teacher4 =
+				AbstractComponent.createComponent(
+						PublisherTeacher.class.getCanonicalName(),
+						new Object[]{1, 0, 4});
+		assert	this.isDeployedComponent(uri_Publisher_Teacher4) ;
+		this.toggleTracing(this.uri_Publisher_Teacher4) ;
+
 		/******* create the subscriber component ********/
 		this.uri_Subscriber_Student1 =
 				AbstractComponent.createComponent(
@@ -139,6 +160,22 @@ public class CVM  extends AbstractCVM {
 		assert	this.isDeployedComponent(this.uri_Subscriber_Student2) ;
 
 		this.toggleTracing(this.uri_Subscriber_Student2) ;
+
+		this.uri_Subscriber_Student3 =
+				AbstractComponent.createComponent(
+						SubscriberStudent.class.getCanonicalName(),
+						new Object[]{RECEPTION_INBOUND_PORT_URI, 1, 0, 3}) ;
+		assert	this.isDeployedComponent(this.uri_Subscriber_Student3) ;
+
+		this.toggleTracing(this.uri_Subscriber_Student3) ;
+
+		this.uri_Subscriber_Student4 =
+				AbstractComponent.createComponent(
+						SubscriberStudent.class.getCanonicalName(),
+						new Object[]{RECEPTION_INBOUND_PORT_URI, 1, 0, 4}) ;
+		assert	this.isDeployedComponent(this.uri_Subscriber_Student4) ;
+
+		this.toggleTracing(this.uri_Subscriber_Student4) ;
 
 		// --------------------------------------------------------------------
 		// Connection phase if we are not using plugins
@@ -201,7 +238,8 @@ public class CVM  extends AbstractCVM {
 				this.uriSubscriberURI,
 				ReceptionOutboundPortUri) ;
 		*/
-		super.finalise();
+			super.finalise();
+
 	}
 
 

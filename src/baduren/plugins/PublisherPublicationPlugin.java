@@ -19,8 +19,14 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
 
     private static final long serialVersionUID = 1L;
 
+    private String BrokerURI;
+
 
     protected PublicationOutboundPort publicationOutboundPort;
+
+    public PublisherPublicationPlugin(String brokerURI) {
+        BrokerURI = brokerURI;
+    }
 
     public void installOn(ComponentI owner) throws Exception
     {
@@ -41,7 +47,7 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
         ropPublisher.publishPort() ;
         this.owner.doPortConnection(
                 ropPublisher.getPortURI(),
-                CVM.BROKER_COMPONENT_URI,
+                this.BrokerURI,
                 ReflectionConnector.class.getCanonicalName()) ;
 
         String[] urisPublisher = ropPublisher.findPortURIsFromInterface(PublicationImplementationI.class) ;

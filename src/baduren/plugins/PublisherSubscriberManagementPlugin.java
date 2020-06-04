@@ -19,6 +19,20 @@ public class PublisherSubscriberManagementPlugin extends AbstractPlugin implemen
 /** the inbound port which calls will be on this plug-in.*/
     protected ManagementOutboundPort managementOutboundPort;
 
+    public PublisherSubscriberManagementPlugin(String brokerUri) {
+        BrokerUri = brokerUri;
+    }
+
+    public String getBrokerUri() {
+        return BrokerUri;
+    }
+
+    public void setBrokerUri(String brokerUri) {
+        BrokerUri = brokerUri;
+    }
+
+    private String BrokerUri;
+
     public void installOn(ComponentI owner) throws Exception
     {
         super.installOn(owner);
@@ -50,7 +64,7 @@ public class PublisherSubscriberManagementPlugin extends AbstractPlugin implemen
 
         this.owner.doPortConnection(
                 rop.getPortURI(),
-                CVM.BROKER_COMPONENT_URI,
+                this.BrokerUri,
                 ReflectionConnector.class.getCanonicalName()) ;
 
         String[] uris = rop.findPortURIsFromInterface(ManagementCI.class) ;

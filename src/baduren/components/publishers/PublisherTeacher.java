@@ -1,5 +1,6 @@
 package baduren.components.publishers;
 
+import baduren.CVM;
 import baduren.TestsIntegration;
 import baduren.interfaces.*;
 import baduren.message.Message;
@@ -75,33 +76,32 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
     public void			start() throws ComponentStartException
     {
         super.start() ;
-        this.logMessage("starting teacher 2 component.") ;
+        this.logMessage("starting teacher  component.") ;
     }
     static int i = 0 ;
     @Override
     public void			execute() throws Exception
     {
-        if(i==0){
-            //tout ce qu'il fesait
-            //...
-            i++;
-        }else{
-            if(i ==1){
-                //un autre comportement.
-            }
-        }
-        try
-        {
+
 
 
         // Install the plug-in.
-        this.plugin = new PublisherPublicationPlugin() ;
+
+        if(this.number_teacher==1||this.number_teacher==2){
+            this.plugin = new PublisherPublicationPlugin(CVM.BROKER_COMPONENT_URI);
+            this.pluginManagement = new PublisherSubscriberManagementPlugin(CVM.BROKER_COMPONENT_URI);
+        }
+        if(this.number_teacher==3||this.number_teacher==4){
+            this.plugin = new PublisherPublicationPlugin(CVM.BROKER_COMPONENT_URI2);
+            this.pluginManagement = new PublisherSubscriberManagementPlugin(CVM.BROKER_COMPONENT_URI2);
+        }
+
+        // Install the plug-in.
+    //    this.plugin = new PublisherPublicationPlugin() ;
         plugin.setPluginURI(MY_PUBLISHER_PLUGIN_URI) ;
         this.installPlugin(plugin) ;
-
-        // Install the plug-in.
-        this.pluginManagement = new PublisherSubscriberManagementPlugin();
         pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
+
         this.installPlugin(pluginManagement) ;
 
         switch(this.number_teacher){
@@ -164,18 +164,18 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                   détails voir la classe du Broker. */
                 Thread.sleep(300);
                 publish(new Message("La semaine prochaine nous verrons PROMELA"),"PC3R");
-                this.publications ++;
+                this.publications++;
                 publish(new Message("Je ferai cours sur TWITCH"), new String[]{"PC3R", "PAF"});
-                this.publications ++;
-                this.publications ++;
+                this.publications++;
+                this.publications++;
                 publish(new MessageI[]{
                         new Message("Le sujet 0 sera à l'examen"),
                         new Message("Le sujet 1 sera à l'examen"),
                         new Message("Le sujet 2 sera à l'examen")
                 }, "PAF");
-                this.publications ++;
-                this.publications ++;
-                this.publications ++;
+                this.publications++;
+                this.publications++;
+                this.publications++;
                 publish(new MessageI[]{
                         new Message("Je ferai cours sur TWITCH lundi "),
                         new Message("Je ferai cours sur TWITCH jeudi"),
@@ -195,10 +195,19 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                 }
                 break;
 
+            case 3:
+                Thread.sleep(1000);
+                this.logMessage("il pleut");
+                publish (new Message("La vie est un long voyage "), "APS");
+                break;
 
-        }
-        }catch (Exception e ){
-            System.out.println("test");
+            case 4:
+                Thread.sleep(1000);
+                this.logMessage("en revoir");
+                publish(new Message("Prenez vos crayons! ") , new String[]{"PC3R", "CPA"});
+                break;
+
+
         }
 
     }
@@ -258,7 +267,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         for (String s : topics) {
             str += s+ " ";
         }
-        logMessage("Publishing message " + m.getURI()+ " to the topics : "+str);
+        logMessage("Publishing message " + m.getMessage()+ " to the topics : "+str);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m,topics);;
     }
 

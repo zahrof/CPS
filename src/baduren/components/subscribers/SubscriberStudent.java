@@ -90,7 +90,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
         this.RECEPTION_INBOUND_PORT_URI = RECEPTION_INBOUND_PORT_URI + number_student;
 
 
-        this.uri = CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI + number_student;
+       // this.uri = CVM.SUBSCRIBER_STUDENT1_COMPONENT_URI + number_student;
      //   this.receptionInboundPort = new ReceptionInboundPortForPlugin(RECEPTION_INBOUND_PORT_URI,this);
 
 
@@ -200,7 +200,12 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
 
 
         // Install the plug-in.
-        PublisherSubscriberManagementPlugin pluginManagement = new PublisherSubscriberManagementPlugin() ;
+        PublisherSubscriberManagementPlugin pluginManagement = null;
+        if(this.number_student==1 || this.number_student==2) pluginManagement = 
+                new PublisherSubscriberManagementPlugin(CVM.BROKER_COMPONENT_URI); 
+        if(this.number_student==3 || this.number_student==4) pluginManagement = 
+                new PublisherSubscriberManagementPlugin(CVM.BROKER_COMPONENT_URI2); 
+        
         pluginManagement.setPluginURI(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI) ;
         this.installPlugin(pluginManagement) ;
 
@@ -208,7 +213,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
         SubscriberReceptionPlugin pluginReception = new SubscriberReceptionPlugin(RECEPTION_INBOUND_PORT_URI,
                 MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
         pluginReception.setPluginURI(MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
-        this.installPlugin(pluginReception) ;
+        this.installPlugin(pluginReception);
 
         System.out.println("number_student (execute)" + number_student);
 
@@ -234,6 +239,17 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
                 unsubscribe("CPS",  pluginReception.receptionInboundPortUri);
                 Thread.sleep(500);
                 this.allTopicsAtTheEnd = getTopics();
+                break;
+
+            case 3:
+
+                this.logMessage("Je m'appelle Claire");
+                subscribe("CPA", pluginReception.receptionInboundPortUri);
+                break;
+
+            case 4:
+                this.logMessage("Je m'appelle Theo");
+                subscribe("APS", pluginReception.receptionInboundPortUri);
                 break;
         }
 

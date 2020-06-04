@@ -231,7 +231,11 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		this.logMessage("stopping broker component.") ;
 
 		for(String subscriber : this.subscribers.keySet()){
-			subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
+			try {
+				subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
+			}catch (Exception e){
+				System.out.println("test");
+			}
 		}
 
 		this.printExecutionLogOnFile(TestsIntegration.LOG_FOLDER + TestsIntegration.BROKER_LOG_FILE);
@@ -502,11 +506,11 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			this.compteur++;
 			if (filter == null) {
 				subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
-						"te souscrire au topic " + topic + " sans filtres "));
+						"te souscrire au topic " + topic + " sans filtres broker "+uri));
 				messagesAcceptDeBroker++;
 			} else {
 				subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
-						"te souscrire au topic " + topic + "avec un filtre "));
+						"te souscrire au topic " + topic + "avec un filtre broker"+uri));
 				messagesAcceptDeBroker++;
 			}
 		}finally {
