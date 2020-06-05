@@ -274,9 +274,7 @@ public class DistributedCVM extends AbstractDistributedCVM{
 		}
 
 
-		if(deploiments==3){
-			this.state= CVMState.DEPLOYMENT_DONE ;
-		}
+
 		super.instantiateAndPublish();
 
 	}
