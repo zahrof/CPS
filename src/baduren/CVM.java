@@ -83,7 +83,7 @@ public class CVM  extends AbstractCVM {
 		this.uriBrokerURI =
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
-						new Object[]{
+						new Object[]{"broker"+1 +"-",
 								10,0,CVM.BROKER_COMPONENT_URI}) ;
 		assert	this.isDeployedComponent(this.uriBrokerURI) ;
 
@@ -93,7 +93,7 @@ public class CVM  extends AbstractCVM {
 		this.uriBrokerURI2 =
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
-						new Object[]{
+						new Object[]{"broker"+2 +"-",
 								10,0,CVM.BROKER_COMPONENT_URI2}) ;
 		assert	this.isDeployedComponent(this.uriBrokerURI2) ;
 

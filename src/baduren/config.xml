@@ -1,0 +1,23 @@
+<deployment>
+   <hosts>
+    <host name="localhost"
+          dir="~/Documents/CPS2/CPSReparti/src"/>
+  </hosts>
+  <cyclicBarrier   hostname="localhost" port="55253"/>
+  <globalRegistry  hostname="localhost" port="55252"/>
+  <rmiRegistryPort no="55999"/>
+  <jvms2hostnames>
+    <jvm2hostname jvmuri="jvm1"
+        rmiRegistryCreator="true"
+        hostname="localhost"
+        mainclass="baduren.DistributedCVM"/>
+    <jvm2hostname jvmuri="manager"
+        rmiRegistryCreator="false"
+        hostname="localhost"
+        mainclass="baduren.DistributedCVM"/>
+    <jvm2hostname jvmuri="jvm2"
+        rmiRegistryCreator="false"
+        hostname="localhost"
+        mainclass="baduren.DistributedCVM"/>
+  </jvms2hostnames>
+</deployment>

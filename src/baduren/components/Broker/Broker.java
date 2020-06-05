@@ -14,6 +14,10 @@ import baduren.connectors.ReceptionConnector;
 import baduren.interfaces.*;
 import baduren.message.Message;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
+import baduren.replicator.connectors.ReplicableConnector;
+import baduren.replicator.interfaces.ReplicationI;
+import baduren.replicator.ports.ReplicableInboundPort;
+import baduren.replicator.ports.ReplicableOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import baduren.plugins.*;
@@ -21,7 +25,7 @@ import fr.sorbonne_u.components.helpers.Logger;
 
 
 public class Broker extends AbstractComponent implements ManagementImplementationI,
-		SubscriptionImplementationI, PublicationImplementationI{
+		SubscriptionImplementationI, PublicationImplementationI, ReplicationI<String> {
 
 	// -------------------------------------------------------------------------
 	// Broker variables and constants
@@ -37,6 +41,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public static String historiqueCreationTopics="\n";
 	public static String suppressionSujets="\n";
 	public static int messagesAcceptDeBroker;
+	/** URI of the inbound port used to offer the service.					*/
+	private ReplicableInboundPort<String> rip = null;
+	/** URI of the inbound port proposed by the replication service.		*/
+	private String replicableInboundPortURI=null;
+	/** outbound port used to call the service.								*/
+	protected ReplicableOutboundPort<String> 	rop ;
 
 	/**
 	 * The Broker's uri.
@@ -56,6 +66,16 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	final private Condition newSubscribers = subscribersLock.newCondition();
 	private BrokerPublicationPlugin pluginPublication;
 
+	/** URI of the reflection inbound port of this component.				*/
+	protected String						refl_ipURI = "generated-" ;
+
+
+	@Override
+	public String call(Object... parameters) throws Exception {
+		String ret = this.refl_ipURI + parameters[0];
+		this.traceMessage(ret+"\n");
+		return ret;
+	}
 
 
 	private class Subscriber {
@@ -131,10 +151,22 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	}
 
 	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
-	protected Broker(int nbThreads, int nbSchedulableThreads,String nbBroker) throws Exception {
+	protected Broker(String reflectionInboundPortURI,String inboundPortURI,String replicableInboundPortURI,  int nbThreads, int nbSchedulableThreads,String nbBroker) throws Exception {
 
 		super(nbBroker, nbThreads, nbSchedulableThreads) ;
 		addRequiredInterface(ReceptionCI.class);
+		this.refl_ipURI = reflectionInboundPortURI;
+
+
+		if(replicableInboundPortURI!=null) {
+			this.replicableInboundPortURI = replicableInboundPortURI;
+			this.rop = new ReplicableOutboundPort<String>(this);
+			this.rop.publishPort();
+
+			this.rip = new ReplicableInboundPort<String>(inboundPortURI, this);
+			this.rip.publishPort();
+
+		}
 
 		uri=nbBroker;
 
@@ -168,6 +200,15 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	{
 		this.logMessage("starting broker component.") ;
 		super.start() ;
+		try{
+			this.doPortConnection(
+					this.rop.getPortURI(),
+					this.replicableInboundPortURI,
+					ReplicableConnector.class.getCanonicalName());
+		}catch(Exception e){
+			throw new ComponentStartException(e);
+		}
+
 	}
 
 	@Override
@@ -186,6 +227,14 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 				return null;
 			}
 		});*/
+
+		for (int i = 0 ; i < 100 ; i++) {
+			try {
+				this.traceMessage(this.rop.call(i ) + "\n") ;
+			} catch(RuntimeException e) {
+				this.traceMessage("exception thrown\n") ;
+			}
+		}
 
 		runTask(
 				new AbstractComponent.AbstractTask() {
