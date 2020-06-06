@@ -215,6 +215,16 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
         pluginReception.setPluginURI(MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
         this.installPlugin(pluginReception);
 
+        /*
+        // Install the plug-in.
+        PublisherSubscriberManagementPlugin pluginManagement = new PublisherSubscriberManagementPlugin() ;
+        //pluginManagement = new PublisherSubscriberManagementPlugin() ;
+
+        pluginManagement.setPluginURI(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI) ;
+        this.installPlugin(pluginManagement) ;
+        */
+
+
         System.out.println("number_student (execute)" + number_student);
 
 
@@ -294,6 +304,10 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
      */
     @Override
     public void subscribe(String[] topics, String inboundPortURI)throws Exception {
+        String topics_str = "";
+        for(String topic : topics) topics_str += "\n>>> " + topic;
+        logMessage("Ask a subscription at port: " + inboundPortURI + " to topics : " + topics_str);
+
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topics, inboundPortURI);
     }
 
@@ -306,7 +320,17 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
      * @throws Exception the exception
      */
     @Override
-    public void subscribe(String topic, MessageFilterI filter, String inboundPortURI)throws Exception {
+    public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
+        String filter_str = "";
+        try {
+            // On doit faire ça car la méthode getName() n'est pas dans l'interface donc il n'y a pas de garantie pour Java qu'elle existe
+            filter_str = (String) filter.getClass().getMethod("getName").invoke(filter);
+            if(filter_str == null) throw new Exception();
+        } catch (Exception e){
+            filter_str = filter.toString();
+        }
+        logMessage("Ask a subscription at port: "+inboundPortURI+" to topic " + topic + " with message filter : " + filter_str);
+
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic,filter,inboundPortURI);
     }
 

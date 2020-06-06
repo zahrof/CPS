@@ -15,16 +15,6 @@
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="BCM4Java-30012020.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../BCM4Java-30012020.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="BCM4Java-30012020" level="project" />
-    <orderEntry type="module-library">
       <library name="JUnit4">
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/" />
@@ -50,5 +40,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="BCM4Java-21042020" level="project" />
   </component>
 </module>

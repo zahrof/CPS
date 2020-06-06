@@ -82,6 +82,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
     @Override
     public void			execute() throws Exception
     {
+        System.out.println("execution de la méthode execute");
 
 
 
@@ -103,6 +104,8 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
 
         this.installPlugin(pluginManagement) ;
+
+        System.out.println(">>> this.number_teacher : " + this.number_teacher);
 
         switch(this.number_teacher){
             case 1:

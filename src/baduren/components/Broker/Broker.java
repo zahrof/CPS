@@ -449,8 +449,8 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 				messages.put(topic, new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
 			this.messages.get(topic).add(m); // On ajoute le message
 			String s = this.rop.call(this.replicableInboundPortURI,m, topic );
-			this.logMessage("WARNING : "+ s);
-			this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment " + m.getTimeStamp().getTime());
+			//this.logMessage("WARNING : "+ s);
+			//this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment " + m.getTimeStamp().getTime());
 		}finally {
 			this.messagesLock.unlock();
 		}
