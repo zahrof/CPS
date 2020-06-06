@@ -1,6 +1,7 @@
 package baduren.components.Broker;
 
 import java.io.File;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,13 +16,14 @@ import baduren.interfaces.*;
 import baduren.message.Message;
 import baduren.ports.outboundPorts.ReceptionOutboundPort;
 import baduren.replicator.connectors.ReplicableConnector;
-import baduren.replicator.interfaces.ReplicationI;
+import baduren.replicator.interfaces.*;
 import baduren.replicator.ports.ReplicableInboundPort;
 import baduren.replicator.ports.ReplicableOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import baduren.plugins.*;
 import fr.sorbonne_u.components.helpers.Logger;
+import fr.sorbonne_u.components.ports.InboundPortI;
 
 
 public class Broker extends AbstractComponent implements ManagementImplementationI,
@@ -72,9 +74,24 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 	@Override
 	public String call(Object... parameters) throws Exception {
-		String ret = this.refl_ipURI + parameters[0];
+		/*String ret = this.refl_ipURI + parameters[0];
 		this.traceMessage(ret+"\n");
-		return ret;
+		return ret;*/
+	/*	String ret = null;
+		if(!parameters[0].equals(this.rip)) {
+			if (!this.messages.containsKey((String) parameters[2]))
+				messages.put((String) parameters[2], new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
+			this.messages.get((String) parameters[2]).add((MessageI) parameters[1]);
+			ret = "Votre message a été stocké ! ";
+			return ret;
+		}
+		ret = "Votre message:  a pas été enregistré car c'est le même broker";
+		return ret;*/
+		if(!parameters[0].equals(this.replicableInboundPortURI)) {
+			return "I'm the one";
+		}
+		return "I'm NOT the one";
+
 	}
 
 
@@ -156,7 +173,8 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		super(nbBroker, nbThreads, nbSchedulableThreads) ;
 		addRequiredInterface(ReceptionCI.class);
 		this.refl_ipURI = reflectionInboundPortURI;
-
+		addRequiredInterface(ReplicableCI.class);
+		addOfferedInterface(ReplicableCI.class);
 
 		if(replicableInboundPortURI!=null) {
 			this.replicableInboundPortURI = replicableInboundPortURI;
@@ -286,6 +304,8 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 				System.out.println("test");
 			}
 		}
+		rop.unpublishPort();
+		rip.unpublishPort();
 
 		this.printExecutionLogOnFile(TestsIntegration.LOG_FOLDER + TestsIntegration.BROKER_LOG_FILE);
 
@@ -428,6 +448,8 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			if (!this.messages.containsKey(topic))
 				messages.put(topic, new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
 			this.messages.get(topic).add(m); // On ajoute le message
+			String s = this.rop.call(this.replicableInboundPortURI,m, topic );
+			this.logMessage("WARNING : "+ s);
 			this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment " + m.getTimeStamp().getTime());
 		}finally {
 			this.messagesLock.unlock();

@@ -87,6 +87,11 @@ implements ReplicationI<T>
 	protected CombinatorI<T> combinator ;
 	/** a port factory to create inbound and outbound ports.				*/
 	protected PortFactoryI portCreator ;
+
+	public String[] getServerInboundPortURIs() {
+		return serverInboundPortURIs;
+	}
+
 	/** URIs of the inbound ports of the server to connect this component.	*/
 	protected String[]			serverInboundPortURIs ;
 

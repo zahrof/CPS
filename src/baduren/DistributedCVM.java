@@ -300,7 +300,7 @@ public class DistributedCVM extends AbstractDistributedCVM{
 
 		} else {
 
-			System.out.println("Unknown JVM URI... " + thisJVMURI) ;
+			System.out.println("Unknown JVM URI333... " + thisJVMURI) ;
 
 		}
 
@@ -325,7 +325,7 @@ public class DistributedCVM extends AbstractDistributedCVM{
 
 		} else {
 
-			System.out.println("Unknown JVM URI... " + thisJVMURI) ;
+			System.out.println("Unknown JVM URI666... " + thisJVMURI) ;
 
 		}
 
@@ -336,8 +336,8 @@ public class DistributedCVM extends AbstractDistributedCVM{
 	{
 		try {
 			DistributedCVM da  = new DistributedCVM(args, 2, 5) ;
-			da.startStandardLifeCycle(15000) ;
-			Thread.sleep(5000L) ;
+			da.startStandardLifeCycle(20000) ;
+			Thread.sleep(20000L) ;
 			System.exit(0) ;
 		} catch (Exception e) {
 			throw new RuntimeException(e) ;

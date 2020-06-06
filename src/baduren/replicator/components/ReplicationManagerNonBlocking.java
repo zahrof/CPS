@@ -277,7 +277,7 @@ public class			ReplicationManagerNonBlocking<T>
         }
         mes.append("\n") ;
         this.traceMessage(mes.toString()) ;
-
+        String[] a = this.serverInboundPortURIs;
         // The next lines create all of the request objects that will execute
         // the calls to the server components.
         ArrayList<AbstractService<T>> requests =

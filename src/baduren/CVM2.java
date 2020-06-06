@@ -91,6 +91,8 @@ public class CVM2 extends AbstractCVM {
 					return ReplicableConnector.class.getCanonicalName() ;
 				}
 			} ;
+	protected final ReplicationManagerNonBlocking.CallMode currentCallMode = ReplicationManagerNonBlocking.CallMode.ALL ;
+
 
 
 	public static enum SelectorType {
@@ -116,97 +118,95 @@ public class CVM2 extends AbstractCVM {
 
 	/*********************   LIFE CYCLE   **********************/
 	@Override
-	public void	 deploy() throws Exception
-	{
-		int deploiments=0;
-		if (thisJVMURI.equals(JVM1_COMPONENT_URI)) {
-			this.uriBrokerURI =
-					AbstractComponent.createComponent(
-							Broker.class.getCanonicalName(),
-							new Object[]{"server"+1 +"-",SERVER_INBOUND_PORT_URIS[0],MANAGER_INBOUND_PORT_URI,
-									10,0,CVM.BROKER_COMPONENT_URI}) ;
-			assert	this.isDeployedComponent(this.uriBrokerURI) ;
+	public void	 deploy() throws Exception {
+		int deploiments = 0;
+		this.uriBrokerURI =
+				AbstractComponent.createComponent(
+						Broker.class.getCanonicalName(),
+						new Object[]{"server" + 1 + "-", SERVER_INBOUND_PORT_URIS[0], MANAGER_INBOUND_PORT_URI,
+								10, 0, CVM.BROKER_COMPONENT_URI});
+		assert this.isDeployedComponent(this.uriBrokerURI);
 
-			this.toggleTracing(this.uriBrokerURI) ;
+		this.toggleTracing(this.uriBrokerURI);
 
-			// arguments : { nbThreads , nbSchedulableThreads , number_teacher }
-			this.uri_Publisher_Teacher1 =
-					AbstractComponent.createComponent(
-							PublisherTeacher.class.getCanonicalName(),
-							new Object[]{1, 0, 1});
-			assert	this.isDeployedComponent(uri_Publisher_Teacher1) ;
-			this.toggleTracing(this.uri_Publisher_Teacher1) ;
+		// arguments : { nbThreads , nbSchedulableThreads , number_teacher }
+		this.uri_Publisher_Teacher1 =
+				AbstractComponent.createComponent(
+						PublisherTeacher.class.getCanonicalName(),
+						new Object[]{1, 0, 1});
+		assert this.isDeployedComponent(uri_Publisher_Teacher1);
+		this.toggleTracing(this.uri_Publisher_Teacher1);
 
-			this.uri_Publisher_Teacher2 =
-					AbstractComponent.createComponent(
-							PublisherTeacher.class.getCanonicalName(),
-							new Object[]{1, 0, 2});
-			assert	this.isDeployedComponent(uri_Publisher_Teacher2) ;
-			this.toggleTracing(this.uri_Publisher_Teacher2) ;
+		this.uri_Publisher_Teacher2 =
+				AbstractComponent.createComponent(
+						PublisherTeacher.class.getCanonicalName(),
+						new Object[]{1, 0, 2});
+		assert this.isDeployedComponent(uri_Publisher_Teacher2);
+		this.toggleTracing(this.uri_Publisher_Teacher2);
 
-			this.uri_Subscriber_Student1 =
-					AbstractComponent.createComponent(
-							SubscriberStudent.class.getCanonicalName(),
-							new Object[]{RECEPTION_INBOUND_PORT_URI, 2 ,0, 1}) ;
-			assert	this.isDeployedComponent(this.uri_Subscriber_Student1) ;
+		this.uri_Subscriber_Student1 =
+				AbstractComponent.createComponent(
+						SubscriberStudent.class.getCanonicalName(),
+						new Object[]{RECEPTION_INBOUND_PORT_URI, 2, 0, 1});
+		assert this.isDeployedComponent(this.uri_Subscriber_Student1);
 
-			this.toggleTracing(this.uri_Subscriber_Student1) ;
+		this.toggleTracing(this.uri_Subscriber_Student1);
 
-			this.uri_Subscriber_Student2 =
-					AbstractComponent.createComponent(
-							SubscriberStudent.class.getCanonicalName(),
-							new Object[]{RECEPTION_INBOUND_PORT_URI, 1, 0, 2}) ;
-			assert	this.isDeployedComponent(this.uri_Subscriber_Student2) ;
+		this.uri_Subscriber_Student2 =
+				AbstractComponent.createComponent(
+						SubscriberStudent.class.getCanonicalName(),
+						new Object[]{RECEPTION_INBOUND_PORT_URI, 1, 0, 2});
+		assert this.isDeployedComponent(this.uri_Subscriber_Student2);
 
-			this.toggleTracing(this.uri_Subscriber_Student2) ;
-			deploiments++;
-			System.out.println("deploiments jvm1"+ deploiments);
+		this.toggleTracing(this.uri_Subscriber_Student2);
+		deploiments++;
+		System.out.println("deploiments jvm1" + deploiments);
 
-		} else if (thisJVMURI.equals(JVM2_COMPONENT_URI)) {
 
-			this.uriBrokerURI2 =
-					AbstractComponent.createComponent(
-							Broker.class.getCanonicalName(),
-							new Object[]{"server"+2 +"-",SERVER_INBOUND_PORT_URIS[1],MANAGER_INBOUND_PORT_URI,
-									10,0,CVM.BROKER_COMPONENT_URI2}) ;
-			assert	this.isDeployedComponent(this.uriBrokerURI2) ;
 
-			this.toggleTracing(this.uriBrokerURI2) ;
+		this.uriBrokerURI2 =
+				AbstractComponent.createComponent(
+						Broker.class.getCanonicalName(),
+						new Object[]{"server" + 2 + "-", SERVER_INBOUND_PORT_URIS[1], MANAGER_INBOUND_PORT_URI,
+								10, 0, CVM.BROKER_COMPONENT_URI2});
+		assert this.isDeployedComponent(this.uriBrokerURI2);
 
-			this.uri_Publisher_Teacher3 =
-					AbstractComponent.createComponent(
-							PublisherTeacher.class.getCanonicalName(),
-							new Object[]{1, 0, 3});
-			assert this.isDeployedComponent(uri_Publisher_Teacher3);
-			this.toggleTracing(this.uri_Publisher_Teacher3);
+		this.toggleTracing(this.uriBrokerURI2);
 
-			this.uri_Publisher_Teacher4 =
-					AbstractComponent.createComponent(
-							PublisherTeacher.class.getCanonicalName(),
-							new Object[]{1, 0, 4});
-			assert	this.isDeployedComponent(uri_Publisher_Teacher4) ;
-			this.toggleTracing(this.uri_Publisher_Teacher4) ;
+		this.uri_Publisher_Teacher3 =
+				AbstractComponent.createComponent(
+						PublisherTeacher.class.getCanonicalName(),
+						new Object[]{1, 0, 3});
+		assert this.isDeployedComponent(uri_Publisher_Teacher3);
+		this.toggleTracing(this.uri_Publisher_Teacher3);
 
-			this.uri_Subscriber_Student3 =
-					AbstractComponent.createComponent(
-							SubscriberStudent.class.getCanonicalName(),
-							new Object[]{RECEPTION_INBOUND_PORT_URI, 1, 0, 3}) ;
-			assert	this.isDeployedComponent(this.uri_Subscriber_Student3) ;
+		this.uri_Publisher_Teacher4 =
+				AbstractComponent.createComponent(
+						PublisherTeacher.class.getCanonicalName(),
+						new Object[]{1, 0, 4});
+		assert this.isDeployedComponent(uri_Publisher_Teacher4);
+		this.toggleTracing(this.uri_Publisher_Teacher4);
 
-			this.toggleTracing(this.uri_Subscriber_Student3) ;
+		this.uri_Subscriber_Student3 =
+				AbstractComponent.createComponent(
+						SubscriberStudent.class.getCanonicalName(),
+						new Object[]{RECEPTION_INBOUND_PORT_URI, 1, 0, 3});
+		assert this.isDeployedComponent(this.uri_Subscriber_Student3);
 
-			this.uri_Subscriber_Student4 =
-					AbstractComponent.createComponent(
-							SubscriberStudent.class.getCanonicalName(),
-							new Object[]{RECEPTION_INBOUND_PORT_URI, 1, 0, 4}) ;
-			assert	this.isDeployedComponent(this.uri_Subscriber_Student4) ;
+		this.toggleTracing(this.uri_Subscriber_Student3);
 
-			this.toggleTracing(this.uri_Subscriber_Student4) ;
-			deploiments++;
-			System.out.println("deploiments jvm1"+ deploiments);
+		this.uri_Subscriber_Student4 =
+				AbstractComponent.createComponent(
+						SubscriberStudent.class.getCanonicalName(),
+						new Object[]{RECEPTION_INBOUND_PORT_URI, 1, 0, 4});
+		assert this.isDeployedComponent(this.uri_Subscriber_Student4);
 
-		} else if (thisJVMURI.equals("manager")) {
-			System.out.println("totooooooooooooooooooooooooooooo");
+		this.toggleTracing(this.uri_Subscriber_Student4);
+		deploiments++;
+		System.out.println("deploiments jvm1" + deploiments);
+
+
+		System.out.println("totooooooooooooooooooooooooooooo");
 
 /*			AbstractComponent.createComponent(
 			ReplicationManager.class.getCanonicalName(),
@@ -237,24 +237,25 @@ public class CVM2 extends AbstractCVM {
 							SERVER_INBOUND_PORT_URIS
 					}) ;*/
 
-			AbstractComponent.createComponent(
-					ReplicationManagerNonBlocking.class.getCanonicalName(),
-					new Object[]{
-							SERVER_INBOUND_PORT_URIS.length,
-							MANAGER_INBOUND_PORT_URI,
-							new WholeSelector()
-							,
-							this.currentCallMode,
+		AbstractComponent.createComponent(
+				ReplicationManagerNonBlocking.class.getCanonicalName(),
+				new Object[]{
+						SERVER_INBOUND_PORT_URIS.length,
+						MANAGER_INBOUND_PORT_URI,
+						new WholeSelector()
+						,
+						this.currentCallMode,
 
-							new RandomCombinator<String>(),
-							PC,
-							SERVER_INBOUND_PORT_URIS
-					}) ;
-			deploiments++;
-			System.out.println("deploiments jvm1"+ deploiments);
+						new RandomCombinator<String>(),
+						PC,
+						SERVER_INBOUND_PORT_URIS
+				});
+		deploiments++;
+		System.out.println("deploiments jvm1" + deploiments);
 
 		super.deploy();
-		assert	this.deploymentDone() ;
+		assert this.deploymentDone();
+
 	}
 
 	// --------------------------------------------------------------------
@@ -278,7 +279,7 @@ public class CVM2 extends AbstractCVM {
 				this.uriSubscriberURI,
 				ReceptionOutboundPortUri) ;
 		*/
-			super.finalise();
+		super.finalise();
 
 	}
 
@@ -303,7 +304,7 @@ public class CVM2 extends AbstractCVM {
 			// Create an instance of the defined component virtual machine.
 			CVM2 a = new CVM2() ;
 			// Execute the application.
-			a.startStandardLifeCycle(5000L) ;
+			a.startStandardLifeCycle(10000000L) ;
 			System.out.println("--------------------------------------------------------------- RESULTATS --------------------------------------------------------------");
 			System.out.println("Messages publiées à partir de Publisher: "+ PublisherTeacher.publications);
 			System.out.println("Messages sauvegardés dans broker : " + Broker.messagesSupprimes);
@@ -332,7 +333,7 @@ public class CVM2 extends AbstractCVM {
 			}else {
 				System.out.println("ALL topics at the end is null! " );// Give some time to see the traces (convenience).
 			}
-			Thread.sleep(1000L) ;
+			Thread.sleep(1000000L) ;
 			// Simplifies the termination (termination has yet to be treated
 			// properly in BCM).
 
