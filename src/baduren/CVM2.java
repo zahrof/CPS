@@ -4,6 +4,7 @@ import baduren.components.Broker.Broker;
 import baduren.components.publishers.PublisherTeacher;
 import baduren.components.subscribers.SubscriberStudent;
 import baduren.replicator.combinators.RandomCombinator;
+import baduren.replicator.components.ReplicationManager;
 import baduren.replicator.components.ReplicationManagerNonBlocking;
 import baduren.replicator.connectors.ReplicableConnector;
 import baduren.replicator.interfaces.PortFactoryI;
@@ -124,7 +125,7 @@ public class CVM2 extends AbstractCVM {
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
 						new Object[]{"server" + 1 + "-", SERVER_INBOUND_PORT_URIS[0], MANAGER_INBOUND_PORT_URI,
-								10, 0, CVM.BROKER_COMPONENT_URI});
+								20, 0, CVM.BROKER_COMPONENT_URI});
 		assert this.isDeployedComponent(this.uriBrokerURI);
 
 		this.toggleTracing(this.uriBrokerURI);
@@ -168,7 +169,7 @@ public class CVM2 extends AbstractCVM {
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
 						new Object[]{"server" + 2 + "-", SERVER_INBOUND_PORT_URIS[1], MANAGER_INBOUND_PORT_URI,
-								10, 0, CVM.BROKER_COMPONENT_URI2});
+								20, 0, CVM.BROKER_COMPONENT_URI2});
 		assert this.isDeployedComponent(this.uriBrokerURI2);
 
 		this.toggleTracing(this.uriBrokerURI2);
@@ -208,36 +209,19 @@ public class CVM2 extends AbstractCVM {
 
 		System.out.println("totooooooooooooooooooooooooooooo");
 
-/*			AbstractComponent.createComponent(
+			AbstractComponent.createComponent(
 			ReplicationManager.class.getCanonicalName(),
-					new Object[]{
-							currentSelector == SelectorType.WHOLE ?
-									1
-									:	SERVER_INBOUND_PORT_URIS.length,
-							MANAGER_INBOUND_PORT_URI,
-							(currentSelector == SelectorType.ROUND_ROBIN ?
-									new RoundRobinDispatcherSelector(
-											SERVER_INBOUND_PORT_URIS.length)
-									:	currentSelector == SelectorType.RANDOM ?
-									new RandomDispatcherSelector()
-									:	new WholeSelector()
-							),
-							(currentCombinator == CombinatorType.FIXED) ?
-									new FixedCombinator<String>(1)
-									:	currentCombinator == CombinatorType.LONE ?
-									new LoneCombinator<String>()
-									:	currentCombinator == CombinatorType.MAJORITY_VOTE ?
-									new MajorityVoteCombinator<String>(
-											(o1,o2) -> o1.equals(o2),
-											RuntimeException.class
-									)
-									:	new RandomCombinator<String>()
-							,
-							PC,
-							SERVER_INBOUND_PORT_URIS
-					}) ;*/
+					new Object[]{4, CVM2.MANAGER_INBOUND_PORT_URI,
 
-		AbstractComponent.createComponent(
+									new WholeSelector()
+							,
+							new RandomCombinator<String>()
+							,
+							CVM2.PC,
+							CVM2.SERVER_INBOUND_PORT_URIS
+					}) ;
+
+/*		AbstractComponent.createComponent(
 				ReplicationManagerNonBlocking.class.getCanonicalName(),
 				new Object[]{
 						SERVER_INBOUND_PORT_URIS.length,
@@ -249,7 +233,7 @@ public class CVM2 extends AbstractCVM {
 						new RandomCombinator<String>(),
 						PC,
 						SERVER_INBOUND_PORT_URIS
-				});
+				});*/
 		deploiments++;
 		System.out.println("deploiments jvm1" + deploiments);
 

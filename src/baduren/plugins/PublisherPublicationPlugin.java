@@ -51,7 +51,6 @@ public class PublisherPublicationPlugin extends AbstractPlugin{
                 ReflectionConnector.class.getCanonicalName()) ;
 
         String[] urisPublisher = ropPublisher.findPortURIsFromInterface(PublicationImplementationI.class) ;
-        System.out.println("uriPublisher "+urisPublisher.toString());
         assert	urisPublisher != null && urisPublisher.length == 1 ;
 
         this.owner.doPortDisconnection(ropPublisher.getPortURI()) ;

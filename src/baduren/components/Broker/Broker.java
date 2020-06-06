@@ -77,20 +77,32 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		/*String ret = this.refl_ipURI + parameters[0];
 		this.traceMessage(ret+"\n");
 		return ret;*/
-	/*	String ret = null;
-		if(!parameters[0].equals(this.rip)) {
+		String ret = null;
+		boolean toto = !parameters[0].equals(this.uri);
+		this.logMessage("starting a call");
+		if(toto) {
+			this.messagesLock.lock();
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAje viens de prendre le lock messageLock 10");
+			try {
 			if (!this.messages.containsKey((String) parameters[2]))
 				messages.put((String) parameters[2], new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
 			this.messages.get((String) parameters[2]).add((MessageI) parameters[1]);
-			ret = "Votre message a été stocké ! ";
-			return ret;
+			ret = "Le mesage a bien été stocke! ";
+
+			}finally {
+				this.messagesLock.unlock();
+				System.out.println("Je relache messageLock 10");
+				this.logMessage("everything was ok ");
+				return ret;
+			}
 		}
 		ret = "Votre message:  a pas été enregistré car c'est le même broker";
-		return ret;*/
-		if(!parameters[0].equals(this.replicableInboundPortURI)) {
+		this.logMessage("everything was ok2 ");
+		return ret;
+/*		if(!parameters[0].equals(this.replicableInboundPortURI)) {
 			return "I'm the one";
 		}
-		return "I'm NOT the one";
+		return "I'm NOT the one";*/
 
 	}
 
@@ -246,13 +258,13 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			}
 		});*/
 
-		for (int i = 0 ; i < 100 ; i++) {
+	/*	for (int i = 0 ; i < 100 ; i++) {
 			try {
 				this.traceMessage(this.rop.call(i ) + "\n") ;
 			} catch(RuntimeException e) {
 				this.traceMessage("exception thrown\n") ;
 			}
-		}
+		}*/
 
 		runTask(
 				new AbstractComponent.AbstractTask() {
@@ -327,7 +339,8 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		int current =0;
 		while(true) {
 
-			this.subscribersLock.lock(); //blocks writers only
+			this.subscribersLock.lock();
+			/*System.out.println("je viens de prendre le lock subscriberLock 11");//blocks writers only*/
 			try {
 				while (subscribers.isEmpty()) { //check if there's data, don't modify shared variables
 					hasSubscribers.await();
@@ -337,6 +350,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 					for (String inboundPortII : messagesTriees.keySet()) {
 						if (inboundPortI.equals(inboundPortII)) {
 							messagesTrieesLock.lock();
+							/*System.out.println("je viens de prendre le lock messagesTrieesLock 11");//blocks writers only*/
 							try {
 								if (messagesTriees.get(inboundPortI).size() == 1) {
 									this.logMessage("Envoi du message " + messagesTriees.get(inboundPortI).get(0).toString() + "au port " + inboundPortI);
@@ -356,20 +370,24 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 								}
 							} finally {
 								messagesTrieesLock.unlock();
+								/*System.out.println("je viens de relacher le lock messagesTrieesLock 11");//blocks writers only*/
 							}
 						}
 					}
 					messagesTrieesLock.lock();
+					/*System.out.println("je viens de prendre le lock messagesTrieesLock 11 ");//blocks writers only*/
 					try {
 						messagesTriees.remove(inboundPortI);
 					}finally {
 						messagesTrieesLock.unlock();
+						/*System.out.println("je viens de relacher le lock messagesTrieesLock 11");//blocks writers only*/
 					}
 
 
 				}
 			}finally {
 				this.subscribersLock.unlock();
+				/*System.out.println("je viens de relacher le lock subscriberLock ");//blocks writers only*/
 			}
 
 		}
@@ -381,10 +399,13 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		while(true) {
 
 			this.subscribersLock.lock();
+			/*System.out.println("je viens de prendre le lock subscriberLock 1");//blocks writers only*/
 			try{
 			this.messagesLock.lock();
+				/*System.out.println("je viens de prendre le lock messageLock 1");*/
 			try{
 			this.messagesTrieesLock.lock();
+				/*System.out.println("je viens de prendre le lock messagesTrieesLock 1");//blocks writers only*/
 			try{
 			if(!messages.isEmpty()) {
 				for (String topic : messages.keySet()) {
@@ -419,12 +440,15 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			}
 			}finally {
 				this.messagesTrieesLock.unlock();
+				/*System.out.println("je viens de relacher le lock messagesTrieesLock 1");//blocks writers only*/
 			}
 			}finally {
 				this.messagesLock.unlock();
+				/*System.out.println("Je relache messageLock 1");*/
 			}
 			}finally {
 				this.subscribersLock.unlock();
+				/*System.out.println("je viens de relacher le lock subscriberLock 1");//blocks writers only*/
 			}
 		}
 
@@ -443,17 +467,28 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	 */
 	@Override
 	public void publish(MessageI m, String topic)throws Exception {
-		this.messagesLock.lock();
+
+		System.out.println("je viens de prendre le lock messageLock 2");
 		try {
+			this.messagesLock.lock();
 			if (!this.messages.containsKey(topic))
 				messages.put(topic, new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
 			this.messages.get(topic).add(m); // On ajoute le message
-			String s = this.rop.call(this.replicableInboundPortURI,m, topic );
-			this.logMessage("WARNING : "+ s);
-			this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment " + m.getTimeStamp().getTime());
 		}finally {
 			this.messagesLock.unlock();
+			System.out.println("Je relache messageLock 2");
 		}
+			try {
+				//this.logMessage("avant le call");
+				String s = this.rop.call(this.uri, m, topic);
+				System.out.println("après le call "+ s);
+				this.logMessage("après le call : " + s);
+			}catch(Exception e){
+				System.out.println("je suis une patete");
+				this.logMessage("je suis une patate");
+			}
+			this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment " + m.getTimeStamp().getTime());
+
 
 
 	}
@@ -546,6 +581,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public  void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
 		// Si le subscriber était pas présent encore on le crée et connecte
 		this.subscribersLock.lock();
+		System.out.println("je viens de prendre le lock subscriberLock 3");//blocks writers only
 		try {
 			if (!subscribers.containsKey(inboundPortURI)) {
 				subscribers.put(inboundPortURI, new Subscriber(this));
@@ -560,12 +596,14 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 				this.hasSubscribers.signal();
 			}
 			this.messagesLock.lock();
+			System.out.println("je viens de prendre le lock messageLock 3");
 			try {
 				if (!messages.containsKey(topic)) {
 					if (!messages.containsKey(topic)) messages.put(topic, new ArrayList<>());
 				}
 			}finally {
 				this.messagesLock.unlock();
+				System.out.println("Je relache messageLock 3");
 			}
 
 			//Si le messager avait pas ce topic on l'ajoute
@@ -586,6 +624,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			}
 		}finally {
 			this.subscribersLock.unlock();
+			System.out.println("je viens de relacher le lock subscriberLock 3");//blocks writers only
 		}
 
 		if (filter == null) {
@@ -612,6 +651,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	@Override
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
 		this.subscribersLock.lock();
+		System.out.println("je viens de prendre le lock subscriberLock 4");//blocks writers only
 		try {
 			while (!subscribers.containsKey(inboundPortURI))
 				newSubscribers.await();
@@ -624,6 +664,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			}
 		}finally {
 			this.subscribersLock.unlock();
+			System.out.println("je viens de relacher le lock subscriberLock 4");//blocks writers only
 		}
 
 	}
@@ -638,6 +679,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	@Override
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
 		this.subscribersLock.lock();
+		System.out.println("je viens de prendre le lock subscriberLock 5");//blocks writers only
 		try {
 			if (this.subscribers.get(inboundPortUri).topics.containsKey(topic)) {
 				this.logMessage("On enlève l'abonnement de " + inboundPortUri + " au topic " + topic);
@@ -652,6 +694,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			}
 		}finally {
 			this.subscribersLock.unlock();
+			System.out.println("je viens de relacher le lock subscriberLock 5");//blocks writers only
 		}
 	}
 
@@ -665,6 +708,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public void createTopic(String topic){
 		logMessage("Creation of topic " + topic);
 		this.messagesLock.lock();
+		System.out.println("je viens de prendre le lock messageLock 6");
 		try{
 			if(!messages.containsKey(topic)){
 				messages.put(topic,new ArrayList<>());
@@ -674,6 +718,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			}
 		}finally {
 			this.messagesLock.unlock();
+			System.out.println("Je relache messageLock 6");
 		}
 
 
@@ -703,6 +748,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public void destroyTopic(String topic) {
 		logMessage("Destruction of the topic " + topic);
 		this.messagesLock.lock();
+		System.out.println("je viens de prendre le lock messageLock 7");
 		try {
 			if (messages.containsKey(topic)) {
 				messages.remove(topic);
@@ -713,6 +759,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			this.messages.remove(topic);
 		}finally {
 			this.messagesLock.unlock();
+			System.out.println("Je relache messageLock 7");
 		}
 	}
 
@@ -728,12 +775,14 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public boolean isTopic(String topic) {
 		boolean res;
 		this.messagesLock.lock();
+		System.out.println("je viens de prendre le lock messageLock 8");
 		try{
 			res=  this.messages.containsKey(topic);
 		}
 
 		finally {
 			this.messagesLock.unlock();
+			System.out.println("Je relache messageLock 8");
 		}
 		return res;
 	}
@@ -749,10 +798,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public String[] getTopics()  {
 		String[]res;
 		this.messagesLock.lock();
+		System.out.println("je viens de prendre le lock messageLock 9");
 		try {
 			res = messages.keySet().toArray(new String[messages.keySet().size()]);
 		}finally {
 			this.messagesLock.unlock();
+			System.out.println("Je relache messageLock 9");
 		}
 		return res;
 	}

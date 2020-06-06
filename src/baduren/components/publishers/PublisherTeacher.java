@@ -115,7 +115,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                 dû à que les threads d'envoi des message à envoyer le message avant que le
                 souscripteur 1 ait eu le temps de se souscrire au topic CPS avec filtres */
 
-                Thread.sleep(300);
+                Thread.sleep(1000);
                 TimeStamp ts = new TimeStamp(System.currentTimeMillis(), "TimeStamper");
                 Message m1 = new Message(""+ts.getTimeStamper()+ ts.hashCode(),ts, new Properties(),"Bonjour, je vais tester tous les filtres. ");
                 Properties p1 = m1.getProperties();
@@ -162,7 +162,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                   sujet 'topic' au moment "+m.getTimeStamp().getTime() ); pour ces 12 messages.
                   Ces messages vont être effacé dans le Broker au fûr et à mesure. Pour plus de
                   détails voir la classe du Broker. */
-                Thread.sleep(300);
+                Thread.sleep(1000);
                 publish(new Message("La semaine prochaine nous verrons PROMELA"),"PC3R");
                 this.publications++;
                 publish(new Message("Je ferai cours sur TWITCH"), new String[]{"PC3R", "PAF"});

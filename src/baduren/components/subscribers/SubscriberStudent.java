@@ -215,8 +215,6 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
         pluginReception.setPluginURI(MY_RECEPTION_STUDENT1_SUBSCRIBER_PLUGIN_URI) ;
         this.installPlugin(pluginReception);
 
-        System.out.println("number_student (execute)" + number_student);
-
 
         switch(this.number_student) {
             case 1:
@@ -235,7 +233,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
                  */
                 subscribe("PAF",  pluginReception.receptionInboundPortUri);
                 subscribe(new String[]{"APS", "PC3R", "CPS"}, pluginReception.receptionInboundPortUri);
-                Thread.sleep(1000);
+                Thread.sleep(2000);
                 unsubscribe("CPS",  pluginReception.receptionInboundPortUri);
                 Thread.sleep(500);
                 this.allTopicsAtTheEnd = getTopics();
@@ -243,12 +241,12 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
 
             case 3:
 
-                this.logMessage("Je m'appelle Claire");
                 subscribe("CPA", pluginReception.receptionInboundPortUri);
+                subscribe("PAF", pluginReception.receptionInboundPortUri);
+                subscribe("CPS", pluginReception.receptionInboundPortUri);
                 break;
 
             case 4:
-                this.logMessage("Je m'appelle Theo");
                 subscribe("APS", pluginReception.receptionInboundPortUri);
                 break;
         }
