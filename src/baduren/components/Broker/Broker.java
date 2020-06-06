@@ -414,7 +414,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 					}
 					for (MessageI m : this.messages.get(topic)) {
 						messagesSupprimes++;
-						this.logMessage("Suppression des messages "+m.getMessage()+" du topic " + topic);
+						this.logMessage("Suppression des messages "+m.getPayload()+" du topic " + topic);
 					}
 					this.messages.put(topic, new ArrayList<>());
 				}
@@ -452,7 +452,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			this.messages.get(topic).add(m); // On ajoute le message
 			String s = this.rop.call(this.replicableInboundPortURI,m, topic );
 			//this.logMessage("WARNING : "+ s);
-			//this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment " + m.getTimeStamp().getTime());
+			//this.logMessage("Message " + m.getPayload() + " stocked to topic " + topic + " at the moment " + m.getTimeStamp().getTime());
 		}finally {
 			this.messagesLock.unlock();
 		}

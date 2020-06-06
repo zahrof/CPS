@@ -23,22 +23,8 @@ public class Message implements MessageI {
 	/**
 	 * The Serializable object.
 	 */
-	protected Serializable serializableObject;
+	protected Serializable messagePayload;
 
-	public String getMessage() {
-		return message;
-	}
-
-	protected String message;
-
-	public Message(String serializableObject) throws Exception {
-		TimeStamp ts = new TimeStamp(System.currentTimeMillis(), "TimeStamper");
-		this.serializableObject=serializableObject;
-		this.uri=""+ts.getTimeStamper()+ ts.hashCode();
-		this.timeStamp = new TimeStamp();
-		this.properties = new Properties();
-		this.message=serializableObject;
-		}
 
 
 	/**
@@ -48,18 +34,26 @@ public class Message implements MessageI {
 	 * @param uri the uri
 	 * @throws Exception the exception
 	 */
-	public Message(String uri, TimeStamp timeStamp, Properties properties, String content){
-		this.serializableObject=content;
-		this.uri=uri;
+	public Message(String uri, TimeStamp timeStamp, Properties properties, String messagePayload){
+		this.messagePayload = messagePayload;
+		this.uri = uri;
 		this.timeStamp = timeStamp;
 		this.properties = properties;
-		this.serializableObject = this;
-		this.message= content;
+		//this.serializableObject = this; --> car la charge utile c'est le message et pas l'instance de l'objet
 	}
+	// Constructor with only the message content as parameter
+	public Message(String messagePayload) throws Exception {
+		this(""+(new TimeStamp(System.currentTimeMillis(), "TimeStamper")).getTimeStamper()
+						+ (new TimeStamp(System.currentTimeMillis(), "TimeStamper")).hashCode(),
+				new TimeStamp(),
+				new Properties(),
+				messagePayload);
+	}
+
 
 	@Override
 	public String toString() {
-		return message;
+		return "[" + timeStamp + "] [" + uri + "] " + messagePayload;
 	}
 
 	@Override
@@ -79,7 +73,7 @@ public class Message implements MessageI {
 
 	@Override
 	public Serializable getPayload() {
-		return this.serializableObject; 
+		return this.messagePayload;
 	}
 
 }

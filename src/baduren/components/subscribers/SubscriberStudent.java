@@ -139,11 +139,8 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
 
         @Override
         public boolean filter(MessageI m) throws Exception {
-            boolean filtreVerifie=true;
-            if(!m.getProperties().getStringProp("professeur").equals("Malenfant"))filtreVerifie=false;
-           return filtreVerifie;
+            return m.getProperties().getStringProp("professeur").equals("Malenfant");
         }
-
 
         public String getName() {
             return "EnseigneParMalenfant";
@@ -207,7 +204,8 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
                 new PublisherSubscriberManagementPlugin(CVM.BROKER_COMPONENT_URI); 
         if(this.number_student==3 || this.number_student==4) pluginManagement = 
                 new PublisherSubscriberManagementPlugin(CVM.BROKER_COMPONENT_URI2); 
-        
+
+        // TODO Pourrait, d'après Intellij produire du null et je crois que c'est déjà arrivé
         pluginManagement.setPluginURI(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI) ;
         this.installPlugin(pluginManagement) ;
 
@@ -432,7 +430,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     // TOUTES LES METHODES DE RECEPTIONCI
     @Override
     public void acceptMessage(MessageI m) {
-            this.logMessage("Receiving/accepting the message " + m.getMessage() + " send by : " + m.getTimeStamp().getTimeStamper() +
+            this.logMessage("Receiving/accepting the message " + m.getPayload() + " send by : " + m.getTimeStamp().getTimeStamper() +
                     " a la date de " + m.getTimeStamp().getTime());
             messagesAcceptDeSubscriber++;
     }

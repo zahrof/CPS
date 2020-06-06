@@ -36,6 +36,4 @@ public interface MessageI extends java.io.Serializable{
 	 * @return the payload
 	 */
 	public Serializable getPayload();
-
-	public String getMessage();
 }

@@ -247,7 +247,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
      */
     @Override
     public void publish(MessageI m, String topic) throws Exception {
-        logMessage("Publishing message " + m.getMessage()+ " to the topic : "+ topic );
+        logMessage("Publishing message " + m.getPayload()+ " to the topic : "+ topic );
         //this.plugin.publish(m,topic);
         try {
             ((PublisherPublicationPlugin) this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m, topic);
@@ -270,7 +270,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         for (String s : topics) {
             str += s+ " ";
         }
-        logMessage("Publishing message " + m.getMessage()+ " to the topics : "+str);
+        logMessage("Publishing message " + m.getPayload()+ " to the topics : "+str);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m,topics);;
     }
 
