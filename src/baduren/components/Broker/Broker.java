@@ -180,7 +180,8 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	}
 
 	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
-	protected Broker(String reflectionInboundPortURI,String inboundPortURI,String replicableInboundPortURI,  int nbThreads, int nbSchedulableThreads,String nbBroker) throws Exception {
+	protected Broker(String reflectionInboundPortURI,String inboundPortURI,String replicableInboundPortURI,
+					 int nbThreads, int nbSchedulableThreads,String nbBroker) throws Exception {
 
 		super(nbBroker, nbThreads, nbSchedulableThreads) ;
 		addRequiredInterface(ReceptionCI.class);
@@ -245,8 +246,8 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	public void	execute() throws Exception
 	{
 		super.execute() ;
-		this.createNewExecutorService(SELECT_MESSAGES_HANDLER_URI, 8, false) ;
-		this.createNewExecutorService(ACCEPT_ACCESS_HANDLER_URI, 8, false) ;
+		this.createNewExecutorService(SELECT_MESSAGES_HANDLER_URI, 5, false) ;
+		this.createNewExecutorService(ACCEPT_ACCESS_HANDLER_URI, 5, false) ;
 		// pas besoin de faire plusieurs threads pour le publieur car elle éxécuterai la méthode publish
 		// qui est locké du début à la fin du coup pas trop de parallelisation
 
@@ -468,15 +469,17 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	@Override
 	public void publish(MessageI m, String topic)throws Exception {
 
-		System.out.println("je viens de prendre le lock messageLock 2");
+
 		try {
 			this.messagesLock.lock();
+			System.out.println("je viens de prendre le lock messageLock 2");
 			if (!this.messages.containsKey(topic))
 				messages.put(topic, new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
 			this.messages.get(topic).add(m); // On ajoute le message
 		}finally {
-			this.messagesLock.unlock();
 			System.out.println("Je relache messageLock 2");
+			this.messagesLock.unlock();
+
 		}
 			try {
 				//this.logMessage("avant le call");

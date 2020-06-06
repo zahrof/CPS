@@ -148,7 +148,7 @@ public class CVM2 extends AbstractCVM {
 		this.uri_Subscriber_Student1 =
 				AbstractComponent.createComponent(
 						SubscriberStudent.class.getCanonicalName(),
-						new Object[]{RECEPTION_INBOUND_PORT_URI, 2, 0, 1});
+						new Object[]{RECEPTION_INBOUND_PORT_URI,1, 0, 1});
 		assert this.isDeployedComponent(this.uri_Subscriber_Student1);
 
 		this.toggleTracing(this.uri_Subscriber_Student1);
@@ -206,34 +206,26 @@ public class CVM2 extends AbstractCVM {
 		deploiments++;
 		System.out.println("deploiments jvm1" + deploiments);
 
-
-		System.out.println("totooooooooooooooooooooooooooooo");
-
-			AbstractComponent.createComponent(
+	/*		AbstractComponent.createComponent(
 			ReplicationManager.class.getCanonicalName(),
-					new Object[]{4, CVM2.MANAGER_INBOUND_PORT_URI,
-
-									new WholeSelector()
-							,
-							new RandomCombinator<String>()
-							,
+					new Object[]{2, CVM2.MANAGER_INBOUND_PORT_URI,
+							new WholeSelector(),
+							new RandomCombinator<String>(),
 							CVM2.PC,
 							CVM2.SERVER_INBOUND_PORT_URIS
-					}) ;
+					}) ;*/
 
-/*		AbstractComponent.createComponent(
+		AbstractComponent.createComponent(
 				ReplicationManagerNonBlocking.class.getCanonicalName(),
 				new Object[]{
 						SERVER_INBOUND_PORT_URIS.length,
 						MANAGER_INBOUND_PORT_URI,
-						new WholeSelector()
-						,
+						new WholeSelector(),
 						this.currentCallMode,
-
 						new RandomCombinator<String>(),
 						PC,
 						SERVER_INBOUND_PORT_URIS
-				});*/
+				});
 		deploiments++;
 		System.out.println("deploiments jvm1" + deploiments);
 
