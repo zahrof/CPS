@@ -25,6 +25,8 @@ import baduren.plugins.*;
 import fr.sorbonne_u.components.helpers.Logger;
 import fr.sorbonne_u.components.ports.InboundPortI;
 
+import static baduren.Utils.filterToString;
+
 
 public class Broker extends AbstractComponent implements ManagementImplementationI,
 		SubscriptionImplementationI, PublicationImplementationI, ReplicationI<String> {
@@ -581,7 +583,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 				messagesAcceptDeBroker++;
 			} else {
 				subscribers.get(inboundPortURI).receptionOutboundPort.acceptMessage(new Message("Bravo tu viens de " +
-						"te souscrire au topic " + topic + "avec un filtre broker"+uri));
+						"te souscrire au topic " + topic + "avec un filtre " + filterToString(filter) + " broker " +uri));
 				messagesAcceptDeBroker++;
 			}
 		}finally {
@@ -594,8 +596,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		}
 		else {
 			this.logMessage("Subscribed " + inboundPortURI + " to topic " + topic + " with filter"+filter);
-			this.historiqueAbonnements += "\n		On abonne " + inboundPortURI + " au sujet " + topic + " avec" +
-					" un filtre";
+			this.historiqueAbonnements += "\n		On abonne " + inboundPortURI + " au sujet " + topic + " avec le filtre " + filterToString(filter);
 		}
 
 
@@ -617,7 +618,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 				newSubscribers.await();
 			if (isTopic(topic)) {
 				this.changementFiltres += " \n		On change un filtre par un autre filtre ";
-				this.logMessage("je remplace" + topic + "par " + newFilter);
+				this.logMessage("je remplace" + topic + "par " + filterToString(newFilter));
 				subscribers.get(inboundPortURI).topics.replace(topic, newFilter);
 
 

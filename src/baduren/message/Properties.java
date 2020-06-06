@@ -46,7 +46,7 @@ public class Properties implements java.io.Serializable{
 
 
 	/**
-	 * Put prop.
+	 * Put boolean prop.
 	 *
 	 * @param name the name
 	 * @param v    the value
@@ -56,7 +56,7 @@ public class Properties implements java.io.Serializable{
 	}
 
 	/**
-	 * Put prop.
+	 * Put byte prop.
 	 *
 	 * @param name the name
 	 * @param v    the valuealue
@@ -66,7 +66,7 @@ public class Properties implements java.io.Serializable{
 	}
 
 	/**
-	 * Put prop.
+	 * Put char prop.
 	 *
 	 * @param name the name
 	 * @param v    the value
@@ -76,7 +76,7 @@ public class Properties implements java.io.Serializable{
 	}
 
 	/**
-	 * Put prop.
+	 * Put double prop.
 	 *
 	 * @param name the name
 	 * @param v    the value
@@ -86,7 +86,7 @@ public class Properties implements java.io.Serializable{
 	}
 
 	/**
-	 * Put prop.
+	 * Put float prop.
 	 *
 	 * @param name the name
 	 * @param v    the value
@@ -96,7 +96,7 @@ public class Properties implements java.io.Serializable{
 	}
 
 	/**
-	 * Put prop.
+	 * Put integer prop.
 	 *
 	 * @param name the name
 	 * @param v    the value
@@ -106,7 +106,7 @@ public class Properties implements java.io.Serializable{
 	}
 
 	/**
-	 * Put prop.
+	 * Put long prop.
 	 *
 	 * @param name the name
 	 * @param v    the value
@@ -116,7 +116,7 @@ public class Properties implements java.io.Serializable{
 	}
 
 	/**
-	 * Put prop.
+	 * Put short type prop.
 	 *
 	 * @param name the name
 	 * @param v    the value
@@ -143,9 +143,8 @@ public class Properties implements java.io.Serializable{
 	 * @return the boolean prop
 	 */
 	public boolean getBooleanProp(String name) throws InvalidPropertiesFormatException {
-
-		if (this.booleanProperties.containsKey(name))  return  this.booleanProperties.get(name);
-
+		if (this.booleanProperties.containsKey(name))
+			return this.booleanProperties.get(name);
 		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 
 	}
@@ -157,7 +156,8 @@ public class Properties implements java.io.Serializable{
 	 * @return the byte prop
 	 */
 	public byte getByteProp(String name) throws InvalidPropertiesFormatException {
-		if(this.byteProperties.containsKey(name)) return this.byteProperties.get(name);
+		if(this.byteProperties.containsKey(name))
+			return this.byteProperties.get(name);
 		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
@@ -168,7 +168,8 @@ public class Properties implements java.io.Serializable{
 	 * @return the char prop
 	 */
 	public char getCharProp(String name) throws InvalidPropertiesFormatException {
-		if(this.characterProperties.containsKey(name )) return this.characterProperties.get(name);
+		if(this.characterProperties.containsKey(name))
+			return this.characterProperties.get(name);
 		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
@@ -179,7 +180,8 @@ public class Properties implements java.io.Serializable{
 	 * @return the double prop
 	 */
 	public double getDoubleProp(String name) throws InvalidPropertiesFormatException {
-		if(this.doubleProperties.containsKey(name )) return this.doubleProperties.get(name);
+		if(this.doubleProperties.containsKey(name))
+			return this.doubleProperties.get(name);
 		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
 
@@ -190,7 +192,7 @@ public class Properties implements java.io.Serializable{
 	 * @return the float prop
 	 */
 	public float getFloatProp(String name) throws InvalidPropertiesFormatException {
-		if(this.floatProperties.containsKey(name ))
+		if(this.floatProperties.containsKey(name))
 			return this.floatProperties.get(name);
 		throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	}
@@ -238,9 +240,8 @@ public class Properties implements java.io.Serializable{
 	 * @return the string prop
 	 */
 	public String getStringProp(String name) throws InvalidPropertiesFormatException {
-		if (this.stringProperties.containsKey(name)){
-			return  this.stringProperties.get(name);
-		}
+		if (this.stringProperties.containsKey(name))
+			return this.stringProperties.get(name);
 		else throw new InvalidPropertiesFormatException(" Cette propriété n'exsite pas. ");
 	} 
 }

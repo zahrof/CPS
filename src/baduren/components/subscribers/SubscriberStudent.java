@@ -13,6 +13,8 @@ import java.io.File;
 import java.lang.annotation.Annotation;
 import java.util.InvalidPropertiesFormatException;
 
+import static baduren.Utils.filterToString;
+
 /**
  * The type Subscriber student.
  */
@@ -268,7 +270,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     @Override
     public void			finalise() throws Exception
     {
-        this.logMessage("stopping subscriberStudend component.") ;
+        this.logMessage("stopping subscriberStudent component.") ;
 
         this.printExecutionLogOnFile(TestsIntegration.LOG_FOLDER + TestsIntegration.SUBSCRIBER_LOG_FILE + this.number_student);
 
@@ -321,15 +323,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
      */
     @Override
     public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
-        String filter_str = "";
-        try {
-            // On doit faire ça car la méthode getName() n'est pas dans l'interface donc il n'y a pas de garantie pour Java qu'elle existe
-            filter_str = (String) filter.getClass().getMethod("getName").invoke(filter);
-            if(filter_str == null) throw new Exception();
-        } catch (Exception e){
-            filter_str = filter.toString();
-        }
-        logMessage("Ask a subscription at port: "+inboundPortURI+" to topic " + topic + " with message filter : " + filter_str);
+        logMessage("Ask a subscription at port: "+inboundPortURI+" to topic " + topic + " with message filter : " + filterToString(filter));
 
         ((PublisherSubscriberManagementPlugin)this.getPlugin(MY_MANAGEMENT_SUBSCRIBER_PLUGIN_URI)).subscribe(topic,filter,inboundPortURI);
     }

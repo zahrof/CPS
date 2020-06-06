@@ -304,7 +304,7 @@ public class CVM2 extends AbstractCVM {
 			// Create an instance of the defined component virtual machine.
 			CVM2 a = new CVM2() ;
 			// Execute the application.
-			a.startStandardLifeCycle(10000000L) ;
+			a.startStandardLifeCycle(5000L) ;
 			System.out.println("--------------------------------------------------------------- RESULTATS --------------------------------------------------------------");
 			System.out.println("Messages publiées à partir de Publisher: "+ PublisherTeacher.publications);
 			System.out.println("Messages sauvegardés dans broker : " + Broker.messagesSupprimes);
@@ -315,8 +315,7 @@ public class CVM2 extends AbstractCVM {
 			System.out.println("Historique des desabonnements dans broker : "+ Broker.desabonnements);
 			System.out.println("Historique des création de topic dans broker: "+ Broker.historiqueCreationTopics);
 			System.out.println("Historique des destruction de topics dans broker: "+ Broker.suppressionSujets);
-			System.out.println("Réponse de la demande 'isTopic(ALASCA)' dans publisher (doit retourner vrai)" +
-					": "+ PublisherTeacher.reponseIsTopic);
+			System.out.println("Réponse de la demande 'isTopic(ALASCA)' dans publisher (doit retourner vrai) : "+ PublisherTeacher.reponseIsTopic);
 			System.out.println("Tous les sujets avant avoir supprimé le topic SRCS : ");
 			System.out.print("		   ");
 			for (String s :  PublisherTeacher.allTopicsAtTheEnd)

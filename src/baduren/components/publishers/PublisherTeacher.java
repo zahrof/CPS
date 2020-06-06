@@ -82,7 +82,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
     @Override
     public void			execute() throws Exception
     {
-        System.out.println("execution de la méthode execute");
+        //System.out.println("execution de la méthode execute");
 
 
 
@@ -105,7 +105,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
         this.installPlugin(pluginManagement) ;
 
-        System.out.println(">>> this.number_teacher : " + this.number_teacher);
+        //System.out.println(">>> this.number_teacher : " + this.number_teacher);
 
         switch(this.number_teacher){
             case 1:
@@ -150,7 +150,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                 destroyTopic("SRCS");
                 if(isTopic("ALASCA")){
                     this.reponseIsTopic += " ALASCA est bien un topic ";
-                }else{
+                } else {
                     // ce qui ne devrait jamais arriver
                     this.reponseIsTopic += " ALASCA est pas un topic ";
                 }
