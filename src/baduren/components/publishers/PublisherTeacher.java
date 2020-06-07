@@ -67,6 +67,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         if(this.number_teacher==3||this.number_teacher==4) {
             this.tracer.setRelativePosition(this.number_teacher, 2);
         }
+        this.tracer.setRelativePosition(this.number_teacher - 1, 1) ;
         if(! new File(TestsIntegration.LOG_FOLDER).exists()) new File(TestsIntegration.LOG_FOLDER).mkdir();
         Logger logger = new Logger(TestsIntegration.LOG_FOLDER);
         logger.toggleLogging();
@@ -77,6 +78,10 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
     // -------------------------------------------------------------------------
     // Life cycle
     // -------------------------------------------------------------------------
+    /**
+     * @see AbstractComponent#start()
+     * @throws ComponentStartException
+     */
     @Override
     public void			start() throws ComponentStartException
     {
@@ -84,9 +89,15 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         this.logMessage("starting teacher  component.") ;
     }
     static int i = 0 ;
+
+    /**
+     * @see AbstractComponent#execute()
+     * @throws ComponentStartException
+     */
     @Override
     public void			execute() throws Exception
     {
+        //System.out.println("execution de la méthode execute");
 
 
 
@@ -108,6 +119,8 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         pluginManagement.setPluginURI(MY_MANAGEMENT_PLUGIN_URI) ;
 
         this.installPlugin(pluginManagement) ;
+
+        //System.out.println(">>> this.number_teacher : " + this.number_teacher);
 
         switch(this.number_teacher){
             case 1:
@@ -152,7 +165,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                 destroyTopic("SRCS");
                 if(isTopic("ALASCA")){
                     this.reponseIsTopic += " ALASCA est bien un topic ";
-                }else{
+                } else {
                     // ce qui ne devrait jamais arriver
                     this.reponseIsTopic += " ALASCA est pas un topic ";
                 }
@@ -219,6 +232,11 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         }
 
     }
+
+    /**
+     * @see AbstractComponent#finalise()
+     * @throws ComponentStartException
+     */
     @Override
     public void			finalise() throws Exception
     {
@@ -227,13 +245,19 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         super.finalise();
     }
 
+    /**
+     * @see AbstractComponent#shutdown()
+     * @throws ComponentStartException
+     */
     @Override
     public void			shutdown() throws ComponentShutdownException
     {
         super.shutdown();
     }
+
     /**
      * @see fr.sorbonne_u.components.AbstractComponent#shutdownNow()
+     * @throws ComponentShutdownException
      */
     @Override
     public void			shutdownNow() throws ComponentShutdownException
@@ -245,6 +269,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to publish 1 message in 1 topic
+     * {@link PublicationImplementationI#publish(MessageI, String)}
      *
      * @param m     the message
      * @param topic the topic
@@ -252,7 +277,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
      */
     @Override
     public void publish(MessageI m, String topic) throws Exception {
-        logMessage("Publishing message " + m.getMessage()+ " to the topic : "+ topic );
+        logMessage("Publishing message " + m.getPayload()+ " to the topic : "+ topic );
         //this.plugin.publish(m,topic);
         try {
             ((PublisherPublicationPlugin) this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m, topic);
@@ -264,6 +289,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to publish 1 message in several topics
+     * {@link PublicationImplementationI#publish(MessageI, String[])}
      *
      * @param m      the message
      * @param topics the topics
@@ -275,13 +301,14 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         for (String s : topics) {
             str += s+ " ";
         }
-        logMessage("Publishing message " + m.getMessage()+ " to the topics : "+str);
+        logMessage("Publishing message " + m.getPayload()+ " to the topics : "+str);
         ((PublisherPublicationPlugin)this.getPlugin(MY_PUBLISHER_PLUGIN_URI)).publish(m,topics);;
     }
 
 
     /**
      * Method to publish several messages in 1 topic
+     * {@link PublicationImplementationI#publish(MessageI[], String)}
      *
      * @param ms     the messages
      * @param topics the topics
@@ -300,6 +327,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to publish several messages in several topics
+     * {@link PublicationImplementationI#publish(MessageI[], String[])}
      *
      * @param ms     the messages
      * @param topics the topics
@@ -324,6 +352,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to subscribe to one topic
+     * {@link SubscriptionImplementationI#subscribe(String, String)}
      *
      * @param topic          the topic
      * @param inboundPortURI the inbound port uri

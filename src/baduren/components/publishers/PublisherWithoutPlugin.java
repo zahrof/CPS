@@ -61,7 +61,7 @@ public class PublisherWithoutPlugin extends AbstractComponent {
 			this.executionLog.setDirectory(System.getProperty("user.home")) ;
 		}
 		this.tracer.setTitle("publisher") ;
-		this.tracer.setRelativePosition(1, 2) ;
+		this.tracer.setRelativePosition(0, 2) ;
 
 	}
 
@@ -83,7 +83,7 @@ public class PublisherWithoutPlugin extends AbstractComponent {
 			for (int i=0; i <10; i++) {
 				publish(new Message("Banane"+i), "fruits");
 			}
-			String topics[]= {"voiture", "avions"}; 
+			String[] topics = {"voiture", "avions"};
 			Message m = new Message("voiture-volante"); 
 			Properties p = m.getProperties();
 			p.putProp("can_fly", true);
