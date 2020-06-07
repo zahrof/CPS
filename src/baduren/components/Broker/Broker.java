@@ -170,7 +170,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
 
-	protected Broker(String reflectionInboundPortURI,String inboundPortURI,String replicableInboundPortURI,  int nbThreads, int nbSchedulableThreads, String nbBroker) throws Exception {
+	protected Broker(String inboundPortURI,String replicableInboundPortURI,  int nbThreads, int nbSchedulableThreads, String nbBroker) throws Exception {
 		super(nbBroker, nbThreads, nbSchedulableThreads) ;
 		addRequiredInterface(ReceptionCI.class);
 		addRequiredInterface(ReplicableCI.class);
@@ -460,7 +460,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		this.logMessage("avant le call");
 		this.rop.call(this.uri, m, topic);
 		this.logMessage("apres le call");
-		this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment "
+		this.logMessage("Message " + m.getPayload() + " stocked to topic " + topic + " at the moment "
 					+ m.getTimeStamp().getTime());
 
 
