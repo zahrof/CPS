@@ -33,10 +33,12 @@ package baduren.replicator.components;
 // knowledge of the CeCILL-C license and that you accept its terms.
 
 
+import baduren.components.Broker.Broker;
 import baduren.replicator.interfaces.CombinatorI;
 import baduren.replicator.interfaces.PortFactoryI;
 import baduren.replicator.interfaces.ReplicableCI;
 import baduren.replicator.interfaces.SelectorI;
+import fr.sorbonne_u.components.AbstractComponent;
 import fr.sorbonne_u.components.annotations.*;
 import fr.sorbonne_u.components.ports.*;
 
@@ -109,7 +111,7 @@ public class			ReplicationManagerNonBlocking<T>
     protected CallMode	callMode ;
     /** semaphore used to ensure mutual exclusion on the computations when
      *  necessary															*/
-    protected Semaphore	s = new Semaphore(1) ;
+    //protected Semaphore	s = new Semaphore(10) ;
 
     /**
      * creating an asynchronous replication manager.
@@ -227,7 +229,7 @@ public class			ReplicationManagerNonBlocking<T>
             String[] serverInboundPortURIs
     ) throws Exception
     {
-        super(reflectionInboundPortURI, 1, ownInboundPortURI,
+        super(reflectionInboundPortURI, 2, ownInboundPortURI,
                 selector, combinator, portCreator, serverInboundPortURIs) ;
 
         assert	mode != null ;
@@ -251,7 +253,7 @@ public class			ReplicationManagerNonBlocking<T>
     protected void		initialise(CallMode mode, int nbThreads)
     {
         this.callMode = mode ;
-        this.createNewExecutorService(CALL_POOL_URI, nbThreads, false) ;
+        this.createNewExecutorService(CALL_POOL_URI, nbThreads+3, false) ;
     }
 
 
@@ -260,10 +262,13 @@ public class			ReplicationManagerNonBlocking<T>
     @Override
     public T			call(Object... parameters) throws Exception
     {
+
+
+
         // This method is meant to be executed by the thread of the caller
         // component (the inbound port does not call handleRequest by directly
         // this method.
-
+        logMessage("got request to transmit"+parameters[1]+" "+parameters[2]+" "+parameters[0]);
         // The method select must be thread safe.
         OutboundPortI[]	selected = this.selector.select(this.outboundPorts) ;
 
@@ -279,171 +284,27 @@ public class			ReplicationManagerNonBlocking<T>
         this.traceMessage(mes.toString()) ;
         // The next lines create all of the request objects that will execute
         // the calls to the server components.
-        ArrayList<AbstractService<T>> requests =
-                new ArrayList<>() ;
+
         for (int i = 0 ; i <  selected.length ; i++) {
             OutboundPortI p = selected[i] ;
-            AbstractService<T> request =
-                    new AbstractService<T>() {
+            logMessage("Sending request for"+parameters[1]+" "+parameters[2]+" "+parameters[0]);
+
+
+            runTask(CALL_POOL_URI,
+                    new AbstractComponent.AbstractTask() {
                         @Override
-                        public T call() throws Exception {
-                            return (T)((ReplicableCI<T>)p).call(parameters) ;
-                        }
-                    } ;
-            request.setOwnerReference(this) ;
-            requests.add(request) ;
-        }
-
-        // After this point, the calls to the servers will be done.
-        // Results of the calls.
-        List<T> results = new ArrayList<T>() ;
-        // Exception raised during the calls.
-        ExecutionException raised = null ;
-        // The four call mode are mutually exclusive for the whole life-time of
-        // the replication manager, as it is a creation-time choice.
-        if (this.callMode == CallMode.SINGLE || this.callMode == CallMode.ANY) {
-            assert	selected.length == 1 && this.callMode == CallMode.SINGLE
-                    || selected.length >= 1 && this.callMode == CallMode.ANY ;
-            try {
-                if (this.callMode == CallMode.SINGLE) {
-                    // The server is called directly using handleRequestSync.
-                    results.add(this.handleRequestSync(CALL_POOL_URI,
-                            requests.get(0))) ;
-                } else {
-                    assert	this.callMode == CallMode.ANY ;
-                    // The selected servers are called and the first result
-                    // will be returned and the other requests are cancelled.
-                    results.add(this.getExecutorService(CALL_POOL_URI).
-                            invokeAny(requests)) ;
-                }
-            } catch (RejectedExecutionException|
-                    AssertionError|
-                    InterruptedException e)
-            {
-                // This means that no request have been executed but rather
-                // rejected by the executor service or some preconditions to
-                // the execution of requests of the components have been
-                // violated or the request has been interrupted while
-                // waiting to execute. In these three cases, the caller is
-                // not in fault, so the replication manager would normally have
-                // to look for its servers and make sure that none has failed.
-                // At this point, propagate to the caller as an execution
-                // exception.
-                throw new ExecutionException(e) ;
-            } catch (ExecutionException e) {
-                // In this case the computation failed in some way, so the
-                // caller must be informed.
-                throw e ;
-            }
-        } else {
-            assert	this.callMode == CallMode.FIRST ||
-                    this.callMode == CallMode.ALL ;
-            // For the call modes that require every server to execute the call,
-            // it is preferable to serialise the calls, which is done by using
-            // a semaphore.
-            try {
-                this.s.acquire() ;
-            } catch (InterruptedException e) {
-                throw new ExecutionException(e) ;
-            }
-            // The two next cases of call mode are kept separated despite the
-            // similarity in their coding, mainly to implement the mutual
-            // exclusion between requests correctly.
-            if (this.callMode == CallMode.FIRST) {
-                ExecutorCompletionService<T> ecs =
-                        new ExecutorCompletionService<T>(
-                                this.getExecutorService(CALL_POOL_URI)) ;
-                List<Future<T>> tempResults = new ArrayList<Future<T>>() ;
-                try {
-                    for (int i = 0 ; i < requests.size() ; i++) {
-                        tempResults.add(ecs.submit(requests.get(i))) ;
-                    }
-                    results.add(ecs.take().get()) ;
-                } catch (RejectedExecutionException|InterruptedException e) {
-                    // This means that no request have been executed but rather
-                    // rejected by the executor service or some preconditions to
-                    // the execution of requests of the components have been
-                    // violated or the request has been interrupted while
-                    // waiting to execute. In these three cases, the caller is
-                    // not in fault, so the replication manager would normally have
-                    // to look for its servers and make sure that none has failed.
-                    // At this point, propagate to the caller as an execution
-                    // exception.
-                    raised = new ExecutionException(e) ;
-                } catch (NullPointerException e) {
-                    // In this case, a task was null, should not happen.
-                    raised = new ExecutionException(e) ;
-                } catch (ExecutionException e) {
-                    // In this case the computation failed in some way, so the
-                    // caller must be informed.
-                    raised = e ;
-                }
-                try {
-                    // Wait for all the results to be returned before
-                    // releasing the semaphore.
-                    this.runTask(
-                            (o -> { try {
-                                ((ReplicationManagerNonBlocking<T>)o).
-                                        finishComputations(
-                                                ecs, requests.size() - 1) ;
-                            } catch (ExecutionException e) {
-                                throw new RuntimeException(e) ;
+                        public void run() {
+                            try {
+                                ((ReplicableCI<T>)p).call(parameters) ;
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            })) ;
-                } catch (RejectedExecutionException|AssertionError e) {
-                    // This means that no request have been executed but rather
-                    // rejected by the executor service or some preconditions to
-                    // the execution of requests of the components have been
-                    // violated or the request has been interrupted while
-                    // waiting to execute. In these three cases, the caller is
-                    // not in fault, so the replication manager would normally have
-                    // to look for its servers and make sure that none has failed.
-                    raised = new ExecutionException(e) ;
-                    // In this case, the release is not done in the method
-                    // finishComputations
-                    this.s.release() ;
-                } catch (RuntimeException e) {
-                    // In this case the computation failed in some way, so the
-                    // caller must be informed, but the release of the semaphore
-                    // has been done.
-                    raised = (ExecutionException) e.getCause() ;
-                }
-            } else {
-                assert	this.callMode == CallMode.ALL ;
-                try {
-                    List<Future<T>> tempResults =
-                            this.getExecutorService(CALL_POOL_URI).
-                                    invokeAll(requests) ;
-                    for (int i = 0 ; i < tempResults.size() ; i++) {
-                        results.add(tempResults.get(i).get()) ;
-                    }
-                } catch (RejectedExecutionException|
-                        AssertionError|
-                        InterruptedException e)
-                {
-                    // This means that no request have been executed but rather
-                    // rejected by the executor service or some preconditions to
-                    // the execution of requests of the components have been
-                    // violated or the request has been interrupted while
-                    // waiting to execute. In these three cases, the caller is
-                    // not in fault, so the replication manager would normally have
-                    // to look for its servers and make sure that none has failed.
-                    raised = new ExecutionException(e) ;
-                } catch (ExecutionException e) {
-                    // In this case the computation failed in some way, so the
-                    // caller must be informed, but the release of the semaphore
-                    // has been done.
-                    raised = e ;
-                } finally {
-                    this.s.release() ;
-                }
-            }
-        }
+                        }
+                    });
+            logMessage("Sent request for"+parameters[1]+" "+parameters[2]+" "+parameters[0]);
 
-        if (results.size() == 0 && raised != null) {
-            throw raised ;
         }
-        return this.combinator.combine((T[])results.toArray()) ;
+        return (T)"ok";
     }
 
     /**
@@ -484,7 +345,7 @@ public class			ReplicationManagerNonBlocking<T>
             // the exception, the caller must be informed.
             raised = e ;
         } finally {
-            this.s.release() ;
+            //this.s.release() ;
         }
 
         if (count < n && raised != null) throw raised ;

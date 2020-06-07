@@ -81,8 +81,10 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 		boolean toto = !parameters[0].equals(this.uri);
 		this.logMessage("starting a call");
 		if(toto) {
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAje VEUX prendre le lock messageLock "+this.uri);
+
 			this.messagesLock.lock();
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAje viens de prendre le lock messageLock 10");
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAje viens de prendre le lock messageLock "+this.uri);
 			try {
 			if (!this.messages.containsKey((String) parameters[2]))
 				messages.put((String) parameters[2], new ArrayList<>()); // Si le topic n'existait pas déjà on le crée
@@ -91,10 +93,11 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 			}finally {
 				this.messagesLock.unlock();
-				System.out.println("Je relache messageLock 10");
+			}
+				System.out.println("Je relache messageLock "+this.uri);
 				this.logMessage("everything was ok ");
 				return ret;
-			}
+
 		}
 		ret = "Votre message:  a pas été enregistré car c'est le même broker";
 		this.logMessage("everything was ok2 ");
@@ -267,7 +270,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			}
 		}*/
 
-		runTask(
+		runTask(SELECT_MESSAGES_HANDLER_URI,
 				new AbstractComponent.AbstractTask() {
 
 					@Override
@@ -288,7 +291,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			}
 		});*/
 
-		this.runTask(
+		this.runTask(ACCEPT_ACCESS_HANDLER_URI,
 				new AbstractComponent.AbstractTask() {
 
 					@Override
@@ -482,15 +485,14 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 		}
 			try {
-				//this.logMessage("avant le call");
-				String s = this.rop.call(this.uri, m, topic);
-				System.out.println("après le call "+ s);
-				this.logMessage("après le call : " + s);
+				this.logMessage("avant le call");
+				this.rop.call(this.uri, m, topic);
 			}catch(Exception e){
 				System.out.println("je suis une patete");
 				this.logMessage("je suis une patate");
 			}
-			this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment " + m.getTimeStamp().getTime());
+			this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment "
+					+ m.getTimeStamp().getTime());
 
 
 

@@ -238,7 +238,7 @@ implements ReplicationI<T>
 		}
 		this.serverInboundPortURIs = serverInboundPortURIs ;
 		this.tracer.setTitle("ReplicationManager") ;
-		this.tracer.setRelativePosition(1, 0) ;
+		this.tracer.setRelativePosition(1, 3) ;
 		this.toggleTracing() ;
 	}
 
