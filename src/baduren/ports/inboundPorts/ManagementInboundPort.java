@@ -105,27 +105,16 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 
 	@Override
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI) throws Exception {
-	/*	this.getOwner().handleRequestAsync(
+
+
+		this.getOwner().handleRequestSync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
-						((SubscriptionImplementationI)this.getServiceOwner()).subscribe(topic,newFilter, inboundPortURI);
+						((SubscriptionImplementationI)this.getServiceOwner()).modifyFilter(topic,newFilter ,inboundPortURI);
 						return null;
 					}
-				}) ;*/
-
-		this.owner.runTask(
-				new AbstractComponent.AbstractTask() {
-
-					@Override
-					public void run() {
-						try {
-							((SubscriptionImplementationI) this.getTaskOwner()).subscribe(topic,newFilter, inboundPortURI);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+				}) ;
 	}
 
 	@Override
@@ -180,27 +169,15 @@ public class ManagementInboundPort extends	AbstractInboundPort implements Manage
 
 	@Override
 	public void destroyTopic(String topic) throws Exception {
-/*		this.getOwner().handleRequestAsync(
+
+		this.getOwner().handleRequestSync(
 				new AbstractComponent.AbstractService<Void>() {
 					@Override
 					public Void call() throws Exception {
 						((ManagementImplementationI)this.getServiceOwner()).destroyTopic(topic);
 						return null;
 					}
-				}) ;*/
-
-		this.owner.runTask(
-				new AbstractComponent.AbstractTask() {
-
-					@Override
-					public void run() {
-						try {
-							((ManagementImplementationI) this.getTaskOwner()).destroyTopic(topic);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+				}) ;
 	}
 
 	@Override

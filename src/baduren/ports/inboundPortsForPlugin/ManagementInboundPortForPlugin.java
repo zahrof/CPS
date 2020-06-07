@@ -117,7 +117,7 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
                         return null;
                     }
                 }) ;*/
-
+/*
         this.owner.runTask(
                 new AbstractComponent.AbstractTask(this.pluginURI) {
                     @Override
@@ -127,6 +127,15 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
                         } catch (Exception e) {
                             e.printStackTrace() ;
                         }
+                    }
+                }) ;*/
+
+        this.getOwner().handleRequestSync(
+                new AbstractComponent.AbstractService<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        ((SubscriptionImplementationI)this.getServiceOwner()).modifyFilter(topic,newFilter ,inboundPortURI);
+                        return null;
                     }
                 }) ;
     }
@@ -191,7 +200,7 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
                     }
                 }) ;*/
 
-        this.owner.runTask(
+/*        this.owner.runTask(
                 new AbstractComponent.AbstractTask(this.pluginURI) {
                     @Override
                     public void run() {
@@ -201,7 +210,17 @@ public class ManagementInboundPortForPlugin extends AbstractInboundPortForPlugin
                             e.printStackTrace() ;
                         }
                     }
+                }) ;*/
+
+        this.getOwner().handleRequestSync(
+                new AbstractComponent.AbstractService<Void>(this.pluginURI) {
+                    @Override
+                    public Void call() throws Exception {
+                        ((BrokerManagementPlugin)this.getServiceProviderReference()).destroyTopic(topic);
+                        return null;
+                    }
                 }) ;
+
     }
 
     @Override
