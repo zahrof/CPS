@@ -193,7 +193,6 @@ public class CVM2 extends AbstractCVM {
 		System.out.println("deploiments jvm1" + deploiments);
 
 
-		System.out.println("totooooooooooooooooooooooooooooo");
 
 	/*		AbstractComponent.createComponent(
 			ReplicationManager.class.getCanonicalName(),

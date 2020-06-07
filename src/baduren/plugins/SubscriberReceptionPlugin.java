@@ -74,7 +74,7 @@ public class SubscriberReceptionPlugin extends AbstractPlugin implements Recepti
         try {
             this.getOwner().acceptMessages(ms);
         }catch (Exception e ){
-            System.out.println("toto");
+            e.printStackTrace();
         }
     }
 }

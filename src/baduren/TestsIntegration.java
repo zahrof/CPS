@@ -18,7 +18,7 @@ public class TestsIntegration {
 
 
         // On lance la CVM
-        CVM.main(new String[]{});
+        CVM2.main(new String[]{});
 
 
         // VERIFICATION DE LA VALIDITE DES LOGS

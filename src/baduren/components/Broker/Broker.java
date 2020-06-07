@@ -76,8 +76,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	@Override
 	public String call(Object... parameters) throws Exception {
 		String ret;
-		boolean toto = !parameters[0].equals(this.uri);
-		if(toto) {
+		if(!parameters[0].equals(this.uri)) {
 			this.messagesLock.lock();
 			try {
 			if (!this.messages.containsKey(parameters[2]))
@@ -302,7 +301,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			try {
 				subscribers.get(subscriber).receptionOutboundPort.unpublishPort();
 			}catch (Exception e){
-				System.out.println("test");
+				e.printStackTrace();
 			}
 		}
 		rop.unpublishPort();
