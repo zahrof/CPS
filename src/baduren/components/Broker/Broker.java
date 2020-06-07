@@ -214,7 +214,10 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	// Broker life cycle
 	// -------------------------------------------------------------------------
 
-
+	/**
+	 * @see AbstractComponent#start()
+	 * @throws ComponentStartException
+	 */
 	@Override
 	public void	start() throws ComponentStartException
 	{
@@ -231,6 +234,10 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 	}
 
+	/**
+	 * @see AbstractComponent#execute()
+	 * @throws Exception
+	 */
 	@Override
 	public void	execute() throws Exception
 	{
@@ -294,6 +301,10 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 	}
 
+	/**
+	 * @see AbstractComponent#finalise()
+	 * @throws Exception
+	 */
 	@Override
 	public void	finalise() throws Exception
 	{
@@ -322,6 +333,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	/*
 		RECEPTION METHODS
 	 */
+
 
 	public void acceptMessage() throws Exception {
 
@@ -437,11 +449,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	 */
 
 	/**
-	 * This method
+	 * Publish 1 message with 1 topic
+	 * {@link PublicationImplementationI#publish(MessageI, String)}
 	 *
 	 * @param m     It's the message to transmit
 	 * @param topic It's the topic where we want to publish the message m
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void publish(MessageI m, String topic)throws Exception {
@@ -461,11 +474,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	}
 
 	/**
-	 * Publish.
+	 * Publish 1 message with multiple topics
+	 * {@link PublicationImplementationI#publish(MessageI, String[])}
 	 *
 	 * @param m      the message
 	 * @param topics the topics
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void publish(MessageI m, String[] topics) throws Exception{
@@ -476,11 +490,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 
 	/**
-	 * Publish.
+	 * Publish multiple messages with 1 topic
+	 * {@link PublicationImplementationI#publish(MessageI[], String)}
 	 *
 	 * @param ms     the messages
 	 * @param topics the topics
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void publish(MessageI[] ms, String topics) throws Exception{
@@ -490,11 +505,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 
 	/**
-	 * Publish.
+	 * Publish multiple messages with multiple topics
+	 * {@link PublicationImplementationI#publish(MessageI[], String[])}
 	 *
 	 * @param ms     the messages
 	 * @param topics the topics
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void publish(MessageI[] ms, String[] topics) throws Exception{
@@ -510,10 +526,11 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	 */
 
 	/**
-	 * Subscribe.
+	 * Subscribe to one topic
+	 * {@link SubscriptionImplementationI#subscribe(String, String)}
 	 *
 	 * @param topic          the topic
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void subscribe(String topic, String inboundPortURIaux) throws Exception{
@@ -523,11 +540,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	}
 
 	/**
-	 * Subscribe.
+	 * Subscribe to multiple topics
+	 * {@link SubscriptionImplementationI#subscribe(String[], String)}
 	 *
 	 * @param topics         the topics
 	 * @param inboundPortURI the inbound port uri
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void subscribe(String[] topics, String inboundPortURI) throws Exception{
@@ -537,12 +555,13 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	}
 
 	/**
-	 * Subscribe.
+	 * Subscribe to one topic with a filter
+	 * {@link SubscriptionImplementationI#subscribe(String, MessageFilterI, String)}
 	 *
 	 * @param topic          the topic
 	 * @param filter         the filter
 	 * @param inboundPortURI the inbound port uri
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public  void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception{
@@ -604,11 +623,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 	/**
 	 * Modify filter.
+	 * {@link SubscriptionImplementationI#modifyFilter(String, MessageFilterI, String)}
 	 *
 	 * @param topic          the topic
 	 * @param newFilter      the new filter
 	 * @param inboundPortURI the inbound port uri
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
@@ -630,11 +650,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	}
 
 	/**
-	 * Unsubscribe.
+	 * Unsubscribe to a topic
+	 * {@link SubscriptionImplementationI#unsubscribe(String, String)}
 	 *
 	 * @param topic          the topic
 	 * @param inboundPortUri the inbound port uri
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void unsubscribe(String topic, String inboundPortUri) throws Exception {
@@ -657,10 +678,11 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	}
 
 	/**
-	 * Create topic.
+	 * Create a topic.
+	 * {@link ManagementImplementationI#createTopic(String)}
 	 *
 	 * @param topic the topic
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void createTopic(String topic){
@@ -682,10 +704,11 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 
 	/**
-	 * Create topics.
+	 * Create multiple topics.
+	 * {@link ManagementImplementationI#createTopics(String[])}
 	 *
 	 * @param topics the topics
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void createTopics(String[] topics){
@@ -695,10 +718,11 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 
 	/**
-	 * Destroy topic.
+	 * Destroy a topic.
+	 * {@link ManagementImplementationI#destroyTopic(String)}
 	 *
 	 * @param topic the topic
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public void destroyTopic(String topic) {
@@ -719,11 +743,12 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 
 	/**
-	 * Is topic boolean.
+	 * Test if the topic exists.
+	 * {@link ManagementImplementationI#isTopic(String)}
 	 *
 	 * @param topic the topic
 	 * @return the boolean
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public boolean isTopic(String topic) {
@@ -741,10 +766,11 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 
 	/**
-	 * Get topics string [ ].
+	 * Get all the topics.
+	 * {@link ManagementImplementationI#getTopics()}
 	 *
-	 * @return the string [ ]
-	 * @throws Exception the exception
+	 * @return a tab containing the topics
+	 * @throws Exception
 	 */
 	@Override
 	public String[] getTopics()  {
@@ -760,9 +786,10 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 	/**
 	 * Gets publication port uri.
+	 * {@link ManagementImplementationI#getPublicationPortURI()}
 	 *
 	 * @return the publication port uri
-	 * @throws Exception the exception
+	 * @throws Exception
 	 */
 	@Override
 	public String getPublicationPortURI() throws Exception {

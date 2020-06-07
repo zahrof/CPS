@@ -16,7 +16,7 @@ public interface ReceptionImplementationI  extends OfferedI, RequiredI {
 	public void acceptMessage(MessageI m) throws Exception;;
 
 	/**
-	 * Accept messages.
+	 * Accept multiple messages.
 	 *
 	 * @param ms the messages
 	 * @throws Exception the exception

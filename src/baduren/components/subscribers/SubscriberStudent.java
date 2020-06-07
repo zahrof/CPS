@@ -183,6 +183,10 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     // Life cycle
     // -------------------------------------------------------------------------
 
+    /**
+     * @see AbstractComponent#start()
+     * @throws ComponentStartException
+     */
     @Override
     public void			start() throws ComponentStartException
     {
@@ -191,7 +195,10 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
 
-
+    /**
+     * @see AbstractComponent#execute()
+     * @throws Exception
+     */
     @Override
     public void			execute() throws Exception
     {
@@ -265,6 +272,11 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
 
 
     }
+
+    /**
+     * @see AbstractComponent#finalise()
+     * @throws Exception
+     */
     @Override
     public void			finalise() throws Exception
     {
@@ -281,11 +293,11 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
 
 
     /**
-     * Subscribe.
+     * Subscribe to one topic
+     * {@link SubscriptionImplementationI#subscribe(String, String)}
      *
      * @param topic          the topic
-     * @param inboundPortURI the inbound port uri
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public void subscribe(String topic, String inboundPortURI) throws Exception{
@@ -296,11 +308,12 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     /**
-     * Subscribe.
+     * Subscribe to multiple topics
+     * {@link SubscriptionImplementationI#subscribe(String[], String)}
      *
      * @param topics         the topics
      * @param inboundPortURI the inbound port uri
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public void subscribe(String[] topics, String inboundPortURI)throws Exception {
@@ -312,12 +325,13 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     /**
-     * Subscribe.
+     * Subscribe to one topic with a filter
+     * {@link SubscriptionImplementationI#subscribe(String, MessageFilterI, String)}
      *
      * @param topic          the topic
      * @param filter         the filter
      * @param inboundPortURI the inbound port uri
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public void subscribe(String topic, MessageFilterI filter, String inboundPortURI) throws Exception {
@@ -327,12 +341,13 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     /**
-     * Method to modify a filter.
+     * Modify filter.
+     * {@link SubscriptionImplementationI#modifyFilter(String, MessageFilterI, String)}
      *
      * @param topic          the topic
      * @param newFilter      the new filter
      * @param inboundPortURI the inbound port uri
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception {
@@ -342,11 +357,12 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     /**
-     * Unsubscribe.
+     * Unsubscribe to a topic
+     * {@link SubscriptionImplementationI#unsubscribe(String, String)}
      *
      * @param topic          the topic
      * @param inboundPortUri the inbound port uri
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public void unsubscribe(String topic, String inboundPortUri)throws Exception {
@@ -356,10 +372,11 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     /**
-     * Create topic.
+     * Create a topic.
+     * {@link ManagementImplementationI#createTopic(String)}
      *
      * @param topic the topic
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public void createTopic(String topic) throws Exception{
@@ -369,10 +386,11 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     /**
-     * Create topics.
+     * Create multiple topics.
+     * {@link ManagementImplementationI#createTopics(String[])}
      *
      * @param topics the topics
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public void createTopics(String[] topics) throws Exception{
@@ -380,10 +398,11 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     /**
-     * Destroy topic.
+     * Destroy a topic.
+     * {@link ManagementImplementationI#destroyTopic(String)}
      *
      * @param topic the topic
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public void destroyTopic(String topic) throws Exception{
@@ -393,11 +412,12 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     /**
-     * Is topic boolean.
+     * Test if the topic exists.
+     * {@link ManagementImplementationI#isTopic(String)}
      *
      * @param topic the topic
      * @return the boolean
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public boolean isTopic(String topic) throws Exception {
@@ -406,10 +426,11 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     /**
-     * Get topics string [ ].
+     * Get all the topics.
+     * {@link ManagementImplementationI#getTopics()}
      *
-     * @return the string [ ]
-     * @throws Exception the exception
+     * @return a tab containing the topics
+     * @throws Exception
      */
     @Override
     public String[] getTopics() throws Exception{
@@ -418,9 +439,10 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
 
     /**
      * Gets publication port uri.
+     * {@link ManagementImplementationI#getPublicationPortURI()}
      *
      * @return the publication port uri
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public String getPublicationPortURI() throws Exception {
@@ -428,23 +450,30 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
     }
 
     // TOUTES LES METHODES DE RECEPTIONCI
+
+    /**
+     * @see ReceptionCI#acceptMessage(MessageI)
+     * @param m the message
+     */
     @Override
     public void acceptMessage(MessageI m) {
             this.logMessage("Receiving/accepting the message " + m.getPayload() + " send by : " + m.getTimeStamp().getTimeStamper() +
                     " a la date de " + m.getTimeStamp().getTime());
             messagesAcceptDeSubscriber++;
     }
+
+    /**
+     * @see ReceptionCI#acceptMessages(MessageI[])
+     * @param ms the messages
+     */
     @Override
     public void acceptMessages(MessageI[] ms) {
         int i =0;
-        while(ms[i]!=null){
+        while(ms[i] != null){
             acceptMessage(ms[i]);
             i++;
         }
 
-     /*   for (MessageI m : ms) {
-            acceptMessage(m);
-        }*/
     }
 }
 

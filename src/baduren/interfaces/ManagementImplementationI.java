@@ -16,7 +16,7 @@ public interface ManagementImplementationI extends OfferedI, RequiredI {
 	public void createTopic(String topic)throws Exception;
 
 	/**
-	 * Create topics.
+	 * Create multiple topics.
 	 *
 	 * @param topics the topics
 	 * @throws Exception the exception
@@ -24,7 +24,7 @@ public interface ManagementImplementationI extends OfferedI, RequiredI {
 	public void createTopics(String[] topics)throws Exception;
 
 	/**
-	 * Destroy topic.
+	 * Destroy a topic.
 	 *
 	 * @param topic the topic
 	 * @throws Exception the exception
@@ -32,7 +32,7 @@ public interface ManagementImplementationI extends OfferedI, RequiredI {
 	public void destroyTopic(String topic)throws Exception;
 
 	/**
-	 * Is topic boolean.
+	 * Test if a topic exists.
 	 *
 	 * @param topic the topic
 	 * @return the boolean
@@ -41,9 +41,9 @@ public interface ManagementImplementationI extends OfferedI, RequiredI {
 	public boolean isTopic(String topic)throws Exception;
 
 	/**
-	 * Get topics string [ ].
+	 * Get all the topics.
 	 *
-	 * @return the string [ ]
+	 * @return a tab containing the topics
 	 * @throws Exception the exception
 	 */
 	public String[] getTopics()throws Exception;

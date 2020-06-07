@@ -8,7 +8,7 @@ import fr.sorbonne_u.components.interfaces.RequiredI;
  */
 public interface SubscriptionImplementationI extends OfferedI, RequiredI {
 	/**
-	 * Subscribe.
+	 * Subscribe to 1 topic
 	 *
 	 * @param topic          the topic
 	 * @param inboundPortURI the inbound port uri
@@ -17,7 +17,7 @@ public interface SubscriptionImplementationI extends OfferedI, RequiredI {
 	public void subscribe(String topic, String inboundPortURI)throws Exception;
 
 	/**
-	 * Subscribe.
+	 * Subscribe to multiple topics
 	 *
 	 * @param topics         the topics
 	 * @param inboundPortURI the inbound port uri
@@ -26,7 +26,7 @@ public interface SubscriptionImplementationI extends OfferedI, RequiredI {
 	public void subscribe(String[] topics, String inboundPortURI)throws Exception;
 
 	/**
-	 * Subscribe.
+	 * Subscribe to a topic
 	 *
 	 * @param topic          the topic
 	 * @param filter         the filter
@@ -46,7 +46,7 @@ public interface SubscriptionImplementationI extends OfferedI, RequiredI {
 	public void modifyFilter(String topic, MessageFilterI newFilter, String inboundPortURI)throws Exception;
 
 	/**
-	 * Unsubscribe.
+	 * Unsubscribe of a topic
 	 *
 	 * @param topic          the topic
 	 * @param inboundPortUri the inbound port uri

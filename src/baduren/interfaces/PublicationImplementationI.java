@@ -8,7 +8,7 @@ import fr.sorbonne_u.components.interfaces.RequiredI;
  */
 public interface PublicationImplementationI extends OfferedI, RequiredI {
 	/**
-	 * Publish.
+	 * Publish 1 message with 1 topic
 	 *
 	 * @param m     the message
 	 * @param topic the topic
@@ -17,7 +17,7 @@ public interface PublicationImplementationI extends OfferedI, RequiredI {
 	public void publish(MessageI m, String topic)throws Exception;
 
 	/**
-	 * Publish.
+	 * Publish 1 message with multiple topics
 	 *
 	 * @param m      the message
 	 * @param topics the topics
@@ -26,7 +26,7 @@ public interface PublicationImplementationI extends OfferedI, RequiredI {
 	public void publish(MessageI m, String[] topics)throws Exception;
 
 	/**
-	 * Publish.
+	 * Publish multiple messages with 1 topic
 	 *
 	 * @param ms     the messages
 	 * @param topics the topics
@@ -35,7 +35,7 @@ public interface PublicationImplementationI extends OfferedI, RequiredI {
 	public void publish(MessageI[] ms, String topics)throws Exception;
 
 	/**
-	 * Publish.
+	 * Publish multiple messages with multiple topics
 	 *
 	 * @param ms     the messages
 	 * @param topics the topics

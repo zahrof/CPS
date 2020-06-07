@@ -72,6 +72,10 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
     // -------------------------------------------------------------------------
     // Life cycle
     // -------------------------------------------------------------------------
+    /**
+     * @see AbstractComponent#start()
+     * @throws ComponentStartException
+     */
     @Override
     public void			start() throws ComponentStartException
     {
@@ -79,6 +83,11 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         this.logMessage("starting teacher  component.") ;
     }
     static int i = 0 ;
+
+    /**
+     * @see AbstractComponent#execute()
+     * @throws ComponentStartException
+     */
     @Override
     public void			execute() throws Exception
     {
@@ -214,6 +223,11 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         }
 
     }
+
+    /**
+     * @see AbstractComponent#finalise()
+     * @throws ComponentStartException
+     */
     @Override
     public void			finalise() throws Exception
     {
@@ -222,13 +236,19 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
         super.finalise();
     }
 
+    /**
+     * @see AbstractComponent#shutdown()
+     * @throws ComponentStartException
+     */
     @Override
     public void			shutdown() throws ComponentShutdownException
     {
         super.shutdown();
     }
+
     /**
      * @see fr.sorbonne_u.components.AbstractComponent#shutdownNow()
+     * @throws ComponentShutdownException
      */
     @Override
     public void			shutdownNow() throws ComponentShutdownException
@@ -240,6 +260,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to publish 1 message in 1 topic
+     * {@link PublicationImplementationI#publish(MessageI, String)}
      *
      * @param m     the message
      * @param topic the topic
@@ -259,6 +280,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to publish 1 message in several topics
+     * {@link PublicationImplementationI#publish(MessageI, String[])}
      *
      * @param m      the message
      * @param topics the topics
@@ -277,6 +299,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to publish several messages in 1 topic
+     * {@link PublicationImplementationI#publish(MessageI[], String)}
      *
      * @param ms     the messages
      * @param topics the topics
@@ -295,6 +318,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to publish several messages in several topics
+     * {@link PublicationImplementationI#publish(MessageI[], String[])}
      *
      * @param ms     the messages
      * @param topics the topics
@@ -319,6 +343,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to subscribe to one topic
+     * {@link SubscriptionImplementationI#subscribe(String, String)}
      *
      * @param topic          the topic
      * @param inboundPortURI the inbound port uri
@@ -333,6 +358,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to subscribe to several topics
+     * {@link SubscriptionImplementationI#subscribe(String[], String)}
      *
      * @param topics         the topics
      * @param inboundPortURI the inbound port uri
@@ -346,6 +372,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to subscribe to one topic with a filter
+     * {@link SubscriptionImplementationI#subscribe(String, MessageFilterI, String)}
      *
      * @param topic          the topic
      * @param filter         the filter
@@ -360,6 +387,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to modify a filter
+     * {@link SubscriptionImplementationI#modifyFilter(String, MessageFilterI, String)}
      *
      * @param topic          the topic
      * @param newFilter      the new filter
@@ -373,6 +401,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to unsubscribe
+     * {@link SubscriptionImplementationI#unsubscribe(String, String)}
      *
      * @param topic          the topic
      * @param inboundPortUri the inbound port uri
@@ -385,6 +414,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to create a topic.
+     * {@link ManagementImplementationI#createTopic(String)}
      *
      * @param topic the topic
      * @throws Exception the exception
@@ -397,6 +427,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to create several topics.
+     * {@link ManagementImplementationI#createTopics(String[])}
      *
      * @param topics the topics
      * @throws Exception the exception
@@ -409,6 +440,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Method to destroy a topic.
+     * {@link ManagementImplementationI#destroyTopic(String)}
      *
      * @param topic the topic
      * @throws Exception the exception
@@ -420,7 +452,8 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
     }
 
     /**
-     * Is topic boolean.
+     * Test if the topic exists.
+     * {@link ManagementImplementationI#isTopic(String)}
      *
      * @param topic the topic
      * @return the boolean
@@ -433,10 +466,11 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
     }
 
     /**
-     * Get topics string [ ].
+     * Get all the topics.
+     * {@link ManagementImplementationI#getTopics()}
      *
-     * @return the string [ ]
-     * @throws Exception the exception
+     * @return a tab containing the topics
+     * @throws Exception
      */
     @Override
     public String[] getTopics() throws Exception{
@@ -446,9 +480,10 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
     /**
      * Gets publication port uri.
+     * {@link ManagementImplementationI#getPublicationPortURI()}
      *
      * @return the publication port uri
-     * @throws Exception the exception
+     * @throws Exception
      */
     @Override
     public String getPublicationPortURI() throws Exception{
