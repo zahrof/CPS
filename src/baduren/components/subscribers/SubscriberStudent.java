@@ -99,7 +99,7 @@ public class SubscriberStudent extends	AbstractComponent implements ManagementIm
 
         // Display to logs in to right position
         this.tracer.setTitle("Student " + this.number_student) ;
-        this.tracer.setRelativePosition(this.number_student, 2) ;
+        this.tracer.setRelativePosition(this.number_student - 1, 2) ;
         if(! new File(TestsIntegration.LOG_FOLDER).exists()) new File(TestsIntegration.LOG_FOLDER).mkdir();
         Logger logger = new Logger(TestsIntegration.LOG_FOLDER);
         logger.toggleLogging();

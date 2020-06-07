@@ -10,6 +10,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import baduren.CVM;
+import baduren.CVM2;
 import baduren.TestsIntegration;
 import baduren.connectors.ReceptionConnector;
 import baduren.interfaces.*;
@@ -170,9 +171,10 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 	}
 
 	/*** BROKER'S CONSTRUCTOR WITH PLUGINS AND CHOSING THE NUMBER OF THREADS ***/
-	protected Broker(String reflectionInboundPortURI,String inboundPortURI,String replicableInboundPortURI,  int nbThreads, int nbSchedulableThreads,String nbBroker) throws Exception {
-
+	protected Broker(String reflectionInboundPortURI,String inboundPortURI,String replicableInboundPortURI,  int nbThreads, int nbSchedulableThreads, String nbBroker) throws Exception {
 		super(nbBroker, nbThreads, nbSchedulableThreads) ;
+
+
 		addRequiredInterface(ReceptionCI.class);
 		this.refl_ipURI = reflectionInboundPortURI;
 		addRequiredInterface(ReplicableCI.class);
@@ -203,7 +205,7 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 
 		/** SETTING TRACER **/
 		this.tracer.setTitle(nbBroker) ;
-		this.tracer.setRelativePosition(1, 0) ;
+		this.tracer.setRelativePosition(CVM2.brokerCounter++, 0) ;
 		if(! new File(TestsIntegration.LOG_FOLDER).exists()) new File(TestsIntegration.LOG_FOLDER).mkdir();
 		Logger logger = new Logger(TestsIntegration.LOG_FOLDER);
 		logger.toggleLogging();

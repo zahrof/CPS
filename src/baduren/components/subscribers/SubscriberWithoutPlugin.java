@@ -35,7 +35,7 @@ public class SubscriberWithoutPlugin extends	AbstractComponent{
 			this.executionLog.setDirectory(System.getProperty("user.home")) ;
 		}
 		this.tracer.setTitle("subscriber") ;
-		this.tracer.setRelativePosition(1, 3) ;
+		this.tracer.setRelativePosition(0, 3) ;
 	}
 	
 	@Override

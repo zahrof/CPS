@@ -17,6 +17,10 @@ import fr.sorbonne_u.components.helpers.CVMDebugModes;
 import fr.sorbonne_u.components.ports.InboundPortI;
 import fr.sorbonne_u.components.ports.OutboundPortI;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.util.List;
+
 //-----------------------------------------------------------------------------
 
 /**
@@ -43,6 +47,7 @@ public class CVM2 extends AbstractCVM {
 
 	/** BROKER URI**/
 	protected String uriBrokerURI;
+	public static int brokerCounter = 0;
 
 	/** SUBSCRIBER URI**/
 	protected String uri_Subscriber_Student1;
@@ -300,6 +305,16 @@ public class CVM2 extends AbstractCVM {
 	 */
 	public static void		main(String[] args)
 	{
+		RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
+		List<String> jvmArgs = bean.getInputArguments();
+
+		for (int i = 0; i < jvmArgs.size(); i++) {
+			System.out.println( jvmArgs.get( i ) );
+		}
+		System.out.println(" -classpath " + System.getProperty("java.class.path"));
+		// print the non-JVM command line arguments
+		// print name of the main class with its arguments, like org.ClassName param1 param2
+		System.out.println(" " + System.getProperty("sun.java.command"));
 		try {
 			// Create an instance of the defined component virtual machine.
 			CVM2 a = new CVM2() ;

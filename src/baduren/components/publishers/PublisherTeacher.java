@@ -61,7 +61,7 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
         // Display to logs in to right position
         this.tracer.setTitle("Teacher " + this.number_teacher) ;
-        this.tracer.setRelativePosition(this.number_teacher, 1) ;
+        this.tracer.setRelativePosition(this.number_teacher - 1, 1) ;
         if(! new File(TestsIntegration.LOG_FOLDER).exists()) new File(TestsIntegration.LOG_FOLDER).mkdir();
         Logger logger = new Logger(TestsIntegration.LOG_FOLDER);
         logger.toggleLogging();

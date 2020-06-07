@@ -61,7 +61,7 @@ public class PublisherWithoutPlugin extends AbstractComponent {
 			this.executionLog.setDirectory(System.getProperty("user.home")) ;
 		}
 		this.tracer.setTitle("publisher") ;
-		this.tracer.setRelativePosition(1, 2) ;
+		this.tracer.setRelativePosition(0, 2) ;
 
 	}
 
