@@ -83,6 +83,7 @@ implements ReplicableCI<T>
 	@Override
 	public T			call(Object... parameters) throws Exception
 	{
+		System.out.println("claire");
 		return this.getOwner().handleRequestSync(
 							o -> ((ReplicationI<T>)o)).call(parameters) ;
 	}

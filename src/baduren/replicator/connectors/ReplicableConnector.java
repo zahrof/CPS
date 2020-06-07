@@ -64,6 +64,7 @@ implements ReplicableCI<T>
 	@Override
 	public T			call(Object... parameters) throws Exception
 	{
+
 		return ((ReplicableCI<T>)this.offering).call(parameters) ;
 	}
 }

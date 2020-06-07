@@ -93,9 +93,9 @@ public class DistributedCVM extends AbstractDistributedCVM{
 					return ReplicableConnector.class.getCanonicalName() ;
 				}
 			} ;
-
-
 	protected final ReplicationManagerNonBlocking.CallMode currentCallMode = ReplicationManagerNonBlocking.CallMode.ALL ;
+
+
 	public DistributedCVM(String[] args, int xLayout, int yLayout) throws Exception{
 		super(args, xLayout, yLayout);
 	}
@@ -272,8 +272,8 @@ public class DistributedCVM extends AbstractDistributedCVM{
 	{
 		try {
 			DistributedCVM da  = new DistributedCVM(args, 2, 5) ;
-			da.startStandardLifeCycle(20000) ;
-			Thread.sleep(20000L) ;
+			da.startStandardLifeCycle(1000000L) ;
+			Thread.sleep(500000L) ;
 			System.exit(0) ;
 		} catch (Exception e) {
 			throw new RuntimeException(e) ;

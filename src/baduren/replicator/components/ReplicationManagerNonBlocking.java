@@ -262,7 +262,7 @@ public class			ReplicationManagerNonBlocking<T>
     public T			call(Object... parameters) throws Exception
     {
 
-
+        System.out.println("holaaaaaaa");
 
         // This method is meant to be executed by the thread of the caller
         // component (the inbound port does not call handleRequest by directly

@@ -20,11 +20,11 @@ import baduren.replicator.interfaces.*;
 import baduren.replicator.ports.ReplicableInboundPort;
 import baduren.replicator.ports.ReplicableOutboundPort;
 import fr.sorbonne_u.components.AbstractComponent;
+import fr.sorbonne_u.components.annotations.RequiredInterfaces;
 import fr.sorbonne_u.components.exceptions.ComponentStartException;
 import baduren.plugins.*;
 import fr.sorbonne_u.components.helpers.Logger;
 import fr.sorbonne_u.components.ports.InboundPortI;
-
 
 public class Broker extends AbstractComponent implements ManagementImplementationI,
 		SubscriptionImplementationI, PublicationImplementationI, ReplicationI<String> {
@@ -442,8 +442,9 @@ public class Broker extends AbstractComponent implements ManagementImplementatio
 			this.messagesLock.unlock();
 
 		}
-
+		this.logMessage("avant le call");
 		this.rop.call(this.uri, m, topic);
+		this.logMessage("apres le call");
 		this.logMessage("Message " + m.getMessage() + " stocked to topic " + topic + " at the moment "
 					+ m.getTimeStamp().getTime());
 

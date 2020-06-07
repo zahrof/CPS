@@ -1,5 +1,5 @@
-1591551021634|starting subscriber component.
-1591551022586|Ask a subscription at port: student4 to topic APS
-1591551022687|Receiving/accepting the message Bravo tu viens de te souscrire au topic APS sans filtres broker my-URI-broker2 send by : 127.0.1.1 a la date de 1591551022
-1591551023773|Receiving/accepting the message La vie est un long voyage  send by : 127.0.1.1 a la date de 1591551023
-1591551042107|stopping subscriberStudend component.
+1591552534692|starting subscriber component.
+1591552535603|Ask a subscription at port: student4 to topic APS
+1591552535744|Receiving/accepting the message Bravo tu viens de te souscrire au topic APS sans filtres broker my-URI-broker2 send by : 127.0.1.1 a la date de 1591552535
+1591552536795|Receiving/accepting the message La vie est un long voyage  send by : 127.0.1.1 a la date de 1591552536
+1591552555159|stopping subscriberStudend component.

@@ -1,64 +1,64 @@
-1591551021586|starting subscriber component.
-1591551022356|Ask a subscription at port: student2 to topic PAF
-1591551024897|Receiving/accepting the message Bravo tu viens de te souscrire au topic PAF sans filtres broker my-URI-broker send by : 127.0.1.1 a la date de 1591551022
-1591551024897|Receiving/accepting the message Bravo tu viens de te souscrire au topic APS sans filtres broker my-URI-broker send by : 127.0.1.1 a la date de 1591551022
-1591551024897|Receiving/accepting the message Bravo tu viens de te souscrire au topic PC3R sans filtres broker my-URI-broker send by : 127.0.1.1 a la date de 1591551022
-1591551024898|Receiving/accepting the message Bravo tu viens de te souscrire au topic CPS sans filtres broker my-URI-broker send by : 127.0.1.1 a la date de 1591551022
-1591551024898|Receiving/accepting the message Je ferai cours sur TWITCH send by : 127.0.1.1 a la date de 1591551023
-1591551024898|Receiving/accepting the message La semaine prochaine nous verrons PROMELA send by : 127.0.1.1 a la date de 1591551023
-1591551024898|Receiving/accepting the message Le sujet 0 sera à l'examen send by : 127.0.1.1 a la date de 1591551023
-1591551024899|Receiving/accepting the message Je ferai cours sur TWITCH lundi  send by : 127.0.1.1 a la date de 1591551023
-1591551024899|Receiving/accepting the message Bonjour, je vais tester tous les filtres.  send by : TimeStamper a la date de 1591551023512
-1591551024899|Receiving/accepting the message Le Coronavirus est partout 2 send by : 127.0.1.1 a la date de 1591551023
-1591551024900|Receiving/accepting the message Le Coronavirus est partout 1 send by : 127.0.1.1 a la date de 1591551023
-1591551024900|Receiving/accepting the message Le Coronavirus est partout 3 send by : 127.0.1.1 a la date de 1591551023
-1591551024902|Receiving/accepting the message Le Coronavirus est partout 4 send by : 127.0.1.1 a la date de 1591551023
-1591551024903|Receiving/accepting the message Le Coronavirus est partout 5 send by : 127.0.1.1 a la date de 1591551023
-1591551024903|Receiving/accepting the message Le Coronavirus est partout 6 send by : 127.0.1.1 a la date de 1591551023
-1591551024904|Receiving/accepting the message Bonjour, je vais tester le filtre de EnseigneParMalenfant  send by : 127.0.1.1 a la date de 1591551023
-1591551024904|Receiving/accepting the message Le Coronavirus est partout 0 send by : 127.0.1.1 a la date de 1591551023
-1591551024904|Receiving/accepting the message Le Coronavirus est partout 7 send by : 127.0.1.1 a la date de 1591551023
-1591551024905|Receiving/accepting the message Le Coronavirus est partout 8 send by : 127.0.1.1 a la date de 1591551023
-1591551024905|Receiving/accepting the message Le Coronavirus est partout 9 send by : 127.0.1.1 a la date de 1591551023
-1591551024905|Receiving/accepting the message Le Coronavirus est partout 10 send by : 127.0.1.1 a la date de 1591551023
-1591551024905|Receiving/accepting the message Le Coronavirus est partout 11 send by : 127.0.1.1 a la date de 1591551023
-1591551024905|Receiving/accepting the message Le Coronavirus est partout 12 send by : 127.0.1.1 a la date de 1591551023
-1591551024911|Receiving/accepting the message Le Coronavirus est partout 13 send by : 127.0.1.1 a la date de 1591551023
-1591551024911|Receiving/accepting the message Le Coronavirus est partout 14 send by : 127.0.1.1 a la date de 1591551023
-1591551024912|Receiving/accepting the message Le Coronavirus est partout 15 send by : 127.0.1.1 a la date de 1591551023
-1591551024912|Receiving/accepting the message Le Coronavirus est partout 16 send by : 127.0.1.1 a la date de 1591551023
-1591551024912|Receiving/accepting the message Le Coronavirus est partout 17 send by : 127.0.1.1 a la date de 1591551023
-1591551024912|Receiving/accepting the message Le Coronavirus est partout 18 send by : 127.0.1.1 a la date de 1591551023
-1591551024913|Receiving/accepting the message Le Coronavirus est partout 19 send by : 127.0.1.1 a la date de 1591551023
-1591551024913|Receiving/accepting the message Le Coronavirus est partout 20 send by : 127.0.1.1 a la date de 1591551023
-1591551024913|Receiving/accepting the message Le Coronavirus est partout 21 send by : 127.0.1.1 a la date de 1591551023
-1591551024913|Receiving/accepting the message Le Coronavirus est partout 22 send by : 127.0.1.1 a la date de 1591551023
-1591551024913|Receiving/accepting the message Le Coronavirus est partout 23 send by : 127.0.1.1 a la date de 1591551023
-1591551024914|Receiving/accepting the message Le Coronavirus est partout 24 send by : 127.0.1.1 a la date de 1591551023
-1591551024914|Receiving/accepting the message Le Coronavirus est partout 25 send by : 127.0.1.1 a la date de 1591551023
-1591551024914|Receiving/accepting the message Le Coronavirus est partout 26 send by : 127.0.1.1 a la date de 1591551023
-1591551024914|Receiving/accepting the message Le Coronavirus est partout 27 send by : 127.0.1.1 a la date de 1591551023
-1591551024922|Receiving/accepting the message Le Coronavirus est partout 28 send by : 127.0.1.1 a la date de 1591551023
-1591551024923|Receiving/accepting the message Le Coronavirus est partout 29 send by : 127.0.1.1 a la date de 1591551023
-1591551024923|Receiving/accepting the message Le Coronavirus est partout 30 send by : 127.0.1.1 a la date de 1591551023
-1591551024923|Receiving/accepting the message Le Coronavirus est partout 31 send by : 127.0.1.1 a la date de 1591551023
-1591551024924|Receiving/accepting the message Le Coronavirus est partout 32 send by : 127.0.1.1 a la date de 1591551023
-1591551024924|Receiving/accepting the message Le Coronavirus est partout 33 send by : 127.0.1.1 a la date de 1591551023
-1591551024924|Receiving/accepting the message Le Coronavirus est partout 34 send by : 127.0.1.1 a la date de 1591551023
-1591551024924|Receiving/accepting the message Le Coronavirus est partout 35 send by : 127.0.1.1 a la date de 1591551023
-1591551024924|Receiving/accepting the message Le Coronavirus est partout 36 send by : 127.0.1.1 a la date de 1591551023
-1591551024925|Receiving/accepting the message Le Coronavirus est partout 37 send by : 127.0.1.1 a la date de 1591551023
-1591551024925|Receiving/accepting the message Le Coronavirus est partout 38 send by : 127.0.1.1 a la date de 1591551023
-1591551024925|Receiving/accepting the message Le Coronavirus est partout 39 send by : 127.0.1.1 a la date de 1591551023
-1591551024925|Receiving/accepting the message Le Coronavirus est partout 40 send by : 127.0.1.1 a la date de 1591551023
-1591551024925|Receiving/accepting the message Le Coronavirus est partout 41 send by : 127.0.1.1 a la date de 1591551023
-1591551024926|Receiving/accepting the message Le Coronavirus est partout 42 send by : 127.0.1.1 a la date de 1591551023
-1591551024926|Receiving/accepting the message Le Coronavirus est partout 43 send by : 127.0.1.1 a la date de 1591551023
-1591551024926|Receiving/accepting the message Le Coronavirus est partout 44 send by : 127.0.1.1 a la date de 1591551023
-1591551024926|Receiving/accepting the message Le Coronavirus est partout 45 send by : 127.0.1.1 a la date de 1591551023
-1591551024926|Receiving/accepting the message Le Coronavirus est partout 46 send by : 127.0.1.1 a la date de 1591551023
-1591551024927|Receiving/accepting the message Le Coronavirus est partout 47 send by : 127.0.1.1 a la date de 1591551023
-1591551024949|Receiving/accepting the message Le Coronavirus est partout 48 send by : 127.0.1.1 a la date de 1591551023
-1591551024986|Receiving/accepting the message Le Coronavirus est partout 49 send by : 127.0.1.1 a la date de 1591551023
-1591551024986|Receiving/accepting the message Tu viens de te desabonner au topic CPS send by : 127.0.1.1 a la date de 1591551024
-1591551042020|stopping subscriberStudend component.
+1591552534695|starting subscriber component.
+1591552535519|Ask a subscription at port: student2 to topic PAF
+1591552538089|Receiving/accepting the message Bravo tu viens de te souscrire au topic APS sans filtres broker my-URI-broker send by : 127.0.1.1 a la date de 1591552535
+1591552538090|Receiving/accepting the message Bravo tu viens de te souscrire au topic PAF sans filtres broker my-URI-broker send by : 127.0.1.1 a la date de 1591552535
+1591552538090|Receiving/accepting the message Bravo tu viens de te souscrire au topic PC3R sans filtres broker my-URI-broker send by : 127.0.1.1 a la date de 1591552535
+1591552538090|Receiving/accepting the message Bravo tu viens de te souscrire au topic CPS sans filtres broker my-URI-broker send by : 127.0.1.1 a la date de 1591552535
+1591552538090|Receiving/accepting the message Le sujet 0 sera à l'examen send by : 127.0.1.1 a la date de 1591552536
+1591552538090|Receiving/accepting the message La semaine prochaine nous verrons PROMELA send by : 127.0.1.1 a la date de 1591552536
+1591552538091|Receiving/accepting the message Je ferai cours sur TWITCH send by : 127.0.1.1 a la date de 1591552536
+1591552538091|Receiving/accepting the message Je ferai cours sur TWITCH lundi  send by : 127.0.1.1 a la date de 1591552536
+1591552538091|Receiving/accepting the message Le Coronavirus est partout 0 send by : 127.0.1.1 a la date de 1591552536
+1591552538091|Receiving/accepting the message Le Coronavirus est partout 2 send by : 127.0.1.1 a la date de 1591552536
+1591552538091|Receiving/accepting the message Le Coronavirus est partout 1 send by : 127.0.1.1 a la date de 1591552536
+1591552538093|Receiving/accepting the message Le Coronavirus est partout 3 send by : 127.0.1.1 a la date de 1591552536
+1591552538094|Receiving/accepting the message Le Coronavirus est partout 5 send by : 127.0.1.1 a la date de 1591552536
+1591552538094|Receiving/accepting the message Le Coronavirus est partout 6 send by : 127.0.1.1 a la date de 1591552536
+1591552538094|Receiving/accepting the message Le Coronavirus est partout 7 send by : 127.0.1.1 a la date de 1591552536
+1591552538094|Receiving/accepting the message Le Coronavirus est partout 4 send by : 127.0.1.1 a la date de 1591552536
+1591552538094|Receiving/accepting the message Le Coronavirus est partout 8 send by : 127.0.1.1 a la date de 1591552536
+1591552538094|Receiving/accepting the message Le Coronavirus est partout 9 send by : 127.0.1.1 a la date de 1591552536
+1591552538095|Receiving/accepting the message Le Coronavirus est partout 10 send by : 127.0.1.1 a la date de 1591552536
+1591552538095|Receiving/accepting the message Le Coronavirus est partout 11 send by : 127.0.1.1 a la date de 1591552536
+1591552538095|Receiving/accepting the message Le Coronavirus est partout 12 send by : 127.0.1.1 a la date de 1591552536
+1591552538095|Receiving/accepting the message Le Coronavirus est partout 13 send by : 127.0.1.1 a la date de 1591552536
+1591552538095|Receiving/accepting the message Le Coronavirus est partout 14 send by : 127.0.1.1 a la date de 1591552536
+1591552538095|Receiving/accepting the message Le Coronavirus est partout 15 send by : 127.0.1.1 a la date de 1591552536
+1591552538096|Receiving/accepting the message Le Coronavirus est partout 16 send by : 127.0.1.1 a la date de 1591552536
+1591552538096|Receiving/accepting the message Le Coronavirus est partout 17 send by : 127.0.1.1 a la date de 1591552536
+1591552538096|Receiving/accepting the message Le Coronavirus est partout 18 send by : 127.0.1.1 a la date de 1591552536
+1591552538096|Receiving/accepting the message Le Coronavirus est partout 19 send by : 127.0.1.1 a la date de 1591552536
+1591552538096|Receiving/accepting the message Le Coronavirus est partout 20 send by : 127.0.1.1 a la date de 1591552536
+1591552538096|Receiving/accepting the message Le Coronavirus est partout 22 send by : 127.0.1.1 a la date de 1591552536
+1591552538096|Receiving/accepting the message Le Coronavirus est partout 21 send by : 127.0.1.1 a la date de 1591552536
+1591552538097|Receiving/accepting the message Le Coronavirus est partout 23 send by : 127.0.1.1 a la date de 1591552536
+1591552538097|Receiving/accepting the message Le Coronavirus est partout 24 send by : 127.0.1.1 a la date de 1591552536
+1591552538097|Receiving/accepting the message Le Coronavirus est partout 25 send by : 127.0.1.1 a la date de 1591552536
+1591552538097|Receiving/accepting the message Le Coronavirus est partout 26 send by : 127.0.1.1 a la date de 1591552536
+1591552538097|Receiving/accepting the message Le Coronavirus est partout 27 send by : 127.0.1.1 a la date de 1591552536
+1591552538097|Receiving/accepting the message Le Coronavirus est partout 28 send by : 127.0.1.1 a la date de 1591552536
+1591552538098|Receiving/accepting the message Le Coronavirus est partout 29 send by : 127.0.1.1 a la date de 1591552536
+1591552538098|Receiving/accepting the message Le Coronavirus est partout 30 send by : 127.0.1.1 a la date de 1591552536
+1591552538098|Receiving/accepting the message Le Coronavirus est partout 31 send by : 127.0.1.1 a la date de 1591552536
+1591552538098|Receiving/accepting the message Le Coronavirus est partout 32 send by : 127.0.1.1 a la date de 1591552536
+1591552538098|Receiving/accepting the message Bonjour, je vais tester tous les filtres.  send by : TimeStamper a la date de 1591552536636
+1591552538098|Receiving/accepting the message Le Coronavirus est partout 33 send by : 127.0.1.1 a la date de 1591552536
+1591552538099|Receiving/accepting the message Bonjour, je vais tester le filtre de EnseigneParMalenfant  send by : 127.0.1.1 a la date de 1591552536
+1591552538099|Receiving/accepting the message Le Coronavirus est partout 34 send by : 127.0.1.1 a la date de 1591552536
+1591552538108|Receiving/accepting the message Le Coronavirus est partout 35 send by : 127.0.1.1 a la date de 1591552536
+1591552538113|Receiving/accepting the message Le Coronavirus est partout 36 send by : 127.0.1.1 a la date de 1591552536
+1591552538113|Receiving/accepting the message Le Coronavirus est partout 37 send by : 127.0.1.1 a la date de 1591552536
+1591552538114|Receiving/accepting the message Le Coronavirus est partout 38 send by : 127.0.1.1 a la date de 1591552536
+1591552538114|Receiving/accepting the message Le Coronavirus est partout 39 send by : 127.0.1.1 a la date de 1591552536
+1591552538114|Receiving/accepting the message Le Coronavirus est partout 40 send by : 127.0.1.1 a la date de 1591552536
+1591552538114|Receiving/accepting the message Le Coronavirus est partout 41 send by : 127.0.1.1 a la date de 1591552536
+1591552538114|Receiving/accepting the message Le Coronavirus est partout 42 send by : 127.0.1.1 a la date de 1591552536
+1591552538114|Receiving/accepting the message Le Coronavirus est partout 43 send by : 127.0.1.1 a la date de 1591552536
+1591552538115|Receiving/accepting the message Le Coronavirus est partout 44 send by : 127.0.1.1 a la date de 1591552536
+1591552538115|Receiving/accepting the message Le Coronavirus est partout 45 send by : 127.0.1.1 a la date de 1591552536
+1591552538115|Receiving/accepting the message Le Coronavirus est partout 46 send by : 127.0.1.1 a la date de 1591552536
+1591552538115|Receiving/accepting the message Le Coronavirus est partout 47 send by : 127.0.1.1 a la date de 1591552536
+1591552538115|Receiving/accepting the message Le Coronavirus est partout 48 send by : 127.0.1.1 a la date de 1591552536
+1591552538115|Receiving/accepting the message Le Coronavirus est partout 49 send by : 127.0.1.1 a la date de 1591552536
+1591552538116|Receiving/accepting the message Tu viens de te desabonner au topic CPS send by : 127.0.1.1 a la date de 1591552537
+1591552555074|stopping subscriberStudend component.
