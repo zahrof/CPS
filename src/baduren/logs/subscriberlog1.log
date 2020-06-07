@@ -1,2 +1,4 @@
-1591458764335|starting subscriber component.
-1591458784592|stopping subscriberStudend component.
+1591551021572|starting subscriber component.
+1591551022511|Receiving/accepting the message Bravo tu viens de te souscrire au topic CPSavec un filtre brokermy-URI-broker send by : 127.0.1.1 a la date de 1591551022
+1591551023845|Receiving/accepting the message Bonjour, je vais tester tous les filtres.  send by : TimeStamper a la date de 1591551023512
+1591551041921|stopping subscriberStudend component.

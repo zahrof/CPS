@@ -94,23 +94,6 @@ public class CVM2 extends AbstractCVM {
 			} ;
 	protected final ReplicationManagerNonBlocking.CallMode currentCallMode = ReplicationManagerNonBlocking.CallMode.ALL ;
 
-
-
-	public static enum SelectorType {
-		ROUND_ROBIN,
-		RANDOM,
-		WHOLE,
-		MANY_ALL
-	}
-	protected final DistributedCVM.SelectorType currentSelector = DistributedCVM.SelectorType.MANY_ALL ;
-
-	public static enum CombinatorType {
-		FIXED,
-		LONE,
-		MAJORITY_VOTE,
-		RANDOM
-	}
-	protected final DistributedCVM.CombinatorType currentCombinator = DistributedCVM.CombinatorType.MAJORITY_VOTE ;
 	/*********************   CONSTRUCTOR   **********************/
 
 	public CVM2() throws Exception{
@@ -120,11 +103,10 @@ public class CVM2 extends AbstractCVM {
 	/*********************   LIFE CYCLE   **********************/
 	@Override
 	public void	 deploy() throws Exception {
-		int deploiments = 0;
 		this.uriBrokerURI =
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
-						new Object[]{"server" + 1 + "-", SERVER_INBOUND_PORT_URIS[0], MANAGER_INBOUND_PORT_URI,
+						new Object[]{ SERVER_INBOUND_PORT_URIS[0], MANAGER_INBOUND_PORT_URI,
 								20, 0, CVM.BROKER_COMPONENT_URI});
 		assert this.isDeployedComponent(this.uriBrokerURI);
 
@@ -160,15 +142,13 @@ public class CVM2 extends AbstractCVM {
 		assert this.isDeployedComponent(this.uri_Subscriber_Student2);
 
 		this.toggleTracing(this.uri_Subscriber_Student2);
-		deploiments++;
-		System.out.println("deploiments jvm1" + deploiments);
 
 
 
 		this.uriBrokerURI2 =
 				AbstractComponent.createComponent(
 						Broker.class.getCanonicalName(),
-						new Object[]{"server" + 2 + "-", SERVER_INBOUND_PORT_URIS[1], MANAGER_INBOUND_PORT_URI,
+						new Object[]{SERVER_INBOUND_PORT_URIS[1], MANAGER_INBOUND_PORT_URI,
 								20, 0, CVM.BROKER_COMPONENT_URI2});
 		assert this.isDeployedComponent(this.uriBrokerURI2);
 
@@ -203,8 +183,6 @@ public class CVM2 extends AbstractCVM {
 		assert this.isDeployedComponent(this.uri_Subscriber_Student4);
 
 		this.toggleTracing(this.uri_Subscriber_Student4);
-		deploiments++;
-		System.out.println("deploiments jvm1" + deploiments);
 
 	/*		AbstractComponent.createComponent(
 			ReplicationManager.class.getCanonicalName(),
@@ -226,8 +204,6 @@ public class CVM2 extends AbstractCVM {
 						PC,
 						SERVER_INBOUND_PORT_URIS
 				});
-		deploiments++;
-		System.out.println("deploiments jvm1" + deploiments);
 
 		super.deploy();
 		assert this.deploymentDone();
@@ -280,7 +256,7 @@ public class CVM2 extends AbstractCVM {
 			// Create an instance of the defined component virtual machine.
 			CVM2 a = new CVM2() ;
 			// Execute the application.
-			a.startStandardLifeCycle(10000000L) ;
+			a.startStandardLifeCycle(1000000L) ;
 			System.out.println("--------------------------------------------------------------- RESULTATS --------------------------------------------------------------");
 			System.out.println("Messages publiées à partir de Publisher: "+ PublisherTeacher.publications);
 			System.out.println("Messages sauvegardés dans broker : " + Broker.messagesSupprimes);
@@ -304,12 +280,13 @@ public class CVM2 extends AbstractCVM {
 				for (String s : SubscriberStudent.allTopicsAtTheEnd)
 					System.out.print(s + "   ");
 				System.out.println("\nPublication Port Uri : " + SubscriberStudent.publicationPortUri);
-				System.out.println("\n-------------------------------------------------------------------------------------------------------");
+				System.out.println("\n------------------------------------------------------------------" +
+						"-------------------------------------");
 
 			}else {
-				System.out.println("ALL topics at the end is null! " );// Give some time to see the traces (convenience).
+				System.out.println("ALL topics at the end is null! " );
 			}
-			Thread.sleep(1000000L) ;
+			Thread.sleep(500000L) ;
 			// Simplifies the termination (termination has yet to be treated
 			// properly in BCM).
 

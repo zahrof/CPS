@@ -65,9 +65,7 @@ implements SelectorI
 		this.rg = new Random(System.currentTimeMillis()) ;
 	}
 
-	/**
-	 * @see fr.sorbonne_u.alasca.replication.interfaces.SelectorI#select(OutboundPortI[])
-	 */
+
 	@Override
 	public synchronized OutboundPortI[] select(OutboundPortI[] ports)
 	{

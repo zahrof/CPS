@@ -53,21 +53,6 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 			//((BrokerPublicationPlugin)this.getSer).publish(m, topic);
 
 
-
-	/*		///???????
-			this.owner.runTask(
-					new AbstractComponent.AbstractTask() {
-
-						@Override
-						public void run() {
-							try {
-								((Broker) this.getTaskOwner()).publish(m, topic);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					});*/
-
 			this.owner.runTask(
 					new AbstractComponent.AbstractTask(this.pluginURI) {
 						@Override
@@ -93,19 +78,6 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 						return null;
 					}
 				}) ;*/
-/*
-			this.owner.runTask(
-					new AbstractComponent.AbstractTask() {
-
-						@Override
-						public void run() {
-							try {
-								((Broker) this.getTaskOwner()).publish(m, topics);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					});*/
 
 			this.owner.runTask(
 					new AbstractComponent.AbstractTask(this.pluginURI) {
@@ -131,18 +103,6 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 					}
 				}) ;*/
 
-	/*		this.owner.runTask(
-					new AbstractComponent.AbstractTask() {
-
-						@Override
-						public void run() {
-							try {
-								((Broker) this.getTaskOwner()).publish(ms, topics);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					});*/
 
 			this.owner.runTask(
 					new AbstractComponent.AbstractTask(this.pluginURI) {
@@ -168,18 +128,7 @@ public class PublicationInboundPortForPlugin extends AbstractInboundPortForPlugi
 					}
 				}) ;*/
 
-	/*		this.owner.runTask(
-					new AbstractComponent.AbstractTask() {
 
-						@Override
-						public void run() {
-							try {
-								((Broker) this.getTaskOwner()).publish(ms, topics);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					});*/
 
 			this.owner.runTask(
 					new AbstractComponent.AbstractTask(this.pluginURI) {

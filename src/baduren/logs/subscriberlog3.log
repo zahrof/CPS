@@ -1,5 +1,8 @@
-1591461196347|starting subscriber component.
-1591461197300|Je m'appelle Claire
-1591461197302|Ask a subscription at port: student3 to topic CPA
-1591461197388|Receiving/accepting the message Bravo tu viens de te souscrire au topic CPA sans filtres broker my-URI-broker2 send by : 127.0.1.1 a la date de 1591461197
-1591461246964|stopping subscriberStudend component.
+1591551021633|starting subscriber component.
+1591551022632|Ask a subscription at port: student3 to topic CPA
+1591551022655|Ask a subscription at port: student3 to topic PAF
+1591551022673|Ask a subscription at port: student3 to topic CPS
+1591551022776|Receiving/accepting the message Bravo tu viens de te souscrire au topic CPS sans filtres broker my-URI-broker2 send by : 127.0.1.1 a la date de 1591551022
+1591551022794|Receiving/accepting the message Bravo tu viens de te souscrire au topic CPA sans filtres broker my-URI-broker2 send by : 127.0.1.1 a la date de 1591551022
+1591551022808|Receiving/accepting the message Bravo tu viens de te souscrire au topic PAF sans filtres broker my-URI-broker2 send by : 127.0.1.1 a la date de 1591551022
+1591551041959|stopping subscriberStudend component.

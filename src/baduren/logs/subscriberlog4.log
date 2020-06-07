@@ -1,6 +1,5 @@
-1591458764336|starting subscriber component.
-1591458765581|Je m'appelle Theo
-1591458765588|Ask a subscription at port: student4 to topic APS
-1591458765940|Receiving/accepting the message Bravo tu viens de te souscrire au topic APS sans filtres broker my-URI-broker2 send by : 127.0.1.1 a la date de 1591458765
-1591458767497|Receiving/accepting the message La vie est un long voyage  send by : 127.0.1.1 a la date de 1591458767
-1591458784683|stopping subscriberStudend component.
+1591551021634|starting subscriber component.
+1591551022586|Ask a subscription at port: student4 to topic APS
+1591551022687|Receiving/accepting the message Bravo tu viens de te souscrire au topic APS sans filtres broker my-URI-broker2 send by : 127.0.1.1 a la date de 1591551022
+1591551023773|Receiving/accepting the message La vie est un long voyage  send by : 127.0.1.1 a la date de 1591551023
+1591551042107|stopping subscriberStudend component.

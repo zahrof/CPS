@@ -111,7 +111,6 @@ public class			ReplicationManagerNonBlocking<T>
     protected CallMode	callMode ;
     /** semaphore used to ensure mutual exclusion on the computations when
      *  necessary															*/
-    //protected Semaphore	s = new Semaphore(10) ;
 
     /**
      * creating an asynchronous replication manager.
@@ -268,7 +267,7 @@ public class			ReplicationManagerNonBlocking<T>
         // This method is meant to be executed by the thread of the caller
         // component (the inbound port does not call handleRequest by directly
         // this method.
-        logMessage("got request to transmit"+parameters[1]+" "+parameters[2]+" "+parameters[0]);
+
         // The method select must be thread safe.
         OutboundPortI[]	selected = this.selector.select(this.outboundPorts) ;
 
@@ -287,22 +286,19 @@ public class			ReplicationManagerNonBlocking<T>
 
         for (int i = 0 ; i <  selected.length ; i++) {
             OutboundPortI p = selected[i] ;
-            logMessage("Sending request for"+parameters[1]+" "+parameters[2]+" "+parameters[0]);
-
-
             runTask(CALL_POOL_URI,
                     new AbstractComponent.AbstractTask() {
                         @Override
                         public void run() {
                             try {
+                                System.out.println(" envoi du message "+ parameters[1]);
                                 ((ReplicableCI<T>)p).call(parameters) ;
+                                System.out.println(" adeu "+ parameters[1]);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                     });
-            logMessage("Sent request for"+parameters[1]+" "+parameters[2]+" "+parameters[0]);
-
         }
         return (T)"ok";
     }

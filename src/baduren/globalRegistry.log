@@ -1,126 +1,130 @@
-1591458756864|Registry up and running!
-1591458762900|GlobalRegistry processing put my-URI-broker rmi=localhost
-1591458762960|GlobalRegistry processing put baduren.replicator.interfaces.ReplicableCI-76d76200-fb5e-4b0d-9ccb-b5f9f582e1cd rmi=localhost
-1591458763046|All connected!
-1591458763046|GlobalRegistry processing put my-URI-broker2 rmi=localhost
-1591458763046|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-18a48023-3449-480c-9028-ec394e747101 rmi=localhost
-1591458763057|GlobalRegistry processing put server-service-1 rmi=localhost
-1591458763120|GlobalRegistry processing put baduren.replicator.interfaces.ReplicableCI-5d5ae8ed-51c4-4c5a-bf26-9139e76f6307 rmi=localhost
-1591458763123|GlobalRegistry processing put manager rmi=localhost
-1591458763178|GlobalRegistry processing put baduren.interfaces.ManagementCI-ad89e11c-b3b1-4176-8291-cab89a32e44f rmi=localhost
-1591458763219|GlobalRegistry processing put server-service-2 rmi=localhost
-1591458763227|GlobalRegistry processing put baduren.replicator.interfaces.ReplicableCI-c7e107ec-b1c4-40c5-bbdc-5d1683fcd2c8 rmi=localhost
-1591458763267|GlobalRegistry processing put baduren.interfaces.PublicationImplementationI-b36c3726-09a1-4bb8-b069-6e87282f731b rmi=localhost
-1591458763319|GlobalRegistry processing put baduren.replicator.interfaces.ReplicableCI-4af685a5-2fe0-42f8-915f-f3bdb8270870 rmi=localhost
-1591458763323|GlobalRegistry processing put baduren.interfaces.ManagementCI-ca6c2f4c-f04d-42f4-99e9-bd48fc27c7cc rmi=localhost
-1591458763423|GlobalRegistry processing put baduren.interfaces.PublicationImplementationI-78a1cedb-eec8-4555-8dbe-01597339323c rmi=localhost
-1591458763563|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-f8431018-592d-4779-945d-b86e65b9a5e4 rmi=localhost
-1591458763623|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-42909be7-5c60-42ce-a8c3-e21f2c16f92a rmi=localhost
-1591458763671|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-fbd8128a-4046-48c5-be81-b7f3f6b59898 rmi=localhost
-1591458763723|GlobalRegistry processing put my-URI-subscriber-student11 rmi=localhost
-1591458763743|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-69f3b068-13b2-417e-8097-f2ee7b0983c9 rmi=localhost
-1591458763751|GlobalRegistry processing put manager-dcc rmi=localhost
-1591458763799|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-8dd925e6-7616-41b5-9a7e-25c6ff48a2a5 rmi=localhost
-1591458763815|GlobalRegistry processing put my-URI-subscriber-student12 rmi=localhost
-1591458763899|GlobalRegistry processing put my-URI-subscriber-student13 rmi=localhost
-1591458763915|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-b2364455-3151-48d7-804f-b0c755456b56 rmi=localhost
-1591458763999|GlobalRegistry processing put my-URI-subscriber-student14 rmi=localhost
-1591458764011|GlobalRegistry processing put jvm1-dcc rmi=localhost
-1591458764095|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-858287f1-0eb5-4022-9c95-e425792f587b rmi=localhost
-1591458764199|GlobalRegistry processing put jvm2-dcc rmi=localhost
-1591458764379|GlobalRegistry processing lookup manager
-1591458764383|GlobalRegistry processing lookup manager
-1591458764387|GlobalRegistry processing lookup server-service-1
-1591458764447|GlobalRegistry processing lookup server-service-2
-1591458764568|GlobalRegistry processing put baduren.interfaces.ManagementCI-463b3d0c-e3ce-4198-bd2e-e857fbdfeca1 rmi=localhost
-1591458764604|GlobalRegistry processing put publisher-client-plugin-uri4 rmi=localhost
-1591458764619|GlobalRegistry processing put publisher-client-plugin-uri1 rmi=localhost
-1591458764655|GlobalRegistry processing put baduren.interfaces.ManagementCI-1ab7aae3-4f3d-4fa6-b0e7-236cd681c706 rmi=localhost
-1591458764707|GlobalRegistry processing put publisher-client-plugin-uri2 rmi=localhost
-1591458764743|GlobalRegistry processing put baduren.interfaces.ManagementCI-55983fbc-7eb6-4d0a-9d2a-4c44dde0064b rmi=localhost
-1591458764795|GlobalRegistry processing put baduren.interfaces.ManagementCI-59d96e83-973e-418d-90db-84b183de79fa rmi=localhost
-1591458764831|GlobalRegistry processing put publisher-client-plugin-uri3 rmi=localhost
-1591458764888|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-4d65bb32-84a8-48e6-8f2f-d9b951302fda rmi=localhost
-1591458764919|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-aca7a0e6-75ed-41cb-b81e-24883f5478b5 rmi=localhost
-1591458764976|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-c060d46c-5d6d-4b08-8ca8-27adaaea0913 rmi=localhost
-1591458765007|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-7b33912f-32e6-4a0d-9958-caeb08b464fa rmi=localhost
-1591458765068|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-652a665e-d965-4d73-983f-ec8f82838e11 rmi=localhost
-1591458765095|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-9c01e647-58f8-4133-8fe1-50d099d7ce13 rmi=localhost
-1591458765156|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-41a55f70-e0ca-4a2f-a3ed-7a2222e95872 rmi=localhost
-1591458765183|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-7b33912f-32e6-4a0d-9958-caeb08b464fa
-1591458765245|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-652a665e-d965-4d73-983f-ec8f82838e11
-1591458765271|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-aca7a0e6-75ed-41cb-b81e-24883f5478b5
-1591458765339|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-c060d46c-5d6d-4b08-8ca8-27adaaea0913
-1591458765359|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-de15d5c5-3120-49ed-9e7b-8ad46c2f4cec rmi=localhost
-1591458765428|GlobalRegistry processing put baduren.interfaces.ManagementCI-69951ce8-0e50-4074-85cb-02fbb4b9e915 rmi=localhost
-1591458765447|GlobalRegistry processing put student3 rmi=localhost
-1591458765515|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-7b654606-a996-4c0e-8a51-f248bb58e4db rmi=localhost
-1591458765537|GlobalRegistry processing put student4 rmi=localhost
-1591458765603|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-4d65bb32-84a8-48e6-8f2f-d9b951302fda
-1591458765627|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-9c01e647-58f8-4133-8fe1-50d099d7ce13
-1591458765696|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-7b654606-a996-4c0e-8a51-f248bb58e4db
-1591458765722|GlobalRegistry processing put my-URI-broker20 rmi=localhost
-1591458765783|GlobalRegistry processing put baduren.interfaces.ManagementCI-0c72e642-72c0-43a9-b441-ecfddd09562c rmi=localhost
-1591458765808|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-de15d5c5-3120-49ed-9e7b-8ad46c2f4cec
-1591458765871|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-41a55f70-e0ca-4a2f-a3ed-7a2222e95872
-1591458765897|GlobalRegistry processing put my-URI-broker21 rmi=localhost
-1591458765959|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-0417e1f8-a8c6-4539-820d-2ae82f5c39c2 rmi=localhost
-1591458765983|GlobalRegistry processing put baduren.interfaces.ManagementCI-ab8ba442-ad34-40a5-a28b-6379a2317464 rmi=localhost
-1591458766047|GlobalRegistry processing put student2 rmi=localhost
-1591458766091|GlobalRegistry processing put baduren.interfaces.ManagementCI-0696cd3f-46a4-4fb8-8b18-8662458e8ea8 rmi=localhost
-1591458766135|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-0417e1f8-a8c6-4539-820d-2ae82f5c39c2
-1591458766179|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-e30fa111-8df3-436c-a728-1030cecdd5ad rmi=localhost
-1591458766223|GlobalRegistry processing put student1 rmi=localhost
-1591458766268|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-a5b5e974-f71a-4875-a85e-c16d81517484 rmi=localhost
-1591458766318|GlobalRegistry processing put my-URI-broker0 rmi=localhost
-1591458766355|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-e30fa111-8df3-436c-a728-1030cecdd5ad
-1591458766443|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-a5b5e974-f71a-4875-a85e-c16d81517484
-1591458784587|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-fbd8128a-4046-48c5-be81-b7f3f6b59898
-1591458784591|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-f8431018-592d-4779-945d-b86e65b9a5e4
-1591458784591|GlobalRegistry processing remove my-URI-subscriber-student13
-1591458784631|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-18a48023-3449-480c-9028-ec394e747101
-1591458784635|GlobalRegistry processing remove my-URI-subscriber-student11
-1591458784639|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-69f3b068-13b2-417e-8097-f2ee7b0983c9
-1591458784723|GlobalRegistry processing remove my-URI-subscriber-student12
-1591458784727|GlobalRegistry processing remove my-URI-subscriber-student14
-1591458784811|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-42909be7-5c60-42ce-a8c3-e21f2c16f92a
-1591458784819|GlobalRegistry processing remove my-URI-broker21
-1591458784899|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-b2364455-3151-48d7-804f-b0c755456b56
-1591458784907|GlobalRegistry processing remove my-URI-broker20
-1591458784987|GlobalRegistry processing remove my-URI-broker0
-1591458784999|GlobalRegistry processing remove baduren.replicator.interfaces.ReplicableCI-5d5ae8ed-51c4-4c5a-bf26-9139e76f6307
-1591458785079|GlobalRegistry processing remove baduren.replicator.interfaces.ReplicableCI-76d76200-fb5e-4b0d-9ccb-b5f9f582e1cd
-1591458785087|GlobalRegistry processing remove server-service-2
-1591458785171|GlobalRegistry processing remove server-service-1
-1591458785175|GlobalRegistry processing remove my-URI-broker2
-1591458785263|GlobalRegistry processing remove my-URI-broker
-1591458785263|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-8dd925e6-7616-41b5-9a7e-25c6ff48a2a5
-1591458785355|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-858287f1-0eb5-4022-9c95-e425792f587b
-1591458785443|GlobalRegistry processing remove student3
-1591458785487|GlobalRegistry processing remove baduren.replicator.interfaces.ReplicableCI-c7e107ec-b1c4-40c5-bbdc-5d1683fcd2c8
-1591458785488|GlobalRegistry processing remove baduren.interfaces.ManagementCI-0c72e642-72c0-43a9-b441-ecfddd09562c
-1591458785539|GlobalRegistry processing remove baduren.interfaces.ManagementCI-55983fbc-7eb6-4d0a-9d2a-4c44dde0064b
-1591458785579|GlobalRegistry processing remove baduren.replicator.interfaces.ReplicableCI-4af685a5-2fe0-42f8-915f-f3bdb8270870
-1591458785583|GlobalRegistry processing remove student1
-1591458785627|GlobalRegistry processing remove baduren.interfaces.ManagementCI-0696cd3f-46a4-4fb8-8b18-8662458e8ea8
-1591458785667|GlobalRegistry processing remove manager
-1591458785671|GlobalRegistry processing remove baduren.interfaces.ManagementCI-463b3d0c-e3ce-4198-bd2e-e857fbdfeca1
-1591458785715|GlobalRegistry processing remove publisher-client-plugin-uri3
-1591458785759|GlobalRegistry processing remove student2
-1591458785803|GlobalRegistry processing remove student4
-1591458785847|GlobalRegistry processing remove baduren.interfaces.ManagementCI-59d96e83-973e-418d-90db-84b183de79fa
-1591458785891|GlobalRegistry processing remove baduren.interfaces.ManagementCI-1ab7aae3-4f3d-4fa6-b0e7-236cd681c706
-1591458785935|GlobalRegistry processing remove publisher-client-plugin-uri2
-1591458785979|GlobalRegistry processing remove baduren.interfaces.ManagementCI-ca6c2f4c-f04d-42f4-99e9-bd48fc27c7cc
-1591458786023|GlobalRegistry processing remove baduren.interfaces.ManagementCI-69951ce8-0e50-4074-85cb-02fbb4b9e915
-1591458786067|GlobalRegistry processing remove baduren.interfaces.PublicationImplementationI-78a1cedb-eec8-4555-8dbe-01597339323c
-1591458786111|GlobalRegistry processing remove jvm1-dcc
-1591458786155|GlobalRegistry processing remove publisher-client-plugin-uri4
-1591458786199|GlobalRegistry processing remove baduren.interfaces.PublicationImplementationI-b36c3726-09a1-4bb8-b069-6e87282f731b
-1591458786243|GlobalRegistry processing remove baduren.interfaces.ManagementCI-ab8ba442-ad34-40a5-a28b-6379a2317464
-1591458786288|GlobalRegistry processing remove baduren.interfaces.ManagementCI-ad89e11c-b3b1-4176-8291-cab89a32e44f
-1591458786331|GlobalRegistry processing remove jvm2-dcc
-1591458786463|GlobalRegistry processing shutdown
-1591458786463|GlobalRegistry processing shutdown
-1591458786463|GlobalRegistry processing shutdown
-1591458786466|Global registry shuts down!
+1591551014081|Registry up and running!
+1591551020225|GlobalRegistry processing put my-URI-broker rmi=localhost
+1591551020273|GlobalRegistry processing put baduren.replicator.interfaces.ReplicableCI-4c8f0e34-8fd7-4b10-9af3-c6db86de6473 rmi=localhost
+1591551020294|GlobalRegistry processing put server-service-1 rmi=localhost
+1591551020365|GlobalRegistry processing put baduren.interfaces.ManagementCI-4dc9fa3a-367d-4e89-9e30-6f67e00a7841 rmi=localhost
+1591551020443|GlobalRegistry processing put baduren.interfaces.PublicationImplementationI-b579aeee-e6a4-42fb-836e-7842175538c0 rmi=localhost
+1591551020471|GlobalRegistry processing put my-URI-broker2 rmi=localhost
+1591551020508|All connected!
+1591551020515|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-4c65f0ca-0b43-43bd-8f71-4e911a8bc447 rmi=localhost
+1591551020520|GlobalRegistry processing put baduren.replicator.interfaces.ReplicableCI-b061f110-4ed4-4207-9916-fa8672200d3f rmi=localhost
+1591551020568|GlobalRegistry processing put server-service-2 rmi=localhost
+1591551020653|GlobalRegistry processing put baduren.interfaces.ManagementCI-a6fce365-025a-4b2d-8ced-e9b785217a60 rmi=localhost
+1591551020666|GlobalRegistry processing put manager rmi=localhost
+1591551020719|GlobalRegistry processing put baduren.replicator.interfaces.ReplicableCI-77f78b9d-bb35-4c87-b021-571f9259d020 rmi=localhost
+1591551020729|GlobalRegistry processing put baduren.replicator.interfaces.ReplicableCI-6baf36d9-f419-473a-894d-73989c403ed1 rmi=localhost
+1591551020755|GlobalRegistry processing put baduren.interfaces.PublicationImplementationI-9c8f3996-8321-4d4b-b756-41ab0f5fed02 rmi=localhost
+1591551020867|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-aa031046-5083-4dd6-b717-72794b8b629a rmi=localhost
+1591551020919|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-280ecf4f-4aaf-4542-8c33-e73097b24f2d rmi=localhost
+1591551021016|GlobalRegistry processing put my-URI-subscriber-student11 rmi=localhost
+1591551021135|GlobalRegistry processing put my-URI-subscriber-student12 rmi=localhost
+1591551021198|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-142d6777-5af0-4489-a208-04d8a11dda10 rmi=localhost
+1591551021234|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-e068782e-4403-4c42-86b8-2d3c553fd46e rmi=localhost
+1591551021271|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-97c452ef-d317-4000-ad41-20389cad55f5 rmi=localhost
+1591551021275|GlobalRegistry processing put jvm1-dcc rmi=localhost
+1591551021359|GlobalRegistry processing put my-URI-subscriber-student13 rmi=localhost
+1591551021388|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-a705482b-2aa7-4cea-8b3e-3e722d246ae2 rmi=localhost
+1591551021389|GlobalRegistry processing put my-URI-subscriber-student14 rmi=localhost
+1591551021426|GlobalRegistry processing put manager-dcc rmi=localhost
+1591551021471|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-ef738f4b-8d84-4f79-9f7f-0d49c908490f rmi=localhost
+1591551021555|GlobalRegistry processing put jvm2-dcc rmi=localhost
+1591551021603|GlobalRegistry processing lookup server-service-1
+1591551021605|GlobalRegistry processing lookup manager
+1591551021652|GlobalRegistry processing lookup manager
+1591551021741|GlobalRegistry processing lookup server-service-2
+1591551022068|GlobalRegistry processing put baduren.interfaces.ManagementCI-6cca948b-394c-4bc2-90a5-509f88fa8bd4 rmi=localhost
+1591551022100|GlobalRegistry processing put publisher-client-plugin-uri3 rmi=localhost
+1591551022111|GlobalRegistry processing put publisher-client-plugin-uri2 rmi=localhost
+1591551022112|GlobalRegistry processing put baduren.interfaces.ManagementCI-67d24653-c1c5-4a4d-a859-35c977409029 rmi=localhost
+1591551022119|GlobalRegistry processing put publisher-client-plugin-uri1 rmi=localhost
+1591551022135|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-f8229812-9ad7-44a9-b3c6-3712513dce49 rmi=localhost
+1591551022183|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-16e76d68-ea93-48d7-9ba1-cacf76950db8 rmi=localhost
+1591551022187|GlobalRegistry processing put baduren.interfaces.ManagementCI-331735cd-b63b-4698-89b7-39435374eda0 rmi=localhost
+1591551022188|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-aef62c2f-3fe2-4d39-9fb2-6dbe8d7ad44e rmi=localhost
+1591551022192|GlobalRegistry processing put publisher-client-plugin-uri4 rmi=localhost
+1591551022208|GlobalRegistry processing put baduren.interfaces.ManagementCI-09ef1ce1-fb91-437c-ab32-c5f3ebcbc11b rmi=localhost
+1591551022216|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-f8229812-9ad7-44a9-b3c6-3712513dce49
+1591551022225|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-dbdb7cef-b74c-4ba0-9cfc-7d30b3fe0a72 rmi=localhost
+1591551022267|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-ebbbb395-50f7-43ac-9015-8c169298ef8e rmi=localhost
+1591551022268|GlobalRegistry processing put student1 rmi=localhost
+1591551022270|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-aef62c2f-3fe2-4d39-9fb2-6dbe8d7ad44e
+1591551022271|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-16e76d68-ea93-48d7-9ba1-cacf76950db8
+1591551022299|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-5eb1ae6f-2b0d-4544-81e3-0ac4e879696f rmi=localhost
+1591551022307|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-ebbbb395-50f7-43ac-9015-8c169298ef8e
+1591551022355|GlobalRegistry processing put student2 rmi=localhost
+1591551022361|GlobalRegistry processing put baduren.interfaces.ManagementCI-72f87f4f-25c5-4a9e-ab63-262d74033a54 rmi=localhost
+1591551022363|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-1b376d33-d698-4f07-9ec0-1a301ebf1746 rmi=localhost
+1591551022371|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-2ea9b62b-8a97-4249-9d96-3f13ecaca181 rmi=localhost
+1591551022376|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-b20361db-d726-4764-8db5-2192488caeea rmi=localhost
+1591551022387|GlobalRegistry processing put baduren.interfaces.ManagementCI-d9a89976-e363-47ef-b867-91fe7fd671cd rmi=localhost
+1591551022396|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-5eb1ae6f-2b0d-4544-81e3-0ac4e879696f
+1591551022411|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-dbdb7cef-b74c-4ba0-9cfc-7d30b3fe0a72
+1591551022457|GlobalRegistry processing put baduren.interfaces.ManagementCI-320c13b9-1b9d-4a32-8468-6b9023353a91 rmi=localhost
+1591551022460|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-e1044520-67cb-4ae7-bab7-312b1efbfb0a rmi=localhost
+1591551022467|GlobalRegistry processing put my-URI-broker0 rmi=localhost
+1591551022469|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-1b376d33-d698-4f07-9ec0-1a301ebf1746
+1591551022485|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-e1044520-67cb-4ae7-bab7-312b1efbfb0a
+1591551022499|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-b20361db-d726-4764-8db5-2192488caeea
+1591551022515|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-0ff58695-5dcc-443b-b57f-d180b89f27d4 rmi=localhost
+1591551022519|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-2ea9b62b-8a97-4249-9d96-3f13ecaca181
+1591551022538|GlobalRegistry processing put student4 rmi=localhost
+1591551022599|GlobalRegistry processing put my-URI-broker1 rmi=localhost
+1591551022627|GlobalRegistry processing put baduren.interfaces.ManagementCI-bd8469ce-ee20-4569-a47c-2b6c49cf715c rmi=localhost
+1591551022631|GlobalRegistry processing put student3 rmi=localhost
+1591551022633|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-0ff58695-5dcc-443b-b57f-d180b89f27d4
+1591551022638|GlobalRegistry processing put my-URI-broker20 rmi=localhost
+1591551022683|GlobalRegistry processing put fr.sorbonne_u.components.reflection.interfaces.ReflectionI-c9449280-efed-4468-a427-0feb641cf40f rmi=localhost
+1591551022726|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-c9449280-efed-4468-a427-0feb641cf40f
+1591551022771|GlobalRegistry processing put my-URI-broker21 rmi=localhost
+1591551041922|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-ef738f4b-8d84-4f79-9f7f-0d49c908490f
+1591551041940|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-a705482b-2aa7-4cea-8b3e-3e722d246ae2
+1591551041940|GlobalRegistry processing remove my-URI-subscriber-student11
+1591551041952|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-e068782e-4403-4c42-86b8-2d3c553fd46e
+1591551041976|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-142d6777-5af0-4489-a208-04d8a11dda10
+1591551041982|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-4c65f0ca-0b43-43bd-8f71-4e911a8bc447
+1591551042024|GlobalRegistry processing remove my-URI-subscriber-student13
+1591551042083|GlobalRegistry processing remove my-URI-subscriber-student12
+1591551042100|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-aa031046-5083-4dd6-b717-72794b8b629a
+1591551042141|GlobalRegistry processing remove my-URI-subscriber-student14
+1591551042158|GlobalRegistry processing remove my-URI-broker20
+1591551042209|GlobalRegistry processing remove my-URI-broker21
+1591551042212|GlobalRegistry processing remove baduren.replicator.interfaces.ReplicableCI-b061f110-4ed4-4207-9916-fa8672200d3f
+1591551042215|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-280ecf4f-4aaf-4542-8c33-e73097b24f2d
+1591551042215|GlobalRegistry processing remove server-service-2
+1591551042264|GlobalRegistry processing remove my-URI-broker1
+1591551042266|GlobalRegistry processing remove my-URI-broker0
+1591551042267|GlobalRegistry processing remove baduren.replicator.interfaces.ReplicableCI-4c8f0e34-8fd7-4b10-9af3-c6db86de6473
+1591551042267|GlobalRegistry processing remove my-URI-broker2
+1591551042270|GlobalRegistry processing remove server-service-1
+1591551042280|GlobalRegistry processing remove fr.sorbonne_u.components.reflection.interfaces.ReflectionI-97c452ef-d317-4000-ad41-20389cad55f5
+1591551042314|GlobalRegistry processing remove my-URI-broker
+1591551042327|GlobalRegistry processing remove jvm2-dcc
+1591551042328|GlobalRegistry processing remove student1
+1591551042363|GlobalRegistry processing remove manager-dcc
+1591551042386|GlobalRegistry processing remove baduren.interfaces.ManagementCI-6cca948b-394c-4bc2-90a5-509f88fa8bd4
+1591551042395|GlobalRegistry processing remove baduren.interfaces.ManagementCI-d9a89976-e363-47ef-b867-91fe7fd671cd
+1591551042400|GlobalRegistry processing remove baduren.replicator.interfaces.ReplicableCI-77f78b9d-bb35-4c87-b021-571f9259d020
+1591551042411|GlobalRegistry processing remove baduren.replicator.interfaces.ReplicableCI-6baf36d9-f419-473a-894d-73989c403ed1
+1591551042465|GlobalRegistry processing remove manager
+1591551042472|GlobalRegistry processing remove publisher-client-plugin-uri3
+1591551042483|GlobalRegistry processing remove student3
+1591551042491|GlobalRegistry processing remove jvm1-dcc
+1591551042499|GlobalRegistry processing remove student2
+1591551042507|GlobalRegistry processing remove baduren.interfaces.ManagementCI-67d24653-c1c5-4a4d-a859-35c977409029
+1591551042555|GlobalRegistry processing remove publisher-client-plugin-uri1
+1591551042559|GlobalRegistry processing remove baduren.interfaces.ManagementCI-09ef1ce1-fb91-437c-ab32-c5f3ebcbc11b
+1591551042559|GlobalRegistry processing remove baduren.interfaces.ManagementCI-320c13b9-1b9d-4a32-8468-6b9023353a91
+1591551042599|GlobalRegistry processing remove publisher-client-plugin-uri2
+1591551042615|GlobalRegistry processing remove student4
+1591551042636|GlobalRegistry processing remove baduren.interfaces.ManagementCI-331735cd-b63b-4698-89b7-39435374eda0
+1591551042699|GlobalRegistry processing remove baduren.interfaces.ManagementCI-72f87f4f-25c5-4a9e-ab63-262d74033a54
+1591551042707|GlobalRegistry processing remove baduren.interfaces.ManagementCI-a6fce365-025a-4b2d-8ced-e9b785217a60
+1591551042719|GlobalRegistry processing remove baduren.interfaces.PublicationImplementationI-b579aeee-e6a4-42fb-836e-7842175538c0
+1591551042726|GlobalRegistry processing remove baduren.interfaces.PublicationImplementationI-9c8f3996-8321-4d4b-b756-41ab0f5fed02
+1591551042727|GlobalRegistry processing remove baduren.interfaces.ManagementCI-4dc9fa3a-367d-4e89-9e30-6f67e00a7841
+1591551042820|GlobalRegistry processing remove publisher-client-plugin-uri4
+1591551042863|GlobalRegistry processing remove baduren.interfaces.ManagementCI-bd8469ce-ee20-4569-a47c-2b6c49cf715c
+1591551042886|GlobalRegistry processing shutdown
+1591551042916|GlobalRegistry processing shutdown
+1591551042931|GlobalRegistry processing shutdown
+1591551042940|Global registry shuts down!

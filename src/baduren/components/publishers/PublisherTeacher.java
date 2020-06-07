@@ -61,7 +61,12 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
 
         // Display to logs in to right position
         this.tracer.setTitle("Teacher " + this.number_teacher) ;
-        this.tracer.setRelativePosition(this.number_teacher, 1) ;
+        if(this.number_teacher==1||this.number_teacher==2) {
+            this.tracer.setRelativePosition(this.number_teacher, 1);
+        }
+        if(this.number_teacher==3||this.number_teacher==4) {
+            this.tracer.setRelativePosition(this.number_teacher, 2);
+        }
         if(! new File(TestsIntegration.LOG_FOLDER).exists()) new File(TestsIntegration.LOG_FOLDER).mkdir();
         Logger logger = new Logger(TestsIntegration.LOG_FOLDER);
         logger.toggleLogging();
@@ -199,12 +204,15 @@ public class PublisherTeacher extends AbstractComponent implements ManagementImp
                 Thread.sleep(1000);
                 this.logMessage("il pleut");
                 publish (new Message("La vie est un long voyage "), "APS");
+                this.publications++;
                 break;
 
             case 4:
                 Thread.sleep(1000);
                 this.logMessage("en revoir");
                 publish(new Message("Prenez vos crayons! ") , new String[]{"PC3R", "CPA"});
+                this.publications++;
+                this.publications++;
                 break;
 
 
